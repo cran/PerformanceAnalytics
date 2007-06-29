@@ -6,7 +6,7 @@
   Chart that cumulates the periodic returns given and draws a line graph of the results as a "wealth index".
 }
 \usage{
-    chart.CumReturns(R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), ...)
+chart.CumReturns(R, wealth.index = FALSE, legend.loc = NULL, colorset =(1:12), begin = c("first","axis"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -14,6 +14,13 @@
   \item{wealth.index}{ if \code{wealth.index} is \code{TRUE}, shows the "value of \$1", starting the cumulation of returns at 1 rather than zero }
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{colorset}{ color palette to use, set by default to rational choices }
+  \item{begin}{
+    Align shorter series to:
+    \itemize{
+        \item first - prior value of the first column given for the reference or longer series or,
+        \item axis  - the initial value (1 or zero) of the axis.
+    }
+  }
   \item{\dots}{ any other passthru parameters }
 }
 \details{
@@ -26,7 +33,10 @@ A timeseries line chart of the cumulative return series.
 \author{ Peter Carl }
 \note{
 }
-\seealso{ See Also \code{\link{chart.TimeSeries}}, \code{\link{plot}} }
+\seealso{
+    \code{\link{chart.TimeSeries}} \cr
+    \code{\link{plot}}
+}
 \examples{
 data(edhec)
 chart.CumReturns(edhec[,"Funds.of.Funds"],main="Cumulative Returns")

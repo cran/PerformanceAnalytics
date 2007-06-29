@@ -25,7 +25,8 @@ function (R, rf)
         rf = checkData(rf, method = "zoo")
 
     ## arithmetic on zoo objects intersects them first
-    R.excess = R[,1,drop = FALSE] - rf
+#    R.excess = R[,1,drop = FALSE] - rf
+    R.excess = R[drop = FALSE] - rf
 
     # RESULTS:
     return(R.excess)
@@ -39,10 +40,13 @@ function (R, rf)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.excess.R,v 1.3 2007/03/16 13:59:20 peter Exp $
+# $Id: Return.excess.R,v 1.4 2007/05/15 19:47:38 peter Exp $
 #
 ###############################################################################
 # $Log: Return.excess.R,v $
+# Revision 1.4  2007/05/15 19:47:38  peter
+# - handles multiple column objects
+#
 # Revision 1.3  2007/03/16 13:59:20  peter
 # - added cvs footer
 #

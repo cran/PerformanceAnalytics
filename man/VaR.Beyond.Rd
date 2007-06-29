@@ -9,13 +9,14 @@ BeyondVaR is described in theoretical detail in the paper:
 Gaussel, N., Legras, J., Longin, F., and Rabemananjara, R. "Beyond the VaR Horizon" 2001, Quants Review No. 37
 }
 \usage{
-VaR.Beyond(R, p=.95, modified=FALSE, periods = 1)
+VaR.Beyond(R, p=.95, modified=FALSE, add=FALSE, periods = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{p}{ confidence level for calculation, default p=.99 }
   \item{modified}{ TRUE/FALSE default FALSE, use Cornish Fisher Expansion to take higher moments into account }
+  \item{add}{ TRUE/FALSE default FALSE, add VaR to BeyondVaR value for total predicted loss, like \code{\link[fPortfolio]{CVaRplus}} }
   \item{periods}{ number of periods to calculate predicted loss beyond the VaR for, default 1 }
 }
 \details{
@@ -32,9 +33,10 @@ Peter Carl \cr
 Brian G. Peterson
 }
 \seealso{
-    \code{\link{VaR.CornishFisher}}
-    \code{\link{VaR.traditional}}
-    \code{\link[fPortfolio]{CVaR}}
+    \code{\link{VaR.CornishFisher}} \cr
+    \code{\link{VaR.traditional}} \cr
+    \code{\link[fPortfolio]{CVaR}} \cr
+    \code{\link[fPortfolio]{CVaRplus}}
 }
 \examples{
     data(edhec)

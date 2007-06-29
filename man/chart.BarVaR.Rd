@@ -1,21 +1,23 @@
 \name{chart.BarVaR}
 \alias{chart.BarVaR}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Periodic returns in a bar chart with risk metric overlay }
 \description{
   Plots the periodic returns in a bar chart overlayed with a risk metric calculation.
 }
 \usage{
-chart.BarVaR(R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", reference.grid = TRUE, xaxis = TRUE, main = "Title", ylab = "Value", xlab = "Date", date.format = "\%m/\%y", xlim = NA, ylim = NA, lwd = 1, colorset = (1:12), p = 0.99, ...)
+chart.BarVaR(R, width = 0, gap = 12, risk.line = TRUE, method = c("ModifiedVaR","VaR","StdDev"),
+             reference.grid = TRUE, xaxis = TRUE, main = "Title", ylab="Value", xlab="Date",
+             date.format = "\%m/\%y", xlim = NA, ylim = NA, lwd = 1, colorset =(1:12),
+             p=.99, lty = "13", all = FALSE, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{width}{ periods specified for rolling-period calculations.  Note that VaR and Std Dev with width=0 are calculated from the start of the timeseries }
-  \item{method}{ can be specified as \code{StdDev}, \code{VaR}, or \code{ModifiedVaR} }
+  \item{gap}{ numeric number of periods from start of series to use to train risk calculation }
+  \item{method}{ one of \emph{StdDev}, \emph{VaR}, or \emph{ModifiedVaR}, default ModifiedVaR }
   \item{p}{ confidence level for \code{VaR} or \code{ModifiedVaR} calculation, default is .99 }
   \item{risk.line}{ if risk.line is set to \code{FALSE}, then this function just draws the underlying bar chart }
-  \item{gap}{ numeric number of periods from start of series to use to train risk calculation }
   \item{reference.grid}{ if true, draws a grid aligned with the points on the x and y axes }
   \item{xaxis}{ if true, draws the x axis }
   \item{main}{ set the chart title, same as in \code{\link{plot}} }
@@ -25,6 +27,8 @@ chart.BarVaR(R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", re
   \item{xlim}{ set the x-axis limit, same as in \code{\link{plot}} }
   \item{ylim}{ set the y-axis limit, same as in \code{\link{plot}} }
   \item{lwd}{ set the line width, same as in \code{\link{plot}} }
+  \item{lty}{ set the line type, same as in \code{\link{plot}} }
+  \item{all}{ if TRUE, calculates risk lines for each column given in R.  If FALSE, only calculates the risk line for the first column }
   \item{colorset}{ color palette to use, set by default to rational choices }
   \item{\dots}{ any other passthru parameters }
 }
@@ -39,9 +43,9 @@ Creates a plot of time on the x-axis and vertical lines for each period to indic
 \note{
 }
 \seealso{
-   \code{\link{chart.TimeSeries}}
-   \code{\link{plot}}
-   \code{\link[fPortfolio]{VaR}}
+   \code{\link{chart.TimeSeries}} \cr
+   \code{\link{plot}} \cr
+   \code{\link[fPortfolio]{VaR}} \cr
    \code{\link{VaR.CornishFisher}}
 }
 \examples{

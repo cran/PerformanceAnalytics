@@ -1,14 +1,35 @@
+`sd.multiperiod` <-
+function (x, na.rm=FALSE, periods = 12, ...)
+{
+    x = checkData (x,na.rm=na.rm, ...=...)
+    #scale standard deviation by multiplying by the square root of the number of periods to scale by
+	return(sqrt(periods)*sd(x, na.rm=na.rm))
+}
+
+`sd.annualized` <-
+function (x, na.rm=FALSE, periods = 12, ...)
+{
+	sd.multiperiod(x, na.rm=na.rm, periods = periods, ...=...)
+}
+
 `StdDev.annualized` <-
-function (Ra, scale = 12)
-{ # @author Peter Carl
+function (Ra, na.rm=FALSE, scale = 12, ...)
+{   # wrapper function for backwards compatibility
+	sd.multiperiod(Ra, na.rm=na.rm, periods = scale, ...=...)
+}
 
-    # To annualize standard deviation, we multiply by the square root of the
-    # number of observations per year.
+###############################################################################
+# sd function wrappers for backwards compatibility
+`StdDev` <-
+function(Ra)
+{ # wrapper for backwards compatibility
+    return(sd(Ra))
+}
 
-    Ra = checkDataVector(Ra)
-
-    # return(sqrt(scale)*sqrt(var(x - rf)))
-    return(sqrt(scale)*sqrt(var(Ra)))
+`std` <-
+function(Ra) {
+    # NOTE: std function is listed in the doc for fBasics, but not implemented
+    return(sd(Ra))
 }
 
 ###############################################################################
@@ -19,10 +40,25 @@ function (Ra, scale = 12)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.annualized.R,v 1.4 2007/03/12 15:45:50 brian Exp $
+# $Id: StdDev.annualized.R,v 1.8 2007/06/07 23:02:20 brian Exp $
 #
 ###############################################################################
 # $Log: StdDev.annualized.R,v $
+# Revision 1.8  2007/06/07 23:02:20  brian
+# - update passing of ... into functions
+# - fix scale/periods cut and paste error
+#
+# Revision 1.7  2007/06/04 14:32:33  peter
+# - fixed x and Ra replacement error
+#
+# Revision 1.6  2007/05/15 20:02:01  brian
+# - fix syntax error (extra paren)
+#
+# Revision 1.5  2007/05/15 11:57:52  brian
+# - standardize usage to match common R usage
+# - define sd.annualized and sd.multiperiod as generic extensions of R core sd fn
+# - move StdDev and std wrappers to this file
+#
 # Revision 1.4  2007/03/12 15:45:50  brian
 # - add equations to documentation
 # - standardize on Ra for Returns of asset

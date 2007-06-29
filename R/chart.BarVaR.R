@@ -1,5 +1,5 @@
 `chart.BarVaR` <-
-function (R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", reference.grid = TRUE, xaxis = TRUE, main = "Title", ylab="Value", xlab="Date", date.format = "%m/%y", xlim = NA, ylim = NA, lwd = 1, colorset =(1:12), p=.99,...)
+function (R, width = 0, gap = 12, risk.line = TRUE, method = c("ModifiedVaR","VaR","StdDev"), reference.grid = TRUE, xaxis = TRUE, main = "Title", ylab="Value", xlab="Date", date.format = "%m/%y", xlim = NA, ylim = NA, lwd = 1, colorset =(1:12), p=.99, lty = "13", all = FALSE, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -26,43 +26,55 @@ function (R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", refer
     rows = nrow(x)
     columnnames = colnames(x)
     rownames = rownames(x)
+    method = method[1] # grab the first value if this is still a vector, to avoid varnings
+
+    risk = zoo(0)
+
+    if (!all)
+        columns = 1
 
     if(risk.line){
-        if(method == "StdDev"){
-            symmetric = TRUE
-            if(width > 0){
-                risk = apply.rolling(na.omit(x[,1,drop=FALSE]), width = width, FUN = "sd")
-                legend.txt = paste("Rolling ",width,"-month Std Dev",sep="")
-            }
-            else {
-                risk = apply.fromstart(na.omit(x[,1,drop=FALSE]), gap = gap, FUN = "sd")
-                legend.txt = "Std Dev"
-            }
-        }
-        else if(method == "VaR"){
-            symmetric = TRUE
-            if(width > 0) {
-                risk = apply.rolling(na.omit(x[,1,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = FALSE)
-                legend.txt = paste("Rolling ",width,"-Month VaR (1 Mo, ",p*100,"%)",sep="")
-            }
-            else {
-                risk = apply.fromstart(na.omit(x[,1,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = FALSE)
-                legend.txt = paste("Traditional VaR (1 Mo, ",p*100,"%)",sep="")
-            }
-        }
-        else if(method == "ModifiedVaR"){
-            symmetric = FALSE
-            if(width > 0) {
-                risk = apply.rolling(na.omit(x[,1,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = TRUE)
-                legend.txt = paste("Rolling ",width,"-Month Modified VaR (1 Mo, ",p*100,"%)",sep="")
-            }
-            else {
-                risk = apply.fromstart(na.omit(x[,1,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = TRUE)
-                legend.txt = paste("Modified VaR (1 Mo, ",p*100,"%)",sep="")
-            }
-        }
+        for(column in 1:columns) {
+            switch(method,
+                StdDev = {
+                    symmetric = TRUE
+                    if(width > 0){
+                        column.risk = apply.rolling(na.omit(x[,column,drop=FALSE]), width = width, FUN = "sd")
+                        legend.txt = paste("Rolling ",width,"-month Std Dev",sep="")
+                    }
+                    else {
+                        column.risk = apply.fromstart(na.omit(x[,column,drop=FALSE]), gap = gap, FUN = "sd")
+                        legend.txt = "Std Dev"
+                    }
+                },
+                VaR = {
+                    symmetric = TRUE
+                    if(width > 0) {
+                        column.risk = apply.rolling(na.omit(x[,column,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = FALSE)
+                        legend.txt = paste("Rolling ",width,"-Month VaR (1 Mo, ",p*100,"%)",sep="")
+                    }
+                    else {
+                        column.risk = apply.fromstart(na.omit(x[,column,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = FALSE)
+                        legend.txt = paste("Traditional VaR (1 Mo, ",p*100,"%)",sep="")
+                    }
+                },
+                ModifiedVaR = {
+                    symmetric = FALSE
+                    if(width > 0) {
+                        column.risk = apply.rolling(na.omit(x[,column,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = TRUE)
+                        legend.txt = paste("Rolling ",width,"-Month Modified VaR (1 Mo, ",p*100,"%)",sep="")
+                    }
+                    else {
+                        column.risk = apply.fromstart(na.omit(x[,column,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = TRUE)
+                        legend.txt = paste("Modified VaR (1 Mo, ",p*100,"%)",sep="")
+                    }
+                }
+            ) # end switch
+        if(column == 1)
+            risk = merge(x[,1],column.risk)
         else
-            stop("Did not recognize the method, which should be one of \"StdDev\", \"VaR\", or \"ModifiedVaR\".")
+            risk = merge(risk,column.risk)
+        }
     }
     else {
         risk = 0
@@ -72,16 +84,21 @@ function (R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", refer
         ylim = range(c(na.omit(as.vector(x[,1])), na.omit(as.vector(risk)), -na.omit(as.vector(risk))))
     }
 
-    chart.TimeSeries(x[,1], type = "h", col = colorset, legend.loc = NULL, ylim = ylim, reference.grid = reference.grid, xaxis = xaxis, main = main, ylab = ylab, xlab = xlab, lwd = lwd, lend="butt", ...)
+    chart.TimeSeries(x[,1, drop=FALSE], type = "h", col = colorset, legend.loc = NULL, ylim = ylim, reference.grid = reference.grid, xaxis = xaxis, main = main, ylab = ylab, xlab = xlab, lwd = lwd, lend="butt", ...)
 
     if(risk.line){
-        if (symmetric)
-            lines(1:rows, risk, col = colorset[1], lwd = 1, type = "l", lty="13")
-        lines(1:rows, -risk, col = colorset[1], lwd = 1, type = "l", lty="13")
+        if (symmetric){
+            for(column in (columns+1):2) {
+                lines(1:rows, risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty)
+            }
+        }
+        for(column in (columns+1):2) {
+            lines(1:rows, -risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty)
+        }
     }
 
     if(legend.txt != "")
-        legend("bottomleft", inset = 0.02, text.col = colorset[1], col = colorset[1], cex = .8, border.col = "grey", lwd = 1, lty="13", bty = "n", legend = legend.txt)
+        legend("bottomleft", inset = 0.02, text.col = colorset, col = colorset, cex = .8, border.col = "grey", lwd = 1, lty=lty, bty = "n", legend = legend.txt)
 
 }
 
@@ -93,10 +110,22 @@ function (R, width = 0, gap = 1, risk.line = TRUE, method = "ModifiedVaR", refer
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R,v 1.8 2007/04/13 22:45:18 peter Exp $
+# $Id: chart.BarVaR.R,v 1.12 2007/06/25 04:15:59 peter Exp $
 #
 ###############################################################################
 # $Log: chart.BarVaR.R,v $
+# Revision 1.12  2007/06/25 04:15:59  peter
+# - made gap default 12 (months)
+#
+# Revision 1.11  2007/06/18 03:33:07  brian
+# - use switch for method argument, more efficient
+#
+# Revision 1.10  2007/04/21 14:07:25  peter
+# - added 'all' flag: when F only draws first column
+#
+# Revision 1.9  2007/04/21 01:06:01  peter
+# - creates risk lines for each column of data
+#
 # Revision 1.8  2007/04/13 22:45:18  peter
 # - changed how na.omit is applied
 #

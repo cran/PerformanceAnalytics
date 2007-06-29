@@ -1,17 +1,25 @@
 `cummax.column` <-
-function (R, na.rm = TRUE, ...)
+function (x)
 { # @author Peter Carl
 
-    # to get to drawdown calculations, we need cumMax.column
-    x = checkDataMatrix(R)
+    # NOTE: a prior version of this function included na.rm as a parameter
+    # this was removed because the cumulative functions are now generic functions
+    # in R.
+    # Conversation with Kurt Hornik (who consulted Brian Ripley) indicated that
+    # the best handling of NA's in these functions might be to do specific
+    # replacement such that the returned column series would have the same length
+    # as the input series.  For now, I've simply removed the offending parameters,
+    # but left the code here and this note to remind us to revisit the decision.
 
-    if (na.rm) {
-        result = apply(na.omit(x), MARGIN = 2, FUN = cummax,
-            ...)
-    }
-    else {
-        result = apply(x, MARGIN = 2, FUN = cummax, ...)
-    }
+    # to get to drawdown calculations, we need cummax.column
+    x = checkDataMatrix(x)
+
+    #if (na.rm) {
+    #    result = apply(na.omit(x), MARGIN = 2, FUN = cummax, ...)
+    #}
+    #else {
+        result = apply(x, MARGIN = 2, FUN = cummax)
+    #}
     result
 }
 
@@ -23,10 +31,19 @@ function (R, na.rm = TRUE, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: cummax.column.R,v 1.3 2007/02/22 18:26:26 brian Exp $
+# $Id: cummax.column.R,v 1.6 2007/07/10 09:13:28 brian Exp $
 #
 ###############################################################################
 # $Log: cummax.column.R,v $
+# Revision 1.6  2007/07/10 09:13:28  brian
+# - comment out old na.rm handling to pass R CMD check
+#
+# Revision 1.5  2007/07/10 09:06:54  brian
+# - change parameters to x only, for reconciliation with R core
+#
+# Revision 1.4  2007/07/09 13:42:06  brian
+# - update to pass R CMD check
+#
 # Revision 1.3  2007/02/22 18:26:26  brian
 # - update function name for consistency
 #
