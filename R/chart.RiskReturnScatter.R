@@ -31,7 +31,9 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     # Code inspired by a chart on:
     # http://zoonek2.free.fr/UNIX/48_R/03.html
 
-    x = checkData(R, method = "matrix")
+    x = checkData(R, method = "zoo")
+    if(!is.null(dim(rf)))
+        rf = checkData(rf, method = "zoo")
 
     columns = ncol(x)
     rows = nrow(x)
@@ -45,12 +47,18 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     else
         elementcolor = "lightgray" #better for the screen
 
+    if(length(colorset) < columns)
+        colorset = rep(colorset, length.out = columns)
+
+    if(length(symbolset) < columns)
+        symbolset = rep(symbolset, length.out = columns)
+
     # @todo: add flags to use other risk measures
 
     if(method == "calc"){
         # Assume we're passed in a series of monthly returns.  First, we'll
         # annualized returns and risk
-        comparison = t(table.AnnualizedReturns(x, rf = rf))
+        comparison = t(table.AnnualizedReturns(x[,columns:1], rf = rf))
 
         returns = comparison[,1]
         risk = comparison[,2]
@@ -65,7 +73,7 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     if(is.null(xlim[1]))
         xlim = c(0, max(risk) + 0.02)
     if(is.null(ylim[1]))
-        ylim = c(0, max(returns) + 0.02)
+        ylim = c(min(c(0,returns)), max(returns) + 0.02)
 
     if(add.boxplots){
         original.layout <- par()
@@ -78,9 +86,13 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     # Draw the principal scatterplot
     plot(returns ~ risk,
         xlab='', ylab='',
-        las = 1, xlim=xlim, ylim=ylim, cex.axis = .8, col = colorset, pch = symbolset, ...)
+        las = 1, xlim=xlim, ylim=ylim, cex.axis = .8, col = colorset[columns:1], pch = symbolset[columns:1], axes= FALSE, ...)
 #     abline(v = 0, col = elementcolor)
-#     abline(h = 0, col = elementcolor)
+    if(ylim[1] != 0){
+        abline(h = 0, col = elementcolor)
+    }
+    axis(1, cex.axis = 0.8, col = elementcolor)
+    axis(2, cex.axis = 0.8, col = elementcolor)
 
     if(!add.boxplots){
         title(ylab = ylab)
@@ -97,7 +109,7 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
 
     # Label the data points
     if(add.names)
-        text(x = risk,y = returns, labels = row.names(comparison), adj = -0.1, cex = 0.8, col = colorset)
+        text(x = risk,y = returns, labels = row.names(comparison), adj = -0.1, cex = 0.8, col = colorset[columns:1])
 
     # Add a rug so that data points are easier to identify
     rug(side=1, risk, col = elementcolor)
@@ -112,7 +124,7 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     }
 
     #title(sub='From Inception', line=1)
-    box()
+    box(col = elementcolor)
 
     if(add.boxplots){
         # Draw the Y-axis histogram
@@ -139,10 +151,24 @@ function (R, rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RiskReturnScatter.R,v 1.4 2007/04/09 12:31:27 brian Exp $
+# $Id: chart.RiskReturnScatter.R,v 1.7 2007/10/03 02:46:18 peter Exp $
 #
 ###############################################################################
 # $Log: chart.RiskReturnScatter.R,v $
+# Revision 1.7  2007/10/03 02:46:18  peter
+# - colors and symbol sets now stretched to match the number of columns
+# - name text colors prints backwards to match the order of the dots
+#
+# Revision 1.6  2007/09/24 02:49:34  peter
+# - chart elements now consistent with time series charts
+# - prints columns backwards so that earlier columns printed on top of later
+# - return axis now unbounded below zero, although it will show zero
+# - zero return line drawn if min is not zero
+#
+# Revision 1.5  2007/08/16 14:29:16  peter
+# - modified checkData to return Zoo object
+# - added checkData to handle Rf as a time series rather than a point est
+#
 # Revision 1.4  2007/04/09 12:31:27  brian
 # - syntax and usage changes to pass R CMD check
 #

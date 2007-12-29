@@ -1,0 +1,40 @@
+\name{table.Autocorrelation}
+\alias{table.Autocorrelation}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{ table for calculating the first six autocorrelation coefficients and significance }
+\description{
+  Produces data table of autocorrelation coefficients \eqn{\rho}{rho} and corresponding Q(6)-statistic for each column in R.
+}
+\usage{
+table.Autocorrelation(R, digits = 4)
+}
+\arguments{
+  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{digits}{ number of digits to round results to for display }
+}
+\details{
+
+}
+\value{
+data.frame with columns for the first six auto-correlation coefficients and the Q(6) test.
+}
+\references{
+Lo, Andrew W. 2001. Risk Management for Hedge Funds: Introduction and Overview. SSRN
+  eLibrary.
+ }
+\author{ Peter Carl }
+\note{
+To test returns for autocorrelation, Lo (2001) suggests the use of the Ljung-Box test, a significance test for the auto-correlation coefficients.  Ljung and Box (1978) provide a refinement of the Q-statistic proposed by Box and Pierce (1970) that offers a better fit for the \eqn{\chi^2}{chi^2} test for small sample sizes. \code{\link{Box.test}} provides both.
+}
+\seealso{ \code{\link{Box.test}}, \code{\link{acf}} }
+\examples{
+data(managers)
+t(table.Autocorrelation(managers))
+
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ts }
+\keyword{ multivariate }
+\keyword{ distribution }
+\keyword{ models }

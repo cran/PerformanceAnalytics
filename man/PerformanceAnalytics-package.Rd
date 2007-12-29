@@ -16,10 +16,10 @@ We created this library to include functionality that has been appearing in the 
     \tabular{rl}{
         Package: \tab PerformanceAnalytics\cr
         Type: \tab Package\cr
-        Version: \tab 0.9.5\cr
-        Date: \tab 2007-06-29\cr
+        Version: \tab 0.9.6\cr
+        Date: \tab 2007-12-29\cr
         License: \tab GPL\cr
-        Copyright: \tab (c) 2004-2007 Brian G. Peterson and Peter Carl\cr
+        Copyright: \tab (c) 2004-2008 Brian G. Peterson and Peter Carl\cr
         URL: \tab \url{http://braverock.com/R/}
     }
 In general, this library is most tested on return (rather than price) data on a monthly scale. Many functions will work with daily or irregular return data as well.  See function \code{\link{CalculateReturns}} for calculating returns from prices, and be aware that the \code{\link{aggregate}} function has methods for \code{tseries} and \code{zoo} timeseries data classes to rationally coerce irregular data into regular data of the correct periodicity.
@@ -75,7 +75,7 @@ We have covered multiple methods of performance \emph{analysis} in this summary 
 }
 
 \section{Summary Tabular Data}{
-Summary statistics are then the necessary aggregation and reduction of these (potentially thousands) of periodic return numbers. Usually these statistics are most palatable when organized into a table of related statistics, assembled for a particular purpose.  A common offering of past returns organized by month and cumulated by calendar year is usually presented as a table, such as in \code{\link{table.Returns}}.  Adding benchmarks or peers alongside the annualized data is helpful for comparing returns in calendar years.
+Summary statistics are then the necessary aggregation and reduction of these (potentially thousands) of periodic return numbers. Usually these statistics are most palatable when organized into a table of related statistics, assembled for a particular purpose.  A common offering of past returns organized by month and cumulated by calendar year is usually presented as a table, such as in \code{\link{table.CalendarReturns}}.  Adding benchmarks or peers alongside the annualized data is helpful for comparing returns in calendar years.
 
 When we started this project, we debated whether such tables would be broadly useful or not.  No reader is likely to think that we captured the precise statistics to help their decision. We merely offer these as a starting point for creating your own.  Add, subtract, do whatever seems useful to you.  If you think that your work may be useful to others, please consider sharing it so that we may include it in a future version of this library.
 
@@ -102,11 +102,11 @@ Two-dimensional charts can also be useful while remaining easy to understand.  \
 
 For distributional analysis, a few graphics may be useful.  \code{\link{chart.Boxplot}} is an example of a graphic that is difficult to create in Excel and is under-utilized as a result.  A boxplot of returns is, however, a very useful way to instantly observe the shape of large collections of asset returns in a manner that makes them easy to compare to one another.  \code{\link{chart.Histogram}} and \code{\link{chart.QQPlot}} are two charts from the RMetrics packages with only small modifications.
 
-Rolling performance is typically used as a way to assess stability of a return stream.  Although perhaps it doesn't get much credence in the financial literature as it derives from work in digital signal processing, many practitioners find it a useful way to examine and segment performance and risk periods.  See \code{\link{chart.RollingPerformance}}, which is a way to display different metrics over rolling time periods.  \code{\link{chart.RollingMean}} is a specific example of a rolling mean and one standard deviation bands.  A group of related metrics is offered in \code{\link{charts.RollingPerformance}}.  These charts use utility functions such as \code{\link{rollingFunction}} and \code{\link{rollingStat}}.  \code{\link{chart.RollingCorrelation}} shows how correlations change over rolling periods.  \code{\link{chart.RollingRegression}} displays the coefficients of a linear model fitted over rolling periods.  A group of charts in \code{\link{charts.RollingRegression}} displays alpha, beta, and R-squared estimates in three aligned charts in a single device.
+Rolling performance is typically used as a way to assess stability of a return stream.  Although perhaps it doesn't get much credence in the financial literature as it derives from work in digital signal processing, many practitioners find it a useful way to examine and segment performance and risk periods.  See \code{\link{chart.RollingPerformance}}, which is a way to display different metrics over rolling time periods.  \code{\link{chart.RollingMean}} is a specific example of a rolling mean and one standard deviation bands.  A group of related metrics is offered in \code{\link{charts.RollingPerformance}}.  These charts use utility functions such as \code{\link[zoo]{rollapply}} and \code{\link{rollingStat}}.  \code{\link{chart.RollingCorrelation}} shows how correlations change over rolling periods.  \code{\link{chart.RollingRegression}} displays the coefficients of a linear model fitted over rolling periods.  A group of charts in \code{\link{charts.RollingRegression}} displays alpha, beta, and R-squared estimates in three aligned charts in a single device.
 
 A number of charts or groups of charts that remain unfinished or were experimental and may be modified or removed in the future.  \code{\link{chart.RegressionDiagnostics}}, \code{\link{chart.Correlation}}, and \code{\link{chart.Correlation.color}} are examples.  The latter two are slight modifications of code from the package \code{MASS} and the \R \code{base}.  See their documentation for more information.
 
-We have been greatly inspired by other peoples' work, some of which is on display at \url{http://addictedtor.free.fr/}.  Particular inspiration came from Dirk Eddelbuettel and John Bollinger for their work at \url{http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=65}.
+We have been greatly inspired by other peoples' work, some of which is on display at \url{http://addictedtor.free.fr/}.  Particular inspiration came from Dirk Eddelbuettel and John Bollinger for their work at \url{http://addictedtor.free.fr/graphiques/RGraphGallery.php?graph=65}. Those interested in price charting in \R should also look at the \code{quantmod} package.
 }
 
 \section{Risk Analysis}{
@@ -181,7 +181,7 @@ Data series \code{\link{edhec}} used in \code{PerformanceAnalytics} and related 
 
 Prototypes of the drawdowns functionality were provided by Sankalp Upadhyay, and modified with permission.
 
-Thanks to Joe Wayne Byers and Dirk Eddelbuettel for comments on early versions of these functions.
+Thanks to Joe Wayne Byers and Dirk Eddelbuettel for comments on early versions of these functions, and to Khanh Nguyen for careful testing and detailed problem reports.
 
 Thanks to the R-SIG-Finance community without whom this library would not be possible.
 }

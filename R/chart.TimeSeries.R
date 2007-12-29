@@ -1,5 +1,5 @@
 `chart.TimeSeries` <-
-function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, main = "Title", ylab=NULL, xlab="Date", date.format = "%m/%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE , legend.loc = NULL, ylog = FALSE, ...)
+function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, main = NULL, ylab=NULL, xlab="Date", date.format.in="%Y-%m-%d", date.format = "%m/%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE , legend.loc = NULL, ylog = FALSE, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -37,17 +37,18 @@ function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, 
     # FUNCTION:
 
     # Make sure that we have a matrix to work with
-    y = checkData(R, method = "matrix")
+    y = checkData(R, method = "zoo")
 
     # Set up dimensions and labels
     columns = ncol(y)
     rows = nrow(y)
     columnnames = colnames(y)
-    rownames = rownames(y)
+    #rownames = rownames(y)
+    rownames = as.Date(time(y))
 
     # Re-format the dates for the xaxis
-    rownames = format(strptime(rownames,format = "%Y-%m-%d"), date.format)
-
+#     rownames = format(strptime(as.Date(rownames),format = date.format.in), date.format)
+    rownames = format(strptime(rownames,format = date.format.in), date.format)
     # If the Y-axis is ln
     logaxis = ""
     if(ylog) {
@@ -72,7 +73,7 @@ function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, 
     if(is.null(xlim[1])) # is.na or is.null?
         xlim = c(1,rows)
     if(is.null(ylim[1])){
-        ylim = range(y[!is.na(y)])
+        ylim = range(y, na.rm=TRUE)
     }
     plot.window(xlim, ylim, xaxs = "r", log = logaxis)
     dimensions = par("usr")
@@ -159,6 +160,8 @@ function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, 
     }
 
     # Add the other titles
+    if(is.null(main))
+        main=columnnames[1]
     title(ylab = ylab)
     title(main = main)
 
@@ -172,10 +175,22 @@ function (R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, 
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.TimeSeries.R,v 1.4 2007/03/13 04:01:40 peter Exp $
+# $Id: chart.TimeSeries.R,v 1.8 2007/11/19 03:42:14 peter Exp $
 #
 ###############################################################################
 # $Log: chart.TimeSeries.R,v $
+# Revision 1.8  2007/11/19 03:42:14  peter
+# - title will no longer be set to default text, will use column name instead
+#
+# Revision 1.7  2007/11/08 05:04:10  peter
+# - added support for other time formats
+#
+# Revision 1.6  2007/08/20 21:06:11  peter
+# - using range function's na.rm flag to get correct NA behavior
+#
+# Revision 1.5  2007/08/14 23:43:50  peter
+# - now uses zoo internally and handles yearmon and yearqtr formatting
+#
 # Revision 1.4  2007/03/13 04:01:40  peter
 # - added new checkData function
 #

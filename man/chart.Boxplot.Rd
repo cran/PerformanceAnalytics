@@ -1,23 +1,42 @@
 \name{chart.Boxplot}
 \alias{chart.Boxplot}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ box whiskers plot wrapper, with sensible defaults }
+\title{ box whiskers plot wrapper }
 \description{
-A wrapper to create box and whiskers plot, but with some sensible defaults useful for comparing distributions.
+A wrapper to create box and whiskers plot with some defaults useful for comparing distributions.
 }
 \usage{
-chart.Boxplot(R, horizontal = TRUE, ...)
+chart.Boxplot(R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = FALSE, darken = FALSE, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison",...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{horizontal}{ TRUE/FALSE plot horizontal (TRUE) or vertical (FALSE)  }
+  \item{names}{ logical. if TRUE, show the names of each series }
+  \item{as.Tufte}{ logical. default FALSE. if TRUE use method derived for Tufte for limiting chartjunk }
+  \item{sort.ascending}{ logical.  If TRUE sort the distributions by ascending \code{sort.by} }
+  \item{sort.by}{ one of "NULL", "mean", "median", "variance" }
+  \item{colorset}{ color palette to use, set by default to rational choices }
+  \item{symbol.color}{ draws the symbols described in \code{mean.symbol},\code{median.symbol},\code{outlier.symbol} in the color specified }
+  \item{mean.symbol}{ symbol to use for the mean of the distribution }
+  \item{median.symbol}{ symbol to use for the median of the distribution }
+  \item{outlier.symbol}{ symbol to use for the outliers of the distribution }
+  \item{show.data}{ logical. default FALSE. if TRUE, show the scatter of all observations }
+  \item{add.mean}{ logical. if TRUE, show a line for the mean of all distributions plotted}
+  \item{xlab}{ set the x-axis label, same as in \code{\link{plot}} }
+  \item{main}{ set the chart title, same as in \code{\link{plot}} }
+  \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers. }
   \item{\dots}{ any other passthru parameters }
 }
 \value{
-Creates a box plot of returns with some defaults.
+box plot of returns
 }
-\references{ }
+\references{
+    Tufte, Edward R.  \emph{The Visual Display of Quantitative Information}. Graphics Press. 1983. p. 124-129
+}
+\details{
+We have also provided controls for all the symbols and lines in the chart.  One default, set by \code{as.Tufte=TRUE}, will strip chartjunk and draw a Boxplot per recommendations by Edward Tufte. It can also be useful when comparing several series to sort them in order of ascending or descending "mean", "median", "variance" by use of \code{sort.by} and \code{sort.ascending=TRUE}.
+}
 \author{ Peter Carl }
 \seealso{
     \code{\link[graphics]{boxplot}}
@@ -25,6 +44,7 @@ Creates a box plot of returns with some defaults.
 \examples{
 data(edhec)
 chart.Boxplot(edhec)
+chart.Boxplot(edhec,as.Tufte=TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

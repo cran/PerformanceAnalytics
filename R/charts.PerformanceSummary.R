@@ -1,5 +1,5 @@
 `charts.PerformanceSummary` <-
-function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), ...)
+function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -28,13 +28,27 @@ function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), widt
     colnames = colnames(x)
     ncols = ncol(x)
 
+# This repeats a bit of code from chart.CumReturns, but it's intended
+# to align the start dates of all three charts.  Basically, it assumes
+# that the first column in the list is the column of interest, and 
+# starts everything from that start date
+
+    length.column.one = length(x[,1])
+# find the row number of the last NA in the first column
+    start.row = 1
+    start.index = 0
+    while(is.na(x[start.row,1])){
+        start.row = start.row + 1
+    }
+    x = x[start.row:length.column.one,]
+
     if(ncols > 1)
-        legend.loc = "topleft"
+        legend.loc = legend.loc
     else
         legend.loc = NULL
 
     if(is.null(main))
-        main = paste(colnames[1]," Performance")
+        main = paste(colnames[1],"Performance", sep=" ")
 
     if(ylog)
         wealth.index = TRUE
@@ -76,10 +90,21 @@ function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), widt
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.PerformanceSummary.R,v 1.12 2007/06/29 15:52:25 peter Exp $
+# $Id: charts.PerformanceSummary.R,v 1.15 2007/09/24 02:50:28 peter Exp $
 #
 ###############################################################################
 # $Log: charts.PerformanceSummary.R,v $
+# Revision 1.15  2007/09/24 02:50:28  peter
+# - cleaned up spacing in title
+#
+# Revision 1.14  2007/08/23 02:12:04  peter
+# - added legend.loc as parameter so that legend can be shut off or moved
+# in top chart
+#
+# Revision 1.13  2007/08/15 00:04:44  peter
+# - aligns the three charts along the start date of the first column of
+# data
+#
 # Revision 1.12  2007/06/29 15:52:25  peter
 # - removed plot.new() that was causing two page pdf files
 #

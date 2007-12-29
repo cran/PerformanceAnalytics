@@ -9,8 +9,14 @@ A wrapper to create a chart of relative regression performance through time
 A group of charts in \code{charts.RollingRegression} displays alpha, beta, and R-squared estimates in three aligned charts in a single device.
 }
 \usage{
-chart.RollingRegression(Ra, Rb, width = 12, rf = 0, attribute = c("Beta","Alpha","R-Squared"), main = paste("Rolling ", width, "-Month ", attribute, sep = ""), xaxis = TRUE, colorset = (1:12), legend.loc = NULL, na.pad = TRUE, ...)
-charts.RollingRegression(Ra, Rb, width = 12, rf = 0, darken = FALSE, main = NULL, ...)
+chart.RollingRegression(Ra, Rb, width = 12, rf = 0,
+                 attribute = c("Beta","Alpha", "R-Squared"),
+                 main = paste("Rolling ", width,"-Month ", attribute, sep = ""),
+                 xaxis = TRUE, colorset = (1:12), legend.loc = NULL,
+                 na.pad = TRUE, ...)
+
+charts.RollingRegression(Ra, Rb, width = 12, rf = 0, darken = FALSE,
+                 main = NULL, legend.loc = NULL, event.labels = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,10 +26,11 @@ charts.RollingRegression(Ra, Rb, width = 12, rf = 0, darken = FALSE, main = NULL
   \item{width}{ number of periods to apply rolling function window over }
   \item{attribute}{ one of "Beta","Alpha","R-Squared" for which attribute to show }
   \item{main}{ set the chart title, same as in \code{plot} }
+  \item{event.labels}{ TRUE/FALSE whether or not to display lines and labels for historical market shock events }
+  \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{xaxis}{ if true, draws the x axis }
   \item{colorset}{ color palette to use, set by default to rational choices }
   \item{darken}{ TRUE/FALSE whether or not to darken the color palette for better printing on some printers }
-  \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{na.pad}{ TRUE/FALSE If TRUE it adds any times that would not otherwise have been in the result with a value of NA. If FALSE those times are dropped. }
   \item{\dots}{ any other passthru parameters }
 }

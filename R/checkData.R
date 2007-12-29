@@ -1,5 +1,5 @@
 `checkData` <-
-function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, ...)
+function (x, method = c("zoo","matrix","vector","data.frame"), na.rm = FALSE, quiet = TRUE, ...)
 { # @author Peter Carl
 
     # Description:
@@ -31,7 +31,7 @@ function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, .
 
         # Test for rows and columns
         if(is.null(ncol(x)))
-            stop("There don't seem to be any columns in the data provided.  If you are trying to pass in names from a zoo object with one column, you should use the form 'data.zoo[rows, columns, drop = FALSE]'.")
+            stop("There don\'t seem to be any columns in the data provided.  If you are trying to pass in names from a zoo object with one column, you should use the form \'data.zoo[rows, columns, drop = FALSE]\'.")
 
         if(is.null(nrow(x)))
             stop("No rows in the data provided.")
@@ -40,14 +40,15 @@ function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, .
         if(method != "vector" & is.null(colnames(x))) {
             columns = ncol(x)
             if(!quiet)
-                warning("No column names in the data provided. To pass in names from a data.frame, you should use the form 'data[rows, columns, drop = FALSE]'.")
-            columnnames = for(column in 1:columns) {paste("Column.",column,sep="")}
+                warning("No column names in the data provided. To pass in names from a data.frame, you should use the form \'data[rows, columns, drop = FALSE]\'.")
+            columnnames = NULL
+            for(column in 1:columns) {columnnames = c(columnnames, paste("Column.",column,sep=""))}
             colnames(x) = columnnames
         }
 
         if(method != "vector" & is.null(rownames(x)))
             if(!quiet)
-                warning("No row names in the data provided. To pass in names from a data.frame, you should use the form 'data[rows, columns, drop = FALSE]'.")
+                warning("No row names in the data provided. To pass in names from a data.frame, you should use the form \'data[rows, columns, drop = FALSE]\'.")
 
         # Coerce a zoo object from the matrix.
         # We fill in column names where needed, and let the coersion
@@ -62,14 +63,18 @@ function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, .
     else {
         if(is.null(ncol(x)) & dim(as.matrix(x))[2] == 1) {
             #warning("If you are trying to pass in names from a zoo object with one column, you should use the form 'data.zoo[rows, columns, drop = FALSE]'.")
-            x = as.matrix(x)
-            colnames(x) = "Column"
-            x = zoo(x, order.by = rownames(x))
+            y = as.matrix(x)
+            colnames(y) = "Column"
+            x = zoo(y, order.by = time(x))
         }
     }
 
     if (method == "matrix")
         x = as.matrix(x)
+
+
+    if (method == "data.frame")
+        x = as.data.frame(x)
 
     # Now follows the tests specific to vectors
     if (method == "vector"){
@@ -85,7 +90,7 @@ function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, .
         if (any(is.na(x))) {
             if(na.rm) {
                 # Try to remove any NA's
-                x = x[!is.na(x)]
+                x = na.omit(x)
                 if(!quiet){
                     warning("The following slots have NAs.")
                     warning(paste(x@na.removed," "))
@@ -93,7 +98,7 @@ function (x, method = c("zoo","matrix","vector"), na.rm = FALSE, quiet = TRUE, .
             }
             else {
                 if(!quiet)
-                    warning("Data contains NA's.")
+                    warning("Data contains NA\'s.")
             }
         }
 
@@ -153,9 +158,28 @@ function (x, na.rm = TRUE, quiet = TRUE, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: checkData.R,v 1.11 2007/04/09 12:31:27 brian Exp $
+# $Id: checkData.R,v 1.17 2007/10/18 13:56:53 peter Exp $
 ###############################################################################
 # $Log: checkData.R,v $
+# Revision 1.17  2007/10/18 13:56:53  peter
+# - fixed error labeling data without columnnames
+#
+# Revision 1.16  2007/10/03 02:43:06  peter
+# - single column zoo objects will have the time class and order preserved
+# - yearmon class should be ordered correctly as a result
+#
+# Revision 1.15  2007/09/25 04:29:09  peter
+# - added data.frame as method
+#
+# Revision 1.14  2007/08/16 12:58:22  peter
+# - fix quote format for sntax highlighting
+#
+# Revision 1.13  2007/08/16 12:57:31  peter
+# - fix quote format for syntax highlighting
+#
+# Revision 1.12  2007/08/15 20:09:47  brian
+# - fix quote format for sntax highlighting
+#
 # Revision 1.11  2007/04/09 12:31:27  brian
 # - syntax and usage changes to pass R CMD check
 #

@@ -1,34 +1,25 @@
-% $Header: /cvs/R/PerformanceAnalytics/inst/doc/PerformanceAnalyticsChartsPresentation-Meielisalp-2007.Rnw,v 1.1 2007/07/07 01:23:42 brian Exp $
+% $Header: /cvs/R/PerformanceAnalytics/inst/doc/PerformanceAnalyticsChartsPresentation-Meielisalp-2007.Rnw,v 1.8 2007/12/29 21:17:25 brian Exp $
 
 \documentclass{beamer}
 
-\usepackage{Sweave}
+% need full path to find these .sty files outside of R environment
+%\usepackage{Sweave}
+\usepackage{/usr/lib/R/share/texmf/Sweave}
+
 \SweaveOpts{engine=R,eps=FALSE}
 %\VignetteIndexEntry{PerformanceAnalytics Charts and Tables Presentation - Meielisalp - 2007}
 %\VignetteDepends{PerformanceAnalytics}
 %\VignetteKeywords{returns, performance, risk, benchmark, portfolio}
 %\VignettePackage{PerformanceAnalytics}
 
-% This file is a solution template for:
-
 % - Talk at a conference/colloquium.
-% - Talk length is about 20min.
-% - Style is ornate.
+% - Talk length is about 60min.
 
-
-
-% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+% Beamer Presentation Template Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+% Contents Copyright 2007 Peter Carl and Brian G. Peterson
 %
-% In principle, this file can be redistributed and/or modified under
+% This file can be redistributed and/or modified under
 % the terms of the GNU Public License, version 2.
-%
-% However, this file is supposed to be a template to be modified
-% for your own needs. For this reason, if you use this file as a
-% template and not specifically distribute it as part of a another
-% package/program, I grant the extra permission to freely copy and
-% modify this file as you see fit and even to delete this copyright
-% notice.
-
 
 \mode<presentation>
 {
@@ -45,7 +36,6 @@
 \usepackage{subfigure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-%\usepackage{Rd}
 
 \usepackage[english]{babel}
 \makeatother
@@ -73,15 +63,9 @@
 
 \institute[Diamond] % (optional, but mostly needed)
 {
-%   \inst{1}%
   Diamond Management \& Technology Consultants \\
-  Chicago, IL
-%   \and
-%   \inst{2}%
-%   Department of Theoretical Philosophy\\
-%   University of Elsewhere}
-% - Use the \inst command only if there are several affiliations.
-% - Keep it simple, no one is interested in your street address.
+  Chicago, IL \\
+  brian@braverock.com
 }
 
 \date[July 2007] % (optional, should be abbreviation of conference name)
@@ -138,32 +122,12 @@ library('PerformanceAnalytics')
   % You might wish to add the option [pausesections]
 \end{frame}
 
-
-% Structuring a talk is a difficult task and the following structure
-% may not be suitable. Here are some rules that apply for this
-% solution:
-
-% - Exactly two or three sections (other than the summary).
-% - At *most* three subsections per section.
-% - Talk about 30s to 2min per frame. So there should be between about
-%   15 and 30 frames, all told.
-
-% - A conference audience is likely to know very little of what you
-%   are going to talk about. So *simplify*!
-% - In a 20min talk, getting the main ideas across is hard
-%   enough. Leave out details, even if it means being less precise than
-%   you think necessary.
-% - If you omit details that are vital to the proof/implementation,
-%   just say so once. Everybody will be happy with that.
-
 \section{Introduction}
 
 %\subsection{Objectives}
 
 \begin{frame}
   \frametitle{Overview}
-  % - A title should summarize the slide in an understandable fashion
-  %   for anyone how does not follow everything on the slide itself.
 
   \begin{itemize}
     \item
@@ -180,6 +144,8 @@ library('PerformanceAnalytics')
     Utilize common performance and risk measures to aid the investment decision
     \item
     Examples developed using data for six (hypothetical) managers, a peer index, and an asset class index
+    \item
+    Hypothetical manager data developed from real manager timeseries using \emph{accuracy} and \emph{perturb} packages to perturb data maintaining the statistical distribution properties of the original data.
   \end{itemize}
 \end{frame}
 
@@ -274,7 +240,7 @@ colorset=rich6equal, lwd=2, ylog=TRUE)
     \begin{scriptsize}
 
 <<CalendarReturns,echo=T>>=
-t(table.Returns(managers[,c(manager.col,indexes.cols)]))
+t(table.CalendarReturns(managers[,c(manager.col,indexes.cols)]))
 @
 
     \end{scriptsize}
@@ -413,14 +379,36 @@ managers[, 8, drop=F], colorset = rainbow8equal, lwd = 2, legend.loc =
 \centering
 \begin{tiny}
 <<tableCAPM,echo=T>>=
-table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)],
-managers[ trailing36.rows, 8, drop=FALSE], rf = managers[ trailing36.rows,
-Rf.col])
+table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)], managers[ trailing36.rows, 8, drop=FALSE], rf = managers[ trailing36.rows, Rf.col, drop=F])
 @
 \end{tiny}
 \end{figure}
 \end{frame}
 
+\begin{frame}
+  \frametitle{table.CAPM underlying techniques}
+  \begin{itemize}
+    \item
+    Return.annualized --- Annualized return using \\
+     \begin{equation}
+        prod(1+R_{a})^{\frac{scale}{n}}-1=\sqrt[n]{prod(1+R_{a})^{scale}}-1
+     \end{equation}
+    \item
+    TreynorRatio --- ratio of asset's Excess Return to Beta $\beta$ of the benchmark
+    \begin{equation}
+        \frac{(\overline{R_{a}-R_{f}})}{\beta_{a,b}}
+    \end{equation}
+    \item
+    ActivePremium --- investment's annualized return minus the benchmark's annualized return
+    \item
+    Tracking Error --- A measure of the unexplained portion of performance relative to a benchmark, given by \\
+    \begin{equation}
+        TrackingError = \sqrt{\sum\frac{(R_{a}-R_{b})^{2}}{len(R_{a})\sqrt{scale}}}
+    \end{equation}
+    \item
+    InformationRatio --- ActivePremium/TrackingError
+  \end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Compare to a Benchmark.}
@@ -455,21 +443,94 @@ table.DownsideRisk(managers[,1:6],rf=.03/12)
 \end{figure}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Semivariance and Downside Deviation}
+    \begin{itemize}
+        \item
+        Downside Deviation as proposed by Sharpe is a generalization of semivariance which calculates bases on the deviation below a Minimumn Acceptable Return(MAR)
+        \begin{equation}
+            \delta_{MAR} = \sqrt{ \frac{\sum^{n}_{t=1}(R_{t} - MAR)^{2}}{n} }
+        \end{equation}
+        \item
+        Downside Deviation may be used to calculate semideviation by setting MAR=mean(R) or may also be used with MAR=0
+        \item
+        Downside Deviation (and its special cases semideviation and semivariance) is useful in several performance to risk ratios, and in several portfolio optimization problems.
+    \end{itemize}
+\end{frame}
 
+\begin{frame}[shrink=10]
+    \frametitle{Value at Risk}
+    \begin{itemize}
+        \item
+        Value at Risk (VaR) has become a required standard risk measure recognized by Basel II and MiFID
+        \item
+        traditional mean-VaR may be derived historically, or estimated parametrically using \\
+           \begin{equation}
+                z_{c} = q_{p}=qnorm(p)
+            \end{equation}
+            \begin{equation}
+                VaR=\bar{R} -  z_{c} \cdot \sqrt{\sigma}
+            \end{equation}
+        \item
+        even with robust covariance matrix or Monte Carlo simulation, mean-VaR is not reliable for non-normal asset distributions
+        \item
+        for non-normal assets, VaR estimates calculated using GPD (as in VaR.GPD) or Cornish Fisher perform best
+        \item
+        modified Cornish Fisher VaR takes higher moments of the distribution into account: \\
+           \begin{equation}
+                z_{cf}=z_{c}+\frac{(z_{c}^{2}-1)S}{6}+\frac{(z_{c}^{3}-3z_{c})K}{24}+\frac{(2z_{c}^{3}-5z_{c})S^{2}}{36}
+            \end{equation}
+            \begin{equation}
+                modVaR =\bar{R} - z_{cf}\sqrt{\sigma}
+            \end{equation}
+        \item
+        modified VaR also meets the definition of a coherent risk measure per Artzner,et.al.(1997)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[shrink=10]
+  \frametitle{Risk/Reward Ratios in \emph{PerformanceAnalytics}}
+
+  \begin{itemize}
+    \item
+    SharpeRatio --- return per unit of risk represented by variance, may also be annualized by \\
+    \begin{equation}
+        \frac{\sqrt[n]{prod(1+R_{a})^{scale}}-1}{\sqrt{scale}\cdot\sqrt{\sigma}}
+    \end{equation}
+    \item
+    Sortino Ratio --- improvement on Sharpe Ration utilizing downside deviation as the measure of risk \\
+    \begin{equation}
+        \frac{(\overline{R_{a} - MAR})}{\delta_{MAR}}
+    \end{equation}
+    \item
+    Calmar and Sterling Ratios --- ratio of annualized return (Eq. 1) over the absolute value of the maximum drawdown
+    \item
+    Sortino's Upside Potential Ratio --- upside semdiviation from MAR over downside deviation from MAR
+    \begin{equation}
+        \frac{ \sum^{n}_{t=1} (R_{t} - MAR) }{ \delta_{MAR} }
+    \end{equation}
+    \item
+    Favre's modified Sharpe Ratio --- ratio of excess return over Cornish-Fisher VaR
+    \begin{equation}
+        \frac{(\overline{R_{a}-R_{f}})}{modVaR_{R_{a},p}}
+    \end{equation}
+    \item
+    \emph{NOTE}: The newest measures such as modified Sharpe and Sortino's UPR are far more reliable than older measures, but everyone still seems to look at older measures.
+  \end{itemize}
+\end{frame}
 
 \section{Summary}
 
 \begin{frame}[fragile]
   \frametitle<presentation>{Summary}
 
-  % Keep the summary *very short*.
   \begin{itemize}
-  \item
-    Performance and Risk analysis are greatly facilitated by the use of charts and tables.
-  \item
-    The display of your infomation is in many cases as important as the analysis.
-  \item
-    The observer should have gained a working knowledge of how specific visual techniques may be utilized to aid investment decision making.
+    \item
+        Performance and Risk analysis are greatly facilitated by the use of charts and tables.
+    \item
+        The display of your infomation is in many cases as important as the analysis.
+    \item
+        The observer should have gained a working knowledge of how specific visual techniques may be utilized to aid investment decision making.
   \end{itemize}
 
   % The following outlook is optional.
@@ -479,7 +540,7 @@ table.DownsideRisk(managers[,1:6],rf=.03/12)
     Further Work
     \begin{itemize}
     \item
-      Additional parameterization to make charts more useful.
+      Additional parameterization to make charts and tables more useful.
     \item
       Pertrac or Morningstar-style sample reports.
     \item
@@ -501,5 +562,3 @@ table.DownsideRisk(managers[,1:6],rf=.03/12)
 \end{frame}
 
 \end{document}
-
-

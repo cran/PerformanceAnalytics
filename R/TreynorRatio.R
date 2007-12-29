@@ -7,12 +7,12 @@ function (Ra, Rb, rf = 0, scale = 12, ...)
 
     # FUNCTION:
 
-    Ra = checkData(Ra, method = "vector")
-    Rb = checkData(Rb, method = "vector")
+    Ra = checkData(Ra, method = "vector", ...=...)
+    Rb = checkData(Rb, method = "vector", ...=...)
 
-    beta = CAPM.beta(Ra, Rb, rf = rf)
-    Re = Return.excess(Ra, rf)
-    treynorRatio = (Return.annualized(Re, scale = scale))/beta
+    beta = CAPM.beta(Ra, Rb, rf = rf, ...=...)
+    Re = Return.excess(Ra, rf=rf, ...=...)
+    treynorRatio = (Return.annualized(Re, scale = scale, ...=...))/beta
     treynorRatio
 
 }
@@ -25,10 +25,13 @@ function (Ra, Rb, rf = 0, scale = 12, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: TreynorRatio.R,v 1.5 2007/04/09 03:31:01 peter Exp $
+# $Id: TreynorRatio.R,v 1.6 2007/08/30 12:18:32 brian Exp $
 #
 ###############################################################################
 # $Log: TreynorRatio.R,v $
+# Revision 1.6  2007/08/30 12:18:32  brian
+# - add passing of dots
+#
 # Revision 1.5  2007/04/09 03:31:01  peter
 # - uses checkData
 # - uses Return.excess

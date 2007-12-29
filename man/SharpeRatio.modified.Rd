@@ -21,14 +21,15 @@ SharpeRatio.modified(Ra, rf = 0, p = 0.95, scale = 1)
   \item{scale}{ number of periods in a year (daily scale = 252, monthly scale = 12, quarterly scale = 4) }
 }
 \details{
-\deqn{modSharpe=\frac{\overline{(R_{a}-R_{f})}}{modVaR_{R_{a},p}}}{modSharpe=mean(Ra-rf)/(modVaR(Ra,p))}
+\deqn{modSharpe=\frac{(\overline{R_{a}-R_{f}})}{modVaR_{R_{a},p}}}{modSharpe=mean(Ra-rf)/(modVaR(Ra,p))}
 
 or for an annualized measure:
 
 \deqn{modSharpe=\frac{\sqrt[n]{prod(1+(R_{a}-R_{f}))^{scale}}-1}{\sqrt{scale}\cdot modVaR_{R_{a},p}}}{modSharpe=Return.annualized(Ra,rf)/(modVaR(Ra,p)*sqrt(scale))}
 }
+
 \value{
-This function returns a modified Sharpe ratio for the same periodicity of the data being input (e.g., monthly data -> monthly SR)
+This function returns a modified Sharpe ratio for the same periodicity of the data being input (e.g., monthly data -> monthly SR), or scaled to multiple periods according to the scale parameter
 }
 \references{
 Laurent Favre and Jose-Antonio Galeano. Mean-Modified Value-at-Risk Optimization with Hedge Funds. Journal of Alternative Investment, Fall 2002, v 5.

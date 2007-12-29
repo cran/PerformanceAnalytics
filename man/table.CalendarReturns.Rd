@@ -1,4 +1,5 @@
-\name{table.Returns}
+\name{table.CalendarReturns}
+\alias{table.CalendarReturns}
 \alias{table.Returns}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Monthly and Calendar year Return table }
@@ -12,8 +13,10 @@ Returns a table of returns formatted with years in rows, months in columns, and 
 2005  2.00  1.28 -1.04 -0.18 1.64  1.91  4.24  1.92 -1.63  1.45 -0.35  0.00  11.68
 2006  2.10    NA    NA    NA   NA    NA    NA    NA    NA    NA    NA    NA   2.10}
 
+NOTE:  the older table.Returns function alias is deprecated, and may be removed in the future
 }
 \usage{
+table.CalendarReturns(R, digits = 1, as.perc = TRUE)
 table.Returns(R, digits = 1, as.perc = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -28,16 +31,14 @@ table of returns
 \references{ }
 \author{ Peter Carl }
 \note{
-This function assumes monthly returns, and does not currently have handling for other scales.
+This function assumes monthly returns and does not currently have handling for other scales.
 
-This function defaults to the first column as the returns to be formatted, but the function will format the column specified.
+This function defaults to the first column as the monthly returns to be formatted.
 }
 \seealso{ }
 \examples{
-data(edhec)
-table.Returns(edhec)
-t(table.Returns(edhec))
-table.Returns(edhec[,c(13,2,4)])
+data(managers)
+t(table.CalendarReturns(managers[,c(1,7,8)]))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

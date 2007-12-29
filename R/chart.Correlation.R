@@ -7,11 +7,11 @@ function (x, y, histogram = TRUE)
     # bivariate scatterplots, with a fitted line
 
     # Published at http://addictedtor.free.fr/graphiques/sources/source_137.R
-    panel.cor <- function(x, y, digits=2, prefix="", cex.cor)
+    panel.cor <- function(x, y, digits=2, prefix="", use="pairwise.complete.obs", cex.cor, ...)
     {
         usr <- par("usr"); on.exit(par(usr))
         par(usr = c(0, 1, 0, 1))
-        r <- abs(cor(x, y))
+        r <- abs(cor(x, y, use = use))
         txt <- format(c(r, 0.123456789), digits=digits)[1]
         txt <- paste(prefix, txt, sep="")
         if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
@@ -46,7 +46,7 @@ function (x, y, histogram = TRUE)
     if(histogram)
         pairs(x, y, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel)
     else
-        pairs(x, y, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor)
+        pairs(x, y, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, pch=".")
 }
 
 ###############################################################################
@@ -57,10 +57,14 @@ function (x, y, histogram = TRUE)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.R,v 1.2 2007/02/07 13:24:49 brian Exp $
+# $Id: chart.Correlation.R,v 1.3 2007/12/27 18:44:36 peter Exp $
 #
 ###############################################################################
 # $Log: chart.Correlation.R,v $
+# Revision 1.3  2007/12/27 18:44:36  peter
+# - added option for passing parameters to cor, including
+# "pairwise.complete.obs"
+#
 # Revision 1.2  2007/02/07 13:24:49  brian
 # - fix pervasive comment typo
 #

@@ -1,4 +1,4 @@
-`CalculateReturns` <-
+`Return.calculate` <-
 function(prices, method = c("compound","simple"))
 { # @ author Peter Carl
 
@@ -25,6 +25,11 @@ function(prices, method = c("compound","simple"))
 
 }
 
+`CalculateReturns` <-
+function(prices, method = c("compound","simple"))
+{ # @ author Peter Carl
+    Return.calculate(prices=prices, method=method)
+}
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
@@ -33,10 +38,15 @@ function(prices, method = c("compound","simple"))
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CalculateReturns.R,v 1.8 2007/04/14 19:12:28 brian Exp $
+# $Id: Return.calculate.R,v 1.9 2007/08/04 15:06:19 brian Exp $
 #
 ###############################################################################
-# $Log: CalculateReturns.R,v $
+# $Log: Return.calculate.R,v $
+# Revision 1.9  2007/08/04 15:06:19  brian
+# - change primary function name to Return.calculate
+# - provide alias to old fn name CalculateReturns
+# - rename in CVS
+#
 # Revision 1.8  2007/04/14 19:12:28  brian
 # -lowercase first parameter prices
 #

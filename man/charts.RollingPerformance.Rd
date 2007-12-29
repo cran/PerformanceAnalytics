@@ -6,7 +6,8 @@
 A wrapper to create a rolling annualized returns chart, rolling annualized standard deviation chart, and a rolling annualized sharpe ratio chart.
 }
 \usage{
-charts.RollingPerformance(R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, ...)
+charts.RollingPerformance(R, width = 12, rf = 0, main = NULL, trim = TRUE,
+                          event.labels = NULL, legend.loc = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,6 +17,7 @@ charts.RollingPerformance(R, width = 12, rf = 0, main = NULL, trim = TRUE, event
   \item{main}{ set the chart title, same as in \code{plot} }
   \item{trim}{ TRUE/FALSE, whether to keep alignment caused by NA's }
   \item{event.labels}{ TRUE/FALSE whether or not to display lines and labels for historical market shock events }
+  \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{\dots}{ any other passthru parameters }
 }
 \value{

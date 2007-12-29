@@ -11,7 +11,7 @@ function (Ra)
 
     Ra = checkDataVector(Ra)
 
-    return(DownsideDeviation(Ra, MAR=mean(Ra)))
+    return(DownsideDeviation(Ra, MAR=mean(Ra)), method="full")
 }
 
 `SemiVariance` <-
@@ -19,7 +19,7 @@ function (Ra)
 {
     Ra = checkDataVector(Ra)
 
-    return(DownsideDeviation(Ra, MAR=mean(Ra)))
+    return(DownsideDeviation(Ra, MAR=mean(Ra), method="subset"))
 }
 
 ###############################################################################
@@ -30,10 +30,18 @@ function (Ra)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SemiDeviation.R,v 1.4 2007/03/14 00:54:06 brian Exp $
+# $Id: SemiDeviation.R,v 1.6 2007/10/11 03:21:42 peter Exp $
 #
 ###############################################################################
 # $Log: SemiDeviation.R,v $
+# Revision 1.6  2007/10/11 03:21:42  peter
+# - fixed return so that method was being passed to DownsideDeviation
+#
+# Revision 1.5  2007/08/03 14:58:26  brian
+# - add use of length of full series or subset below MAR
+# - set proper values for SemiVariance(subset), and SemiDeviation(full)
+# - allow DownsideDeviation user to choose, default method="full"
+#
 # Revision 1.4  2007/03/14 00:54:06  brian
 # - updates to parameters for standardization
 #

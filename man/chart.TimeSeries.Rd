@@ -6,7 +6,7 @@
 Draws a line chart and labels the x-axis with the appropriate dates.  This is really a "primitive", since it extends the base \code{\link{plot}} and standardizes the elements of a chart.  Adds attributes for shading areas of the timeline or aligning vertical lines along the timeline.
 }
 \usage{
-chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, main = "Title", ylab = NULL, xlab = "Date", date.format = "\%m/\%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE, legend.loc = NULL, ylog = FALSE, ...)
+chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, main = NULL, ylab=NULL, xlab="Date", date.format.in="\%Y-\%m-\%d", date.format = "\%m/\%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE , legend.loc = NULL, ylog = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,6 +32,7 @@ chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lw
   \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers. }
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{ylog}{ TRUE/FALSE set the y-axis to logarithmic scale, similar to \code{\link{plot}}, default FALSE }
+  \item{date.format.in}{ allows specification of other date formats in the data object, defaults to "\%Y-\%m-\%d" }
   \item{\dots}{ any other passthru parameters }
 }
 \details{
@@ -80,8 +81,8 @@ risk.labels = c(
     "Tech Bubble",
     "Sept 11")
 data(edhec)
-#use subset instead of accessing the column directly to preserve row and column names
-R=subset(edhec,select="Funds.of.Funds")
+
+R=edhec[,"Funds.of.Funds",drop=FALSE]
 Return.cumulative = cumprod.column(1+R) - 1
 chart.TimeSeries(Return.cumulative)
 chart.TimeSeries(Return.cumulative, colorset = "darkblue", legend.loc = "bottomright", period.areas = cycles.dates, period.color = "lightblue", event.lines = risk.dates, event.labels = risk.labels, event.color = "red", lwd = 2)

@@ -42,11 +42,20 @@ function(R, p=0.99, modified = TRUE)
         if (modified) {
             s = skewness(r) #skewness of the distribution
             k = kurtosis(r) #(excess) kurtosis
-            Zcf = zc + (((zc^2-1)*s)/6) + (((zc^3-3*zc)*k)/24) + (((2*zc^3)-(5*zc)*s^2)/36)
-            VaR = mean(r) - (Zcf * sqrt(var(r)))
+            Zcf = zc + (((zc^2-1)*s)/6) + (((zc^3-3*zc)*k)/24) - (((2*zc^3)-(5*zc)*s^2)/36)
+            VaR = mean(r) - (Zcf * sd(r))
+            if (eval(VaR<0)){ #eval added to get around Sweave bitching
+                warning(c("Cornish-Fisher Expansion produces unreliable result (inverse risk) for column: ",column," : ",VaR))
+                # set VaR to 0, since inverse risk is unreasonable
+                VaR=0
+            }
+            if (eval(VaR>1)){ #eval added to get around Sweave bitching
+                warning(c("Cornish-Fisher Expansion produces unreliable result (risk over 100%) for column: ",column," : ",VaR))
+                # set VaR to 1, since greater than 100% is unreasonable
+                VaR=1
+            }
         } else {
-            # should probably add risk-free-rate skew here?
-            VaR = mean(r) - (zc * sqrt(var(r)))
+            VaR = mean(r) - (zc * sd(r))
         }
         VaR=array(VaR)
         if (column==1) {
@@ -88,7 +97,7 @@ function(R, p=0.99)
 ###############################################################################
 
 `VaR.mean` <-
-function(R, p=0.99)
+function(R, p=0.95)
 {   # @author Brian G. Peterson
 
     # Description:
@@ -106,25 +115,7 @@ function(R, p=0.99)
 ###############################################################################
 
 `VaR.traditional` <-
-function(R, p=0.99)
-{   # @author Brian G. Peterson
-
-    # Description:
-
-    # This is a wrapper function for modified VaR which assumes a normal
-    # distribution by discounting influence from skewness or kurtosis.
-
-    # Wrapper should be used with metrics related to VaR, such as Beyond VaR.
-
-    # FUNCTION:
-    VaR.CornishFisher(R = R, p = p, modified=FALSE)
-
-}
-
-###############################################################################
-
-`VaR` <-
-function(R, p=0.99)
+function(R, p=0.95)
 {   # @author Brian G. Peterson
 
     # Description:
@@ -147,10 +138,19 @@ function(R, p=0.99)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: VaR.CornishFisher.R,v 1.12 2007/04/04 00:23:01 brian Exp $
+# $Id: VaR.CornishFisher.R,v 1.16 2007/12/29 19:25:09 brian Exp $
 #
 ###############################################################################
 # $Log: VaR.CornishFisher.R,v $
+# Revision 1.16  2007/12/29 19:25:09  brian
+# - minor changes to pass R CMD check
+#
+# Revision 1.14  2007/09/04 02:12:33  brian
+# - add eval to if statement for Sweave pickiness
+#
+# Revision 1.13  2007/07/30 19:06:59  brian
+# - fix typo in equation identified by Samantha Kumaran
+#
 # Revision 1.12  2007/04/04 00:23:01  brian
 # - typos and minor comment updates
 #

@@ -15,13 +15,14 @@ function (Rb, rf = 0 )
 function (Ra, Rb, rf = 0)
 { #@author Brian G. Peterson
 
-    Ra = checkDataVector(Ra)
-    Rb = checkDataVector(Rb)
+    Ra = checkData(Ra, method="zoo")
+    Rb = checkData(Rb, method="zoo")
+    rf = checkData(rf, method="zoo")
 
     if (length(Ra) != length(Rb))
-        stop("Returns to be assessed have unequal time periods. Are there NA's in the data?")
+        stop("Returns to be assessed have unequal time periods. Are there NAs in the data?")
 
-    CML = rf + CAPM.CML.slope(Rb, rf)*mean(Ra)
+    CML = mean(rf) + CAPM.CML.slope(Rb, rf)*mean(Ra)
 
     return(CML)
 }
@@ -57,10 +58,19 @@ function (Rb, rf = 0)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.utils.R,v 1.2 2007/03/11 16:53:19 brian Exp $
+# $Id: CAPM.utils.R,v 1.5 2007/08/15 20:08:46 brian Exp $
 #
 ###############################################################################
 # $Log: CAPM.utils.R,v $
+# Revision 1.5  2007/08/15 20:08:46  brian
+# - fix warning for quote formatting
+#
+# Revision 1.4  2007/08/14 21:03:57  peter
+# - changed checkData to use zoo instead of vector
+#
+# Revision 1.3  2007/08/14 20:53:27  peter
+# - changed rf to mean(rf) in CAPM.CML
+#
 # Revision 1.2  2007/03/11 16:53:19  brian
 # - add equations and text to documentation
 # - standardize on Ra as the Return of the Asset

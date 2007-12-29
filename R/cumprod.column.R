@@ -32,10 +32,13 @@ function (x)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: cumprod.column.R,v 1.5 2007/07/10 09:13:28 brian Exp $
+# $Id: cumprod.column.R,v 1.6 2007/07/14 17:24:14 brian Exp $
 #
 ###############################################################################
 # $Log: cumprod.column.R,v $
+# Revision 1.6  2007/07/14 17:24:14  brian
+# - remove dots from apply to pass R CMD check
+#
 # Revision 1.5  2007/07/10 09:13:28  brian
 # - comment out old na.rm handling to pass R CMD check
 #

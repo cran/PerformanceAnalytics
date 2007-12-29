@@ -23,7 +23,7 @@ function (Ra, rf = 0)
 
     Ra = checkData(Ra, method = "zoo")
     Ra.excess = Return.excess(Ra, rf)
-    return(mean(Ra.excess)/sd(Ra))
+    return(mean(Ra.excess)/sd(Ra.excess))
 
 }
 
@@ -35,10 +35,13 @@ function (Ra, rf = 0)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.R,v 1.5 2007/04/09 03:45:04 peter Exp $
+# $Id: SharpeRatio.R,v 1.6 2007/07/12 21:45:09 brian Exp $
 #
 ###############################################################################
 # $Log: SharpeRatio.R,v $
+# Revision 1.6  2007/07/12 21:45:09  brian
+# -calculate stddev on excess return to account for a rf series, per Sharpe paper
+#
 # Revision 1.5  2007/04/09 03:45:04  peter
 # - uses checkData
 # - uses Return.excess

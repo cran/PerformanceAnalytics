@@ -1,5 +1,5 @@
 `DownsideDeviation` <-
-function (Ra, MAR = 0)
+function (Ra, MAR = 0, method=c("full","subset"))
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -12,12 +12,21 @@ function (Ra, MAR = 0)
     # This is also useful for calculating semi-deviation by setting
     # MAR = mean(x)
 
+    method = method[1] # grab the first value if this is still a vector, to avoid varnings
     # FUNCTION:
 
-    Ra = checkDataVector(Ra)
-
+    Ra = checkData(Ra, method="vector")
+    if(!is.null(dim(MAR)))
+        MAR = mean(checkData(MAR, method = "vector"))
+    # we have to assume that Ra and a vector of Rf passed in for MAR both cover the same time period
+    # subset won't work with zoo objects
     r = subset(Ra,Ra < MAR)
-    return(sqrt(sum((r - MAR)^2)/(length(Ra))))
+
+    switch(method,
+        full   = {len = length(Ra)},
+        subset = {len = length(r)} #previously length(R)
+    ) # end switch
+    return(sqrt(sum((r - MAR)^2)/len))
 }
 
 ###############################################################################
@@ -28,10 +37,21 @@ function (Ra, MAR = 0)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R,v 1.5 2007/06/21 21:36:08 brian Exp $
+# $Id: DownsideDeviation.R,v 1.8 2007/10/11 03:22:04 peter Exp $
 #
 ###############################################################################
 # $Log: DownsideDeviation.R,v $
+# Revision 1.8  2007/10/11 03:22:04  peter
+# - fixed "subset" to use r instead of R
+#
+# Revision 1.7  2007/08/16 14:09:33  peter
+# - added checkData for MAR in case it is a vector of Rf
+#
+# Revision 1.6  2007/08/03 14:58:26  brian
+# - add use of length of full series or subset below MAR
+# - set proper values for SemiVariance(subset), and SemiDeviation(full)
+# - allow DownsideDeviation user to choose, default method="full"
+#
 # Revision 1.5  2007/06/21 21:36:08  brian
 # - fixed to use length of entire series, per Platinga, van der Meer, Sortino 2001
 #

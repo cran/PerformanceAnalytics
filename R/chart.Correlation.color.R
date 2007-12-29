@@ -1,5 +1,5 @@
 `chart.Correlation.color` <-
-function (R, new = FALSE, nrgcols = 50, labels = TRUE, labcols = 1, title = "", ...)
+function (R, nrgcols = 50, labels = TRUE, labcols = 1, title = "", use="pairwise.complete.obs", ...)
 { # @author Sandrine Dudoit, sandrine@stat.berkeley.edu, from "SMA" library
   # @author modified by Peter Carl
 
@@ -33,12 +33,10 @@ function (R, new = FALSE, nrgcols = 50, labels = TRUE, labcols = 1, title = "", 
         res
     }
 
-    x = cor(R)
+    x = cor(R, use = use)
 
     n <- ncol(x)
     corr <- x
-    if (new)
-        corr <- cor.na(x)
     image(1:n, 1:n, corr[, n:1], col = rgcolors.func(nrgcols),
         axes = FALSE, xlab = "", ylab = "", ...)
     if (length(labcols) == 1) {
@@ -69,10 +67,16 @@ function (R, new = FALSE, nrgcols = 50, labels = TRUE, labcols = 1, title = "", 
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.color.R,v 1.2 2007/02/07 13:24:49 brian Exp $
+# $Id: chart.Correlation.color.R,v 1.4 2007/12/27 20:19:06 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Correlation.color.R,v $
+# Revision 1.4  2007/12/27 20:19:06  brian
+# - remove unused parameter 'new'
+#
+# Revision 1.3  2007/12/27 18:45:24  peter
+# - added parameter for passing to cor
+#
 # Revision 1.2  2007/02/07 13:24:49  brian
 # - fix pervasive comment typo
 #
