@@ -29,7 +29,7 @@ function (R, FUN = "mean" , gap = 1, ...)
         # the drop=FALSE flag is essential for when the zoo object only has one column
         column.Return.calc=zoo(NA, order.by = as.Date(time(R)))
         for(i in gap:length(time(R))) {
-            data.zoo = window(R,start = start(R), end = time(R[i])) #rm as.Date
+            data.zoo = window(R[,column,drop=FALSE],start = start(R), end = time(R[i])) #rm as.Date
             column.Return.calc[i]=apply(as.matrix(data.zoo[,,drop=FALSE]), FUN = FUN, ..., MARGIN = 2)
         }
         if(column == 1)
@@ -48,15 +48,21 @@ function (R, FUN = "mean" , gap = 1, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.fromstart.R,v 1.4 2007/08/20 21:03:05 peter Exp $
+# $Id: apply.fromstart.R,v 1.6 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: apply.fromstart.R,v $
+# Revision 1.6  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.5  2008-06-02 15:25:09  peter
+# - fixed multicolumn support
+#
 # Revision 1.4  2007/08/20 21:03:05  peter
 # - moved as.Date transformations
 #

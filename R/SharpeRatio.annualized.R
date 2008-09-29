@@ -28,15 +28,18 @@ function (Ra, rf = 0, scale = 12)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.annualized.R,v 1.6 2007/08/16 14:12:40 peter Exp $
+# $Id: SharpeRatio.annualized.R,v 1.7 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: SharpeRatio.annualized.R,v $
+# Revision 1.7  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.6  2007/08/16 14:12:40  peter
 # - added checkData for rf
 #

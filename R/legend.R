@@ -5,7 +5,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
     yjust = 1, x.intersp = 1, y.intersp = 1, adj = c(0, 0.5),
     text.width = NULL, text.col = par("col"), merge = do.lines &&
         has.pch, trace = FALSE, plot = TRUE, ncol = 1, horiz = FALSE,
-    title = NULL, inset = 0, border.col = NULL, border.lwd = 1, border.lty = "solid")
+    title = NULL, inset = 0, border.col = NULL, border.lwd = 1, border.lty = "solid", box.col = NULL, box.lwd = 1, box.lty = "solid")
 {
     # Modifications to core graphics legend() function
     # @author R Core Dev Team
@@ -207,7 +207,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
             fill <- rep(fill, length.out = n.leg)
             rect2(left = xt, top = yt + ybox/2, dx = xbox, dy = ybox,
                 col = fill, density = density, angle = angle,
-                border = bg) #removed internal border
+                border = box.col) #removed internal border
         }
         xt <- xt + dx.fill
     }
@@ -420,15 +420,21 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: legend.R,v 1.2 2007/02/07 13:24:49 brian Exp $
+# $Id: legend.R,v 1.4 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: legend.R,v $
+# Revision 1.4  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.3  2008/02/15 04:20:17  peter
+# - parameterized box color separately from background elements
+#
 # Revision 1.2  2007/02/07 13:24:49  brian
 # - fix pervasive comment typo
 #

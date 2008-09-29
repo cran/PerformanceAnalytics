@@ -9,7 +9,7 @@
 These functions calculate both traditional mean-VaR and modified Cornish-Fisher VaR
 }
 \usage{
-VaR.CornishFisher(R, p = 0.99, modified = TRUE)
+VaR.CornishFisher(R, p = 0.99, modified = TRUE, clean=c("none","boudt"))
 modifiedVaR(R, p = 0.99)
 VaR.traditional(R, p = 0.95)
 VaR.mean(R, p = 0.95)
@@ -18,6 +18,7 @@ VaR.mean(R, p = 0.95)
 \arguments{
   \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{p}{ confidence level for calculation, default p=.99 }
+  \item{clean} { method for data cleaning through \code{\link{Return.clean}}.  Current options are "none" or "boudt". }
   \item{modified}{ TRUE/FALSE default TRUE, use Cornish Fisher Expansion to take higher moments into account }
 }
 \details{
@@ -95,6 +96,9 @@ The prototype of the Cornish Fisher VaR function was completed by Prof. Diethelm
 
     # now use default p=.99
     VaR.CornishFisher(edhec)
+
+    # now with outliers squished
+    VaR.CornishFisher(edhec, clean="boudt")
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -47,6 +47,7 @@ function (filename=stop("Please specify a filename"), frequency = c("m","d","q",
         }
     )
     result = read.zoo(filename, sep=sep, format=format, FUN=FUN, header=header, check.names = check.names, ...)
+    rownames(result) = as.character(as.Date(time(result)))
 
     result
 
@@ -54,15 +55,21 @@ function (filename=stop("Please specify a filename"), frequency = c("m","d","q",
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.read.R,v 1.3 2007/09/24 02:32:31 peter Exp $
+# $Id: Return.read.R,v 1.5 2008-08-13 03:32:10 peter Exp $
 #
 ###############################################################################
 # $Log: Return.read.R,v $
+# Revision 1.5  2008-08-13 03:32:10  peter
+# - sets rownames for the resulting 'zoo' object
+#
+# Revision 1.4  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.3  2007/09/24 02:32:31  peter
 # - added check.names as a parameter
 # - set default so that names are not checked

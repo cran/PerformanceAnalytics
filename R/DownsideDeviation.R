@@ -32,15 +32,18 @@ function (Ra, MAR = 0, method=c("full","subset"))
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R,v 1.8 2007/10/11 03:22:04 peter Exp $
+# $Id: DownsideDeviation.R,v 1.9 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: DownsideDeviation.R,v $
+# Revision 1.9  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.8  2007/10/11 03:22:04  peter
 # - fixed "subset" to use r instead of R
 #

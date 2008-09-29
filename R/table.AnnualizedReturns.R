@@ -26,7 +26,7 @@ function (R, ci = 0.95, scale = 12, rf = 0, digits = 4)
     # for each column, do the following:
     for(column in 1:columns) {
         z = c(Return.annualized(y[,column,drop=FALSE], scale = scale), StdDev.annualized(y[,column,drop=FALSE], scale = scale), SharpeRatio.annualized(y[,column,drop=FALSE], scale = scale, rf = rf)) 
-        znames = c("Annualized Return", "Annualized Std Dev", paste("Annualized Sharpe (rf=",base::round(mean(rf),4)*scale*100,"%)", sep="") )
+        znames = c("Annualized Return", "Annualized Std Dev", paste("Annualized Sharpe (rf=",base::round(mean(rf)*scale,4)*100,"%)", sep="") )
         if(column == 1) {
             resultingtable = data.frame(Value = z, row.names = znames)
         }
@@ -43,15 +43,21 @@ function (R, ci = 0.95, scale = 12, rf = 0, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.AnnualizedReturns.R,v 1.6 2007/08/16 14:41:09 peter Exp $
+# $Id: table.AnnualizedReturns.R,v 1.8 2008-08-16 03:41:14 peter Exp $
 #
 ###############################################################################
 # $Log: table.AnnualizedReturns.R,v $
+# Revision 1.8  2008-08-16 03:41:14  peter
+# - fixed rounding in column name label
+#
+# Revision 1.7  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.6  2007/08/16 14:41:09  peter
 # - NA removal now handled in individual calcs
 # - added checkData for rf

@@ -1,7 +1,7 @@
 \name{managers}
 \docType{data}
 \alias{managers}
-\title{Hypothetical Alternative Asset Manager Data and Fixed Income Benchmarks}
+\title{Hypothetical Alternative Asset Manager and Benchmark Data}
 \description{
 A data frame that contains columns of monthly returns for six hypothetical
 asset managers (HAM1 through HAM6), the EDHEC Long-Short Equity hedge
@@ -13,9 +13,10 @@ from January 1996.
 Note that all the EDHEC indices are available in \code{\link{edhec}}.
 }
 \usage{managers}
-\format{CSV conformed into a data.frame with monthly observations}
-\source{}
-\references{}
+\details{
+ Please note that the `managers' data set included with PerformanceAnalytics will be periodically updated with new managers and information.  If you intend to use this data set in automated tests, please be sure to subset your data like \code{managers[1:120,1:6]} to use the first ten years of observations on HAM1-HAM6.
+}
+\format{CSV conformed into a zoo object with monthly observations}
 \examples{
 data(managers)
 

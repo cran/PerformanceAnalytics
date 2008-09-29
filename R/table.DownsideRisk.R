@@ -87,15 +87,18 @@ function (R, ci = 0.95, scale = 12, rf = 0, MAR = .1/12, p= 0.99, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.DownsideRisk.R,v 1.8 2007/08/29 03:17:24 peter Exp $
+# $Id: table.DownsideRisk.R,v 1.9 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: table.DownsideRisk.R,v $
+# Revision 1.9  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.8  2007/08/29 03:17:24  peter
 # - fixed NA removal problems
 # - fixed rounding issue with Rf labels in table

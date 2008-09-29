@@ -6,7 +6,7 @@
 Create a histogram of returns, with optional curve fits for density and normal.  This is a wrapper function for \code{\link[graphics]{hist}}, see the help for that function for additional arguments you may wish to pass in.
 }
 \usage{
-chart.Histogram(R, breaks = "FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none", "add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, elementcolor = "gray", note.lines = NULL, note.labels = NULL, note.color = "darkgray", probability = FALSE, p = 0.99, ...)
+chart.Histogram(R, breaks = "FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none", "add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, elementcolor = "gray", note.lines = NULL, note.labels = NULL, note.cex = 0.7, note.color = "darkgray", probability = FALSE, p = 0.99, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,7 +33,7 @@ chart.Histogram(R, breaks = "FD", main = NULL, xlab = "Returns", ylab = "Frequen
   }
   \item{p}{ confidence level for calculation, default p=.99 }
   \item{probability}{logical; if TRUE, the histogram graphic is a representation of frequencies, the counts component of the result; if FALSE, probability densities, component density, are plotted (so that the histogram has a total area of one). Defaults to TRUE if and only if breaks are equidistant (and probability is not specified). see \code{\link[graphics]{hist}}}
-  \item{show.outliers}{logical; if TRUE, include the outliers in the boxplot }
+  \item{show.outliers}{logical; if TRUE (the default), the histogram will show all of the data points.  If FALSE, it will show only the first through the fourth quartile and will exclude outliers. }
   \item{main}{ set the chart title, same as in \code{\link{plot}} }
   \item{ylab}{ set the y-axis label, same as in \code{\link{plot}} }
   \item{xlab}{ set the x-axis label, same as in \code{\link{plot}} }
@@ -45,6 +45,7 @@ chart.Histogram(R, breaks = "FD", main = NULL, xlab = "Returns", ylab = "Frequen
   \item{elementcolor}{ provides the color for drawing less-important chart elements, such as the box lines, axis lines, etc. replaces \code{darken} }
   \item{note.lines}{ draws a vertical line through the value given. }
   \item{note.labels}{ adds a text label to vertical lines specified for note.lines. }
+  \item{note.cex}{ The magnification to be used for note line labels relative to the current setting of 'cex'.  }
   \item{note.color}{ specifies the color(s) of the vertical lines drawn. }
   \item{\dots}{ any other passthru parameters }
 }
@@ -71,21 +72,16 @@ Code inspired by a chart on:
   \code{\link[graphics]{hist}}
 }
 \examples{
-    #first get some data
     data(edhec)
-    #default chart was too busy
     chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE])
 
     # version with more breaks and the standard close fit density distribution
     chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], breaks=40, methods = c("add.density", "add.rug") )
 
-    chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.centered") )
+    chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.density", "add.normal") )
 
     # version with just the histogram and normal distribution centered on 0
-    chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.centered") )
-
-    # version with histogram, normal, and close fit distribtuion
-    chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.centered", "add.density") )
+    chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.density", "add.centered") )
 
     # add a rug to the previous plot for more granularity on precisely where the distribution fell
     chart.Histogram(edhec[,'Equity.Market.Neutral',drop=FALSE], methods = c( "add.centered", "add.density", "add.rug") )

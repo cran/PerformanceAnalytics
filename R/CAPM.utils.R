@@ -53,15 +53,18 @@ function (Rb, rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.utils.R,v 1.5 2007/08/15 20:08:46 brian Exp $
+# $Id: CAPM.utils.R,v 1.6 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: CAPM.utils.R,v $
+# Revision 1.6  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.5  2007/08/15 20:08:46  brian
 # - fix warning for quote formatting
 #

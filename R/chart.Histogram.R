@@ -1,5 +1,5 @@
 `chart.Histogram` <-
-function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none","add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, elementcolor="gray", note.lines = NULL, note.labels = NULL, note.color = "darkgray", probability = FALSE, p=0.99, ...)
+function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none","add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, elementcolor="gray", note.lines = NULL, note.labels = NULL, note.cex = 0.7, note.color = "darkgray", probability = FALSE, p=0.99, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -30,21 +30,28 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
         methods = NULL
     }
 
-    b = c(-VaR.CornishFisher(x,p=p),-VaR.traditional(x,p=p))
-    b.labels = c(paste(p*100,"% ModVaR",sep=" "),paste(p*100,"% VaR",sep=""))
 #     xlim = range(qnorm(0.001, mean(x), stdev(x)), qnorm(0.999, mean(x), stdev(x)), note.lines, b)
     if(show.outliers)
         rangedata = c(min(x),max(x))
     else
-        rangedata =  c(qnorm(0.001, mean(x), stdev(x)), qnorm(0.999, mean(x), stdev(x)))
+        rangedata =  c(qnorm(0.001, mean(x), sd(x)), qnorm(0.999, mean(x), sd(x)))
     if(!is.null(note.lines)) {
         rangedata = c(rangedata,note.lines)
     }
+
+    if("add.risk" %in% methods){
+        b = c(-VaR.CornishFisher(x,p=p),-VaR.traditional(x,p=p))
+        b.labels = c(paste(p*100,"% ModVaR",sep=" "),paste(p*100,"% VaR",sep=""))
+        rangedata = c(rangedata,b)
+    }
+
     yrange = 0
+
     if(is.null(xlim))
         xlim = range(rangedata)
 
-    s = seq(xlim[1], xlim[2], length = 500)
+     s = seq(xlim[1], xlim[2], length = 500)
+#     s = seq(min(x, na.rm=TRUE), max(x, na.rm=TRUE), length = 500)
 
     # Things to do before the plot is drawn
     for (method in methods) {
@@ -52,9 +59,11 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
             add.density = {
                 # Show density estimate
                 den = density(x, n=length(x))
+                yrange=c(yrange,max(den$y))
+                 probability = TRUE
             },
             add.stable = {
-                if (!require("fBasics")) stop("fBasics package not available")
+                stopifnot("package:fBasics" %in% search() || require("fBasics",quietly=TRUE))
                 fit.stable = stableFit(x,doplot = FALSE)
                 fitted.stable = dstable(s,alpha = fit.stable@fit$estimate[[1]], beta = fit.stable@fit$estimate[[2]], gamma = fit.stable@fit$estimate[[3]], delta = fit.stable@fit$estimate[[4]], pm = 0)
                 # look at documentation for pm
@@ -62,8 +71,9 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
                 probability = TRUE
             },
             add.cauchy = {
-#               requires library(MASS)
-                if (!require("MASS")) stop("MASS package not available")
+                # requires library(MASS)
+                stopifnot("package:MASS" %in% search() || require("MASS",quietly=TRUE))
+
                 # This uses a Maximum Likelihood method as shown on:
                 # Wessa P., (2006), Maximum-likelihood Cauchy Distribution Fitting (v1.0.0) in
                 # Free Statistics Software (v1.1.21-r4), Office for Research Development and
@@ -76,6 +86,8 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
             },
             add.sst = {
 #               requires library(sn)
+                stopifnot("package:sn" %in% search() || require("sn",quietly=TRUE))
+
                 fit = st.mle(y=x)
                 fitted.sst = dst(s, location = fit$dp[[1]], scale = fit$dp[[2]], shape = fit$dp[[3]], df=fit$dp[[4]], log = FALSE)
                 yrange=c(yrange,max(fitted.sst))
@@ -88,28 +100,30 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
                 probability = TRUE
             },
             add.normal = {
-                fitted.normal = dnorm(s, mean(x), stdev(x))
+                fitted.normal = dnorm(s, mean(x), sd(x))
                 yrange=c(yrange,max(fitted.normal))
                 probability = TRUE
             },
             add.centered = {
-                fitted.centered = dnorm(s, 0, stdev(x))
+                fitted.centered = dnorm(s, 0, sd(x))
                 yrange=c(yrange,max(fitted.centered))
                 probability = TRUE
             },
             add.risk = {
-                rangedata = c(rangedata,b)
+                #
             }
         )
     }
 
     # Draw the plot
-    yrange = c(yrange, max(hist(x, plot = FALSE)$intensities)*1.1)
+    if(probability == TRUE) maxyhist = max(hist(x, breaks = breaks, plot = FALSE)$density)
+    else maxyhist = max(hist(x, breaks = breaks, plot = FALSE)$count)
+    yrange = c(yrange, maxyhist*1.1)
     ylim = c(0,ceiling(max(yrange)))
 
-    hist(x = x, probability = probability, xlim = xlim, ylim = ylim, col = colorset[1], border = border.col, xlab = xlab, main = main, breaks = breaks, cex.axis = 0.8, axes = FALSE, ...)
-    axis(1, cex.axis = 0.8, col = elementcolor)
-    axis(2, cex.axis = 0.8, col = elementcolor)
+    hist(x = x, probability = probability, xlim = xlim, ylim = ylim, col = colorset[1], border = border.col, xlab = xlab, main = main, breaks = breaks, axes = FALSE, ...)
+    axis(1, col = elementcolor)
+    axis(2, col = elementcolor)
 
     box(col=elementcolor)
 
@@ -152,10 +166,12 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
                 text(b, h, b.labels, offset = .2, pos = 2, cex = 0.8, srt=90)
             },
              add.qqplot = {
-                 op <- par(fig=c(.02,.5,.5,.98), new=TRUE)
-                 qqnorm(x, xlab="", ylab="", main="", axes=FALSE, pch=".",col=colorset[2])
-                 qqline(x, col=colorset[3])
-                 box(col=elementcolor)
+                op <- par(no.readonly=TRUE)
+                op1 <- par(fig=c(.02,.5,.5,.98), new=TRUE)
+                qqnorm(x, xlab="", ylab="", main="", axes=FALSE, pch=".",col=colorset[2])
+                qqline(x, col=colorset[3])
+                box(col=elementcolor)
+                par(op)
              }
         ) # end switch
     } # end for
@@ -166,8 +182,8 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
 
         abline(v = note.lines, col = note.color, lty = 2)
         if(!is.null(note.labels)) {
-            h = rep(.2*par("usr")[3] + 1*par("usr")[4], length(b))
-            text(note.lines, h, note.labels, offset = .2, pos = 2, cex = 0.7, srt = 90, col = note.color)
+            h = rep(.2*par("usr")[3] + 0.99*par("usr")[4], length(b))
+            text(note.lines, h, note.labels, offset = .2, pos = 2, cex = note.cex, srt = 90, col = note.color)
 
         }
     }
@@ -179,15 +195,36 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Histogram.R,v 1.28 2007/12/29 19:25:09 brian Exp $
+# $Id: chart.Histogram.R,v 1.36 2008-06-30 21:52:52 peter Exp $
 #
 ###############################################################################
 # $Log: chart.Histogram.R,v $
+# Revision 1.36  2008-06-30 21:52:52  peter
+# - changed 'method' to 'methods' in test
+#
+# Revision 1.35  2008-06-30 03:10:57  peter
+# - VaR not calculated without 'add.risk' method
+# - x-axis correctly adjusted with 'add.risk' method
+# - chart reset correctly after 'qq.plot' method
+#
+# Revision 1.34  2008-06-26 02:00:01  peter
+# - changed 'stdev' to 'sd'
+#
+# Revision 1.32  2008-06-23 02:35:10  peter
+# - added note line text size attribute
+# - added check for 'sn' library
+#
+# Revision 1.31  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.30  2008/01/15 21:06:13  peter
+# - fixed ylim for probability T or F
+#
 # Revision 1.28  2007/12/29 19:25:09  brian
 # - minor changes to pass R CMD check
 #

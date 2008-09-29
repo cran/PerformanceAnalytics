@@ -1,5 +1,5 @@
 `chart.Correlation` <-
-function (x, y, histogram = TRUE)
+function (x, histogram = TRUE)
 { # @author R Development Core Team
   # @author modified by Peter Carl
     # Visualization of a Correlation Matrix. On top the (absolute) value of the
@@ -36,7 +36,7 @@ function (x, y, histogram = TRUE)
              axes = FALSE,
              main = "",
              breaks = "FD")
-        lines(density(x),
+        lines(density(x, na.rm=TRUE),
               col = "red",
               lwd = 1)
         #lines(f, col="blue", lwd=1, lty=1) how to add gaussian normal overlay?
@@ -44,23 +44,30 @@ function (x, y, histogram = TRUE)
       }
     # Draw the chart
     if(histogram)
-        pairs(x, y, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel)
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel)
     else
-        pairs(x, y, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, pch=".")
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, pch=".")
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.R,v 1.3 2007/12/27 18:44:36 peter Exp $
+# $Id: chart.Correlation.R,v 1.5 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Correlation.R,v $
+# Revision 1.5  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.4  2008/01/18 04:05:15  peter
+# - fixed missing values in density
+# - removed y as unnecessary parameter
+#
 # Revision 1.3  2007/12/27 18:44:36  peter
 # - added option for passing parameters to cor, including
 # "pairwise.complete.obs"

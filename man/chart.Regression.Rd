@@ -6,7 +6,7 @@
   Uses a scatterplot to display the relationship of a set of returns to a market benchmark.  Fits a linear model and overlays the resulting model.  Also overlays a Loess line for comparison.
 }
 \usage{
-chart.Regression(Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab = NULL, xlab = NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, darken = FALSE, legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "spline"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"), ylim = NA, evaluation = 50, cex = 0.8, ...)
+chart.Regression(Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab = NULL, xlab = NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, darken = FALSE, legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "conditional", "quadratic"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"), ylim = NA, evaluation = 50,  legend.cex= 0.8, cex = 0.8, lwd = 2, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,13 +24,15 @@ chart.Regression(Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main
   \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers }
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{ylog}{ Not used }
-  \item{fit}{ for values of "loess" or "linear", plots a line to fit the data }
+  \item{fit}{ for values of "loess", "linear", or "conditional", plots a line to fit the data.  Conditional lines are drawn separately for positive and negative benchmark returns.  "Quadratic" is not yet implemented. }
   \item{span}{ passed to loess line fit, as in \code{\link{loess.smooth}} }
   \item{degree}{ passed to loess line fit, as in \code{\link{loess.smooth}} }
   \item{family}{ passed to loess line fit, as in \code{\link{loess.smooth}} }
   \item{ylim}{ set the y-axis limit, same as in \code{\link{plot}} }
   \item{evaluation}{ passed to loess line fit, as in \code{\link{loess.smooth}} }
   \item{cex}{ set the cex size, same as in \code{\link{plot}} }
+  \item{legend.cex}{ set the legend size }
+  \item{lwd}{ set the line width for fits, same as in \code{\link{lines}} }
   \item{\dots}{ any other passthru parameters to \code{\link{plot}} }
 }
 \value{
@@ -42,7 +44,7 @@ chart.Regression(Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main
 \seealso{ \code{\link{plot}} }
 \examples{
 data(managers)
-chart.Regression(managers[, 1:2, drop = FALSE], managers[, 8, drop = FALSE], Rf = managers[, 10, drop = FALSE], excess.returns = TRUE, legend.loc = "topleft")
+chart.Regression(managers[, 1:2, drop = FALSE], managers[, 8, drop = FALSE], Rf = managers[, 10, drop = FALSE], excess.returns = TRUE, fit = c("loess", "linear"), legend.loc = "topleft")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

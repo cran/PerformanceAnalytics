@@ -1,5 +1,5 @@
 `VaR.CornishFisher` <-
-function(R, p=0.99, modified = TRUE)
+function(R, p=0.99, modified = TRUE, clean=c("none", "boudt"))
 {   # @author Brian G. Peterson (completed/debugged fn)
     # @author Diethelm Wuertz (prototype function)
 
@@ -34,6 +34,10 @@ function(R, p=0.99, modified = TRUE)
     R = checkData(R, method="matrix")
     columns = ncol(R)
     columnnames=colnames(R)
+    if(clean[1]!="none"){
+        R = as.matrix(Return.clean(R, method=clean)) 
+    }
+
     # FUNCTION:
     for(column in 1:columns) {
         r = as.vector(na.omit(R[,column]))
@@ -42,21 +46,23 @@ function(R, p=0.99, modified = TRUE)
         if (modified) {
             s = skewness(r) #skewness of the distribution
             k = kurtosis(r) #(excess) kurtosis
-            Zcf = zc + (((zc^2-1)*s)/6) + (((zc^3-3*zc)*k)/24) - (((2*zc^3)-(5*zc)*s^2)/36)
-            VaR = mean(r) - (Zcf * sd(r))
-            if (eval(VaR<0)){ #eval added to get around Sweave bitching
-                warning(c("Cornish-Fisher Expansion produces unreliable result (inverse risk) for column: ",column," : ",VaR))
-                # set VaR to 0, since inverse risk is unreasonable
-                VaR=0
-            }
-            if (eval(VaR>1)){ #eval added to get around Sweave bitching
-                warning(c("Cornish-Fisher Expansion produces unreliable result (risk over 100%) for column: ",column," : ",VaR))
-                # set VaR to 1, since greater than 100% is unreasonable
-                VaR=1
-            }
+            Zcf = zc + (((zc^2-1)*s)/6) + (((zc^3-3*zc)*k)/24) - ((((2*zc^3)-5*zc)*s^2)/36)
+            VaR = (-mean(r) - (Zcf * sd(r)))
         } else {
-            VaR = mean(r) - (zc * sd(r))
+            VaR = (-mean(r) - (zc * sd(r)))
         }
+        # check for unreasonable results
+        if (eval(VaR<0)){ #eval added to get around Sweave bitching
+            warning(c("VaR calculation produces unreliable result (inverse risk) for column: ",column," : ",VaR))
+            # set VaR to 0, since inverse risk is unreasonable
+            VaR=0
+        }
+        if (eval(VaR>1)){ #eval added to get around Sweave bitching
+            warning(c("VaR calculation produces unreliable result (risk over 100%) for column: ",column," : ",VaR))
+            # set VaR to 1, since greater than 100% is unreasonable
+            VaR=1
+        }
+
         VaR=array(VaR)
         if (column==1) {
             #create data.frame
@@ -133,15 +139,30 @@ function(R, p=0.95)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: VaR.CornishFisher.R,v 1.16 2007/12/29 19:25:09 brian Exp $
+# $Id: VaR.CornishFisher.R,v 1.20 2008-08-15 21:42:21 peter Exp $
 #
 ###############################################################################
 # $Log: VaR.CornishFisher.R,v $
+# Revision 1.20  2008-08-15 21:42:21  peter
+# - fixed warnings from 'clean' parameter comparison
+#
+# Revision 1.19  2008-08-13 03:31:32  peter
+# - added 'clean' parameter for calling a data cleaning method prior to calculation
+#
+# Revision 1.18  2008-06-24 21:55:28  brian
+# - remove excess parenthesis in Zcf
+#   - report and patch credit to Enrique Bengoechea Bartolome
+# - fix sign for left tail assymetry
+#   - credit Kris Boudt
+#
+# Revision 1.17  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.16  2007/12/29 19:25:09  brian
 # - minor changes to pass R CMD check
 #

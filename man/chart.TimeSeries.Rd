@@ -6,13 +6,15 @@
 Draws a line chart and labels the x-axis with the appropriate dates.  This is really a "primitive", since it extends the base \code{\link{plot}} and standardizes the elements of a chart.  Adds attributes for shading areas of the timeline or aligning vertical lines along the timeline.
 }
 \usage{
-chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lwd = 1, main = NULL, ylab=NULL, xlab="Date", date.format.in="\%Y-\%m-\%d", date.format = "\%m/\%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE , legend.loc = NULL, ylog = FALSE, ...)
+chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = FALSE, type = "l", lty = 1, lwd = 1, main = NULL, ylab = NULL, xlab = "Date", date.format.in = "\%Y-\%m-\%d", date.format = "\%m/\%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color  = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE, legend.loc =  NULL, ylog = FALSE, cex.axis = 0.8, cex.legend = 0.8, cex.labels = 0.8, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{reference.grid}{ if true, draws a grid aligned with the points on the x and y axes }
   \item{xaxis}{ if true, draws the x axis }
+  \item{yaxis}{ if true, draws the y axis }
+  \item{yaxis.right}{ if true, draws the y axis on the right-hand side of the plot }
   \item{type}{ set the chart type, same as in \code{\link{plot}} }
   \item{lty}{ set the line type, same as in \code{\link{plot}} }
   \item{lwd}{ set the line width, same as in \code{\link{plot}} }
@@ -33,6 +35,9 @@ chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lw
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{ylog}{ TRUE/FALSE set the y-axis to logarithmic scale, similar to \code{\link{plot}}, default FALSE }
   \item{date.format.in}{ allows specification of other date formats in the data object, defaults to "\%Y-\%m-\%d" }
+  \item{cex.axis}{ The magnification to be used for axis annotation relative to the current setting of 'cex', same as in \code{\link{plot}}.  }
+  \item{cex.legend}{ The magnification to be used for sizing the legend relative to the current setting of 'cex'.  }
+  \item{cex.labels}{ The magnification to be used for event line labels relative to the current setting of 'cex'.  }
   \item{\dots}{ any other passthru parameters }
 }
 \details{
@@ -44,7 +49,7 @@ chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, type = "l", lty = 1, lw
 \references{ }
 \author{ Peter Carl }
 \note{ }
-\seealso{ \code{\link{plot}} }
+\seealso{ \code{\link{plot}}, \code{\link{par}} }
 \examples{
 
 # These are start and end dates, formatted the same way as the default axis labels

@@ -25,6 +25,8 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
     if(is.null(main))
         main = paste(colnames[1]," Rolling ",width,"-Month Performance",sep="")
 
+    op <- par(no.readonly=TRUE)
+
     # First, we lay out the graphic as a three row, one column format
 #    plot.new()
     layout(matrix(c(1,2,3)),height=c(1,0.75,1),width=1)
@@ -47,20 +49,27 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
     par(mar=c(5,4,0,2))
     chart.RollingPerformance(R, width = width, main = "", ylab = "Annualized Sharpe Ratio", rf = rf, FUN = "SharpeRatio.annualized", event.labels= NULL, ...)
 
+    par(op)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingPerformance.R,v 1.5 2007/10/03 02:44:46 peter Exp $
+# $Id: charts.RollingPerformance.R,v 1.7 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: charts.RollingPerformance.R,v $
+# Revision 1.7  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.6  2008-04-18 03:52:44  peter
+# - added par to reset layout to default
+#
 # Revision 1.5  2007/10/03 02:44:46  peter
 # - legend will be hidden by default
 # - legend location can be passed in through legend.loc parameter

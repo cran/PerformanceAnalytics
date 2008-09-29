@@ -27,15 +27,18 @@ function (x)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: cumprod.column.R,v 1.6 2007/07/14 17:24:14 brian Exp $
+# $Id: cumprod.column.R,v 1.7 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: cumprod.column.R,v $
+# Revision 1.7  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.6  2007/07/14 17:24:14  brian
 # - remove dots from apply to pass R CMD check
 #

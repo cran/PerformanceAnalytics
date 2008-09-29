@@ -41,15 +41,18 @@ function (Ra, scale=12, excess=.1)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CalmarRatio.R,v 1.1 2007/06/23 12:06:08 brian Exp $
+# $Id: CalmarRatio.R,v 1.2 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: CalmarRatio.R,v $
+# Revision 1.2  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.1  2007/06/23 12:06:08  brian
 # - initial revision of Calmar and Sterling Ratio functions and docs
 #   originally requested by Khanh Nguyen <chaokhanh@yahoo.com>

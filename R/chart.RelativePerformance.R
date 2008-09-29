@@ -1,5 +1,5 @@
 `chart.RelativePerformance` <-
-function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12), legend.loc = NULL, ylog = FALSE, elementcolor = "darkgray", ...)
+function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12), legend.loc = NULL, ylog = FALSE, elementcolor = "darkgray", lty = 1, cex.legend=.7, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -38,27 +38,33 @@ function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12)
         }
     }
 columnnames = colnames(Result.calc)
-    chart.TimeSeries(Result.calc, xaxis = xaxis, main = main, col = colorset, ylog = ylog, ...)
+    chart.TimeSeries(Result.calc, xaxis = xaxis, main = main, col = colorset, ylog = ylog, lty = lty, ...)
     abline(h=1,col=elementcolor)
     if(!is.null(legend.loc)){
         # There's no good place to put this automatically, except under the graph.
         # That requires a different solution, but here's the quick fix
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = .7, border.col = elementcolor, lwd = 2, bg = "white", legend = columnnames)
+        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = cex.legend, border.col = elementcolor, lty = lty, lwd = 2, bg = "white", legend = columnnames)
     }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RelativePerformance.R,v 1.9 2007/12/27 18:43:15 peter Exp $
+# $Id: chart.RelativePerformance.R,v 1.11 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: chart.RelativePerformance.R,v $
+# Revision 1.11  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.10  2008/02/15 04:22:13  peter
+# - added lty parameters to plot and legend
+#
 # Revision 1.9  2007/12/27 18:43:15  peter
 # - added solid reference line
 #

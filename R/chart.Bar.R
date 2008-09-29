@@ -25,15 +25,18 @@ function (R, legend.loc = NULL, colorset = (1:12), ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Bar.R,v 1.3 2007/11/18 14:28:02 peter Exp $
+# $Id: chart.Bar.R,v 1.4 2008-06-02 16:05:19 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Bar.R,v $
+# Revision 1.4  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
 # Revision 1.3  2007/11/18 14:28:02  peter
 # - squared off the bar ends
 #

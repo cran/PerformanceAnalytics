@@ -1,5 +1,5 @@
 `charts.PerformanceSummary` <-
-function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
+function (R, rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -53,6 +53,8 @@ function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), widt
     if(ylog)
         wealth.index = TRUE
 
+    op <- par(no.readonly=TRUE)
+
     # First, we lay out the graphic as a three row, one column format
 #    plot.new()
     layout(matrix(c(1,2,3)),height=c(2,1,1.3),width=1)
@@ -69,7 +71,7 @@ function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), widt
     # The second row is the monthly returns bar plot
     par(mar=c(1,4,0,2))
 #    chart.BarVaR(as.matrix(R[,1]), main = "", xaxis = FALSE, ylab = "Monthly Return", method = method)
-    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = "Monthly Return", method = method, event.labels = NULL, ylog=FALSE, gap = gap, ...)
+    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = "Monthly Return", methods = methods, event.labels = NULL, ylog=FALSE, gap = gap, ...)
 
     # The third row is the underwater plot
     par(mar=c(5,4,0,2))
@@ -80,20 +82,30 @@ function (R, rf = 0, main = NULL, method = c("ModifiedVaR","VaR","StdDev"), widt
     # formatting.  Also, it requires the gplots package.
     #par(mar=c(0,0,0,0))
     #textplot(table.Returns(as.matrix(R)),cex=.7,cmar=1.5,rmar=0.5,halign="center", valign="center")
+    par(op)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.PerformanceSummary.R,v 1.15 2007/09/24 02:50:28 peter Exp $
+# $Id: charts.PerformanceSummary.R,v 1.18 2008-08-16 03:38:54 peter Exp $
 #
 ###############################################################################
 # $Log: charts.PerformanceSummary.R,v $
+# Revision 1.18  2008-08-16 03:38:54  peter
+# - changed chart.BarVaR call from 'method' to 'methods'
+#
+# Revision 1.17  2008-06-02 16:05:19  brian
+# - update copyright to 2004-2008
+#
+# Revision 1.16  2008-04-18 03:51:44  peter
+# - added par to reset graphics layout to default
+#
 # Revision 1.15  2007/09/24 02:50:28  peter
 # - cleaned up spacing in title
 #
