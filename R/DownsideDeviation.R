@@ -1,5 +1,5 @@
 `DownsideDeviation` <-
-function (Ra, MAR = 0, method=c("full","subset"))
+function (Ra, MAR = 0, method=c("subset","full"))
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -37,10 +37,15 @@ function (Ra, MAR = 0, method=c("full","subset"))
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R,v 1.9 2008-06-02 16:05:19 brian Exp $
+# $Id: DownsideDeviation.R,v 1.10 2008-09-30 21:17:24 brian Exp $
 #
 ###############################################################################
 # $Log: DownsideDeviation.R,v $
+# Revision 1.10  2008-09-30 21:17:24  brian
+# - both DownsideDeviation and UpsidePotentialRatio now support "method argument to use full or subset of series
+# - use subset as default method
+# - updated documentation to reflect change
+#
 # Revision 1.9  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #
