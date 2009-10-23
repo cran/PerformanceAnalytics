@@ -12,7 +12,7 @@ function (R)
 
     # FUNCTION:
 
-    x = checkData(R, method="vector") # matrix?
+    x = checkData(R, method="matrix") # matrix?
 
     Return.cumulative = cumprod(1+na.omit(x)) 
     maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]
@@ -33,16 +33,17 @@ function (R)
     sofar = drawdowns[1]
     to = 1
     dmin = 1
+
     for (i in 1:length(drawdowns)) { #2:length()
         thisSign <- ifelse(drawdowns[i] < 0, 0, 1)
-        if (thisSign == priorSign) {
+        if (thisSign == priorSign) { ###
             if(drawdowns[i]< sofar) {
                 sofar = drawdowns[i]
                 dmin = i
             }
             to = i + 1 ###
         }
-        else {
+        else { 
             draw[index] = sofar
             begin[index] = from
             trough[index] = dmin
@@ -67,15 +68,21 @@ function (R)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: findDrawdowns.R,v 1.7 2008-06-02 16:05:19 brian Exp $
+# $Id: findDrawdowns.R,v 1.9 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: findDrawdowns.R,v $
+# Revision 1.9  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.8  2009-04-07 22:32:03  peter
+# - changed checkData to a matrix
+#
 # Revision 1.7  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

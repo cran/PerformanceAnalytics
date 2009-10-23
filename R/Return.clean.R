@@ -1,5 +1,5 @@
 `Return.clean` <-
-function(R, method = "boudt", ...)
+function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -14,35 +14,42 @@ function(R, method = "boudt", ...)
     # FUNCTION:
     method = method[1]
 
-    # Transform input data to a timeseries (zoo) object
-    R = checkData(R, method="zoo")
+    # Transform input data to a timeseries (xts) object
+    orig = R
+    R = checkData(R, method="xts")
 
-    result.zoo = zoo(NA, order.by=time(R))
+    #result.zoo = zoo(NA, order.by=time(R))
 
     # Get dimensions and labels
     columns = ncol(R)
     columnnames = colnames(R)
 
     for(column in 1:columns) { # for each asset passed in as R
-        R.clean = zoo(NA, order.by=time(R))
+        #R.clean = zoo(NA, order.by=time(R))
 
         switch(method,
-            boudt = {
-                R.clean = clean.boudt(na.omit(R[ , column, drop=FALSE]))[[1]]
-            }
+            none = {
+		R.clean = R[,column]
+	    },
+	    boudt = {
+                R.clean = clean.boudt(na.omit(R[ , column, drop=FALSE]),alpha=alpha,...)[[1]]
+            },
+	    geltner = {
+		R.clean = Return.Geltner(R[,column])
+	    }
         )
 
-#         if(column == 1) {
-#             result.zoo = R.clean
-#         }
-#         else {
-            result.zoo = merge (result.zoo, R.clean)
-#         }
+        if(column == 1) {
+            result = R.clean
+        }
+        else {
+            result = cbind(result, R.clean)
+        }
     }
 
-    result.zoo = result.zoo[,-1, drop=FALSE]
     # RESULTS:
-    return(result.zoo)
+    result=reclass(result,match.to=orig)
+    return(result)
 }
 
 `clean.boudt` <-
@@ -106,15 +113,30 @@ function(R, alpha=.01 , trim=1e-3)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.clean.R,v 1.5 2008-08-13 18:05:22 brian Exp $
+# $Id: Return.clean.R,v 1.9 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: Return.clean.R,v $
+# Revision 1.9  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.8  2009-09-02 14:11:12  brian
+# - add alpha and dots as passthru arguments to clean.boudt
+# - TODO: vectorize and na.skip
+#
+# Revision 1.7  2009-09-02 12:23:39  brian
+# - convert to use xts internally
+# - add reclass
+# - add 'none' and 'geltner' as methods
+#
+# Revision 1.6  2009-09-01 21:40:07  brian
+# - change to use xts internally
+#
 # Revision 1.5  2008-08-13 18:05:22  brian
 # - add copyright, licence, and CVS log
 #

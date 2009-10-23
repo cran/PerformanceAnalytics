@@ -1,5 +1,5 @@
 `SemiDeviation` <-
-function (Ra)
+function (R)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -9,31 +9,62 @@ function (Ra)
 
     # FUNCTION:
 
-    Ra = checkDataVector(Ra)
-
-    return(DownsideDeviation(Ra, MAR=mean(Ra)), method="full")
+    if (is.vector(R)) {
+        R = na.omit(R)
+        return(DownsideDeviation(R, MAR=mean(R), method="full"))
+    }
+    else {
+        R = checkData(R, method = "matrix")
+        result = apply(R, 2, SemiDeviation)
+        result = matrix(result, nrow=1)
+        colnames(result) = colnames(R)
+        rownames(result) = "Semi-Deviation"
+        return(result)
+    }
 }
 
 `SemiVariance` <-
-function (Ra)
+function (R)
 {
-    Ra = checkDataVector(Ra)
-
-    return(DownsideDeviation(Ra, MAR=mean(Ra), method="subset"))
+    if (is.vector(R)) {
+        R = na.omit(R)
+        return(DownsideDeviation(R, MAR=mean(R), method="subset"))
+    }
+    else {
+        R = checkData(R, method = "matrix")
+        result = apply(R, 2, SemiDeviation)
+        dim(result) = c(1,NCOL(R))
+        colnames(result) = colnames(R)
+        rownames(result) = "Semi-Variance"
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SemiDeviation.R,v 1.7 2008-06-02 16:05:19 brian Exp $
+# $Id: SemiDeviation.R,v 1.11 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: SemiDeviation.R,v $
+# Revision 1.11  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.10  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.9  2009-10-06 02:57:47  peter
+# - added label to results
+#
+# Revision 1.8  2009-09-24 03:14:01  peter
+# - added multi-column support
+#
 # Revision 1.7  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

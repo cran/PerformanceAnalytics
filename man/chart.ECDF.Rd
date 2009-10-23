@@ -6,11 +6,11 @@
    Creates an emperical cumulative distribution function (ECDF) overlaid with a cumulative distribution function (CDF)
 }
 \usage{
-chart.ECDF(R, main = "Empirical CDF", xlab = "x", ylab = "F(x)", colorset = c("black", "#005AFF"), lwd = 1, xlim = NULL, ylim = NULL, darken = FALSE, lty = c(1, 1), ...)
+chart.ECDF(R, main = "Empirical CDF", xlab = "x", ylab = "F(x)", colorset = c("black", "#005AFF"), lwd = 1, xlim = NULL, ylim = NULL, lty = c(1, 1), element.color = "darkgray", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{main}{ set the chart title, same as in \code{\link{plot}} }
   \item{xlab}{ set the x-axis label, same as in \code{\link{plot}} }
   \item{ylab}{ set the y-axis label, same as in \code{\link{plot}} }
@@ -18,7 +18,7 @@ chart.ECDF(R, main = "Empirical CDF", xlab = "x", ylab = "F(x)", colorset = c("b
   \item{lwd}{ set the line width, same as in \code{\link{plot}} }
   \item{xlim}{ set the x-axis limit, same as in \code{\link{plot}} }
   \item{ylim}{ set the y-axis limit, same as in \code{\link{plot}} }
-  \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers }
+  \item{element.color}{ specify the color of chart elements.  Default is "darkgray" }
   \item{lty}{ set the line type, same as in \code{\link{plot}} }
   \item{\dots}{ any other passthru parameters to \code{\link{plot}} }
 }
@@ -26,9 +26,7 @@ chart.ECDF(R, main = "Empirical CDF", xlab = "x", ylab = "F(x)", colorset = c("b
   The empirical cumulative distribution function (ECDF for short) calculates the fraction of observations less or equal to a given value.  The resulting plot is a step function of that fraction at each observation.  This function uses \code{ecdf} and overlays the CDF for a fitted normal function as well.  Inspired by a chart in Ruppert (2004).
 
 }
-\value{
-  chart of an ECDF calculated from the data overlaid with a CDF
-}
+
 \references{
 Ruppert, David. \emph{Statistics and Finance, an Introduction}. Springer. 2004. Ch. 2 Fig. 2.5
 
@@ -42,7 +40,7 @@ Ruppert, David. \emph{Statistics and Finance, an Introduction}. Springer. 2004. 
 
 \examples{
 data(edhec)
-chart.ECDF(edhec[,1])
+chart.ECDF(edhec[, 1, drop=FALSE])
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -1,5 +1,5 @@
 `chart.Histogram` <-
-function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none","add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, elementcolor="gray", note.lines = NULL, note.labels = NULL, note.cex = 0.7, note.color = "darkgray", probability = FALSE, p=0.99, ...)
+function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", methods = c("none","add.density", "add.normal", "add.centered", "add.cauchy", "add.sst", "add.rug", "add.risk", "add.qqplot"), show.outliers = TRUE, colorset = c("lightgray", "#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), border.col = "white", lwd = 2, xlim = NULL, ylim = NULL, element.color="darkgray", note.lines = NULL, note.labels = NULL, note.cex = 0.7, note.color = "darkgray", probability = FALSE, p = 0.95, cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, xaxis=TRUE, yaxis=TRUE, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -40,7 +40,8 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
     }
 
     if("add.risk" %in% methods){
-        b = c(-VaR.CornishFisher(x,p=p),-VaR.traditional(x,p=p))
+        # TODO Add ES methods here
+        b = c(VaR(x,p=p,method="modified",invert=TRUE),VaR(x,p=p,method="historical",invert=TRUE))
         b.labels = c(paste(p*100,"% ModVaR",sep=" "),paste(p*100,"% VaR",sep=""))
         rangedata = c(rangedata,b)
     }
@@ -62,14 +63,14 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
                 yrange=c(yrange,max(den$y))
                  probability = TRUE
             },
-            add.stable = {
-                stopifnot("package:fBasics" %in% search() || require("fBasics",quietly=TRUE))
-                fit.stable = stableFit(x,doplot = FALSE)
-                fitted.stable = dstable(s,alpha = fit.stable@fit$estimate[[1]], beta = fit.stable@fit$estimate[[2]], gamma = fit.stable@fit$estimate[[3]], delta = fit.stable@fit$estimate[[4]], pm = 0)
-                # look at documentation for pm
-                yrange=c(yrange,max(fitted.stable))
-                probability = TRUE
-            },
+#             add.stable = {
+#                 stopifnot("package:fBasics" %in% search() || require("fBasics",quietly=TRUE))
+#                 fit.stable = stableFit(x,doplot = FALSE)
+#                 fitted.stable = dstable(s,alpha = fit.stable@fit$estimate[[1]], beta = fit.stable@fit$estimate[[2]], gamma = fit.stable@fit$estimate[[3]], delta = fit.stable@fit$estimate[[4]], pm = 0)
+#                 # look at documentation for pm
+#                 yrange=c(yrange,max(fitted.stable))
+#                 probability = TRUE
+#             },
             add.cauchy = {
                 # requires library(MASS)
                 stopifnot("package:MASS" %in% search() || require("MASS",quietly=TRUE))
@@ -121,11 +122,13 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
     yrange = c(yrange, maxyhist*1.1)
     ylim = c(0,ceiling(max(yrange)))
 
-    hist(x = x, probability = probability, xlim = xlim, ylim = ylim, col = colorset[1], border = border.col, xlab = xlab, main = main, breaks = breaks, axes = FALSE, ...)
-    axis(1, col = elementcolor)
-    axis(2, col = elementcolor)
+    hist(x = x, probability = probability, xlim = xlim, ylim = ylim, col = colorset[1], border = border.col, xlab = xlab, main = main, breaks = breaks, axes = FALSE, cex.main = cex.main, cex.lab = cex.lab, ...)
+    if(xaxis)
+        axis(1, cex.axis = cex.axis, col = element.color)
+    if(yaxis)
+        axis(2, cex.axis = cex.axis, col = element.color)
 
-    box(col=elementcolor)
+    box(col=element.color)
 
     # Things to do after the plot is drawn
     for (method in methods) {
@@ -149,14 +152,14 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
             add.cauchy = {
                 lines(s, fitted.cauchy, col = colorset[4], lwd=lwd)
             },
-            add.stable = {
-                lines(s, fitted.stable, col = colorset[4], lwd=lwd)
-            },
+#             add.stable = {
+#                 lines(s, fitted.stable, col = colorset[4], lwd=lwd)
+#             },
             add.sst = { #requires package sn
                 lines(s, fitted.sst, col = colorset[4], lwd=lwd)
             },
             add.rug = {
-                rug(x, col = elementcolor)
+                rug(x, col = element.color)
             },
             add.risk = {
                 h = rep(.2*par("usr")[3] + 1*par("usr")[4], length(b))
@@ -170,7 +173,7 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
                 op1 <- par(fig=c(.02,.5,.5,.98), new=TRUE)
                 qqnorm(x, xlab="", ylab="", main="", axes=FALSE, pch=".",col=colorset[2])
                 qqline(x, col=colorset[3])
-                box(col=elementcolor)
+                box(col=element.color)
                 par(op)
              }
         ) # end switch
@@ -195,15 +198,32 @@ function(R, breaks="FD", main = NULL, xlab = "Returns", ylab = "Frequency", meth
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Histogram.R,v 1.36 2008-06-30 21:52:52 peter Exp $
+# $Id: chart.Histogram.R,v 1.41 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Histogram.R,v $
+# Revision 1.41  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.40  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.39  2009-09-17 02:58:36  peter
+# - added xaxis and yaxis controls
+#
+# Revision 1.38  2009-04-18 02:56:53  peter
+# - argument cleanup and codoc issues
+#
+# Revision 1.37  2009-04-07 22:20:34  peter
+# - changed to use element.color parameter
+#
 # Revision 1.36  2008-06-30 21:52:52  peter
 # - changed 'method' to 'methods' in test
 #

@@ -1,5 +1,5 @@
 `Omega` <-
-function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), output = c("point", "full"), rf = 0)
+function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), output = c("point", "full"), Rf = 0, ...)
 { # @author Peter Carl
 
     # DESCRIPTION
@@ -31,9 +31,9 @@ function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), o
     # one period (e.g., one month) and L is the strike price of both options.
 
     # The numerator and the denominator can be expressed as:
-    #   exp(-rf) * E[max(x - L, 0)]
-    #   exp(-rf) * E[max(L - x, 0)]
-    # with exp(-rf) calculating the present values of the two, where rf is
+    #   exp(-Rf) * E[max(x - L, 0)]
+    #   exp(-Rf) * E[max(L - x, 0)]
+    # with exp(-Rf) calculating the present values of the two, where Rf is
     # the per-period riskless rate.
 
     # The first three methods implemented here focus on that observation.
@@ -47,62 +47,98 @@ function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), o
     # for Omega as a function of L.
 
     # FUNCTION
+    method = method[1]
+    output = output[1]
 
-    x = checkDataVector(R)
+    if (is.vector(R)) {
+        x = na.omit(R)
 
-    switch(method,
-        simple = {
-            numerator = exp(-rf) * mean(pmax(x - L, 0))
-            denominator = exp(-rf) * mean(pmax(L - x, 0))
-            omega = numerator/denominator
-        },
-        binomial = {
-            warning("binomial method not yet implemented, using interp")
-            method = "interp"
-        },
-        blackscholes = {
-            warning("blackscholes method not yet implemented, using interp")
-            method = "interp"
-        },
-        interp = {
+        switch(method,
+            simple = {
+                numerator = exp(-Rf) * mean(pmax(x - L, 0))
+                denominator = exp(-Rf) * mean(pmax(L - x, 0))
+                omega = numerator/denominator
+            },
+            binomial = {
+                warning("binomial method not yet implemented, using interp")
+                method = "interp"
+            },
+            blackscholes = {
+                warning("blackscholes method not yet implemented, using interp")
+                method = "interp"
+            },
+            interp = {
 
-            # require("Hmisc")
-            stopifnot("package:Hmisc" %in% search() || require("Hmisc",quietly=TRUE))
-            a = min(x)
-            b = max(x)
+                # require("Hmisc")
+                stopifnot("package:Hmisc" %in% search() || require("Hmisc",quietly=TRUE))
+                a = min(x)
+                b = max(x)
 
-            xcdf = Ecdf(x, pl=FALSE)
-            f <- approxfun(xcdf$x,xcdf$y,method="linear",ties="ordered")
+                xcdf = Ecdf(x, pl=FALSE)
+                f <- approxfun(xcdf$x,xcdf$y,method="linear",ties="ordered")
 
-            if(output == "full") {
-                omega = cumsum(1-f(xcdf$x))/cumsum(f(xcdf$x))
+                if(output == "full") {
+                    omega = as.matrix(cumsum(1-f(xcdf$x))/cumsum(f(xcdf$x)))
+                    names(omega) = xcdf$x
+                }
+                else {
+                # returns only the point value for L
+                    # to get a point measure for omega, have to interpolate
+                    omegafull = cumsum(1-f(xcdf$x))/cumsum(f(xcdf$x)) # ????????
+                    g <- approxfun(xcdf$x,omegafull,method="linear",ties="ordered")
+                    omega = g(L)
+                }
             }
-            else {
-            # returns only the point value for L
-                # to get a point measure for omega, have to interpolate
-                omegafull = cumsum(1-f(xcdf$x))/cumsum(f(xcdf$x)) # ????????
-                g <- approxfun(xcdf$x,omegafull,method="linear",ties="ordered")
-                omega = g(L)
-            }
+        ) # end method switch
+
+        result = omega
+        return(result)
+    }
+    else {
+        R = checkData(R, method = "matrix", ... = ...)
+        if(output=="full")
+            R = R[,1,drop=FALSE] # constrain to one column
+        result = apply(R, 2, Omega, L = L, method = method, output = output, Rf = Rf,
+            ... = ...)
+        if(output!="full") {
+            dim(result) = c(1,NCOL(R))
+            rownames(result) = paste("Omega (L = ", round(L*100,1),"%)", sep="")
         }
-    ) # end method switch
-
-    result = omega
-    result
+        colnames(result) = colnames(R)
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Omega.R,v 1.11 2008-09-29 13:47:18 brian Exp $
+# $Id: Omega.R,v 1.17 2009-10-21 02:07:22 peter Exp $
 #
 ###############################################################################
 # $Log: Omega.R,v $
+# Revision 1.17  2009-10-21 02:07:22  peter
+# - fixed for full output in method interp
+#
+# Revision 1.16  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.15  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.13  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.12  2009-09-24 03:03:21  peter
+# - added multicolumn support
+#
 # Revision 1.11  2008-09-29 13:47:18  brian
 # - fix to use pmax per patch submitted by Ryan Sheftel <at> Malbec Pertners
 #

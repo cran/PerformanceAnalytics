@@ -1,36 +1,79 @@
 `ActivePremium` <-
-function (Ra, Rb, scale = 12)
+function (Ra, Rb, scale = NA)
 { # @author Peter Carl
 
-    # DESCRIPTION
-    # ActivePremium = (Return.annualized(assetReturns.vec, scale = scale) -
-    #                  Return.annualized(benchmarkReturns.vec, scale = scale) )
-
-    # Inputs:
-    # Outputs:
-
     # FUNCTION
-    assetReturns.vec = checkDataVector(Ra)
-    benchmarkReturns.vec = checkDataVector(Rb)
+    Ra = checkData(Ra)
+    Rb = checkData(Rb)
 
-    ActivePremium = (Return.annualized(assetReturns.vec, scale = scale) - Return.annualized(benchmarkReturns.vec, scale = scale))
+    Ra.ncols = NCOL(Ra) 
+    Rb.ncols = NCOL(Rb)
 
-    ActivePremium
+    pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
+    if(is.na(scale)) {
+        freq = periodicity(Ra)
+        switch(freq$scale,
+            minute = {stop("Data periodicity too high")},
+            hourly = {stop("Data periodicity too high")},
+            daily = {scale = 252},
+            weekly = {scale = 52},
+            monthly = {scale = 12},
+            quarterly = {scale = 4},
+            yearly = {scale = 1}
+        )
+    }
+
+    ap <-function (Ra, Rb, scale)
+    {
+        merged = na.omit(merge(Ra, Rb)) # align
+        ap = (Return.annualized(merged[,1], scale = scale) - Return.annualized(merged[,2], scale = scale))
+        ap
+    }
+
+#     ActivePremium = (Return.annualized(assetReturns.vec, scale = scale) - Return.annualized(benchmarkReturns.vec, scale = scale))
+    result = apply(pairs, 1, FUN = function(n, Ra, Rb, scale) ap(Ra[,n[1]], Rb[,n[2]], scale), Ra = Ra, Rb = Rb, scale = scale)
+
+    if(length(result) ==1)
+        return(result)
+    else {
+        dim(result) = c(Ra.ncols, Rb.ncols)
+        colnames(result) = paste("Active Premium:", colnames(Rb))
+        rownames(result) = colnames(Ra)
+        return(t(result))
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ActivePremium.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: ActivePremium.R,v 1.11 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: ActivePremium.R,v $
+# Revision 1.11  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.10  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.9  2009-10-06 03:01:38  peter
+# - added label to results
+#
+# Revision 1.8  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.7  2009-09-30 01:31:43  peter
+# - added multiple-column support
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

@@ -21,7 +21,7 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
 
     # Transform input data to a matrix
     begin = begin[1]
-    x = checkData(R, method = "zoo")
+    x = checkData(R)
 
     # Get dimensions and labels
     columns = ncol(x)
@@ -44,39 +44,39 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
         }
         x = x[start.row:length.column.one,]
 
-        reference.index = cumprod(1+na.omit(x[,1]))
+        reference.index = na.skip(x[,1],FUN=function(x) {cumprod(1+na.omit(x))})
     }
     for(column in 1:columns) {
         if(begin == "axis")
-            start.index = 1
+            start.index = TRUE
         else {
     # find the row number of the last NA in the target column
             start.row = 1
-            start.index = 0
             while(is.na(x[start.row,column])){
                 start.row = start.row + 1
             }
-            if(start.row == 1){
-                start.index = 0
-            }
-            else {
-                start.index = reference.index[(start.row-1)]
-            }
+            start.index=ifelse(start.row > 1,TRUE,FALSE)
+		
         }
-        z=zoo(0)
-        if(start.index > 1){
-            z = rbind(start.index,1+na.omit(x[,column]))
+	
+        
+        if(start.index){
+	    # we need to "pin" the beginning of the shorter series to the (start date - 1 period) 
+	    # value of the reference index while preserving NA's in the shorter series 
+            z = na.skip(x[,column],FUN = function(x,index=reference.index[(start.row - 1)]) {rbind(index,1+x)})
         }
-        else
-            z = 1+na.omit(x[,column])
-        column.Return.cumulative = (cumprod(z) - one)
+        else{
+            z = na.skip(x[,column],FUN = function(x) {1+x})
+	}
+
+        column.Return.cumulative = na.skip(z,FUN = function(x,one) {cumprod(x) - one},one=one)
         if(column == 1)
             Return.cumulative = column.Return.cumulative
         else
             Return.cumulative = merge(Return.cumulative,column.Return.cumulative)
     }
     if(columns == 1)
-        Return.cumulative = as.matrix(Return.cumulative)
+        Return.cumulative = as.xts(Return.cumulative)
     colnames(Return.cumulative) = columnnames
 
     # Chart the cumulative returns series
@@ -87,15 +87,36 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.CumReturns.R,v 1.8 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.CumReturns.R,v 1.14 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.CumReturns.R,v $
+# Revision 1.14  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.13  2009-09-01 20:18:41  brian
+# - add comments to describe the handling of na.skip for rbind'ing correct start value to shorter series
+#
+# Revision 1.12  2009-09-01 20:05:44  brian
+# - add na.skip to reference.index
+# - revise start.index handling to be more programatically efficient
+# - revise start.index handling for binding later-starting series to the "current" value of the first series
+#
+# Revision 1.11  2009-08-31 21:20:20  brian
+# - fix return accumulation after adding na.skip
+#
+# Revision 1.10  2009-08-31 20:51:27  brian
+# - add new function na.skip to deal with non-contiguous NA's in data, may eventually go to xts
+# - fix components of charts.PerformanceSummary to use na.skip
+#
+# Revision 1.9  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.8  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

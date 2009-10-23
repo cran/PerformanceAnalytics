@@ -6,11 +6,11 @@
 Sortino proposed an improvement on the Sharpe Ratio to better account for skill and excess performance by using only downside semivariance as the measure of risk.
 }
 \usage{
-SortinoRatio(Ra, MAR = 0)
+SortinoRatio(R, MAR = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{MAR}{ Minimum Acceptable Return, in the same periodicity as your returns }
 }
 \details{
@@ -23,14 +23,10 @@ Choosing the MAR carefully is very important, especially when comparing disparat
  }
  where \eqn{\delta_{MAR}} is the \code{\link{DownsideDeviation}}.
 }
-\value{
-Sortino ratio
-}
 \references{
 Sortino, F. and Price, L. Performance Measurement in a Downside Risk Framework. \emph{Journal of Investing}. Fall 1994, 59-65.
 }
 \author{ Brian G. Peterson }
-\note{}
 \seealso{
     \code{\link{SharpeRatio}} \cr
     \code{\link{DownsideDeviation}} \cr
@@ -40,9 +36,9 @@ Sortino, F. and Price, L. Performance Measurement in a Downside Risk Framework. 
 
 }
 \examples{
-data(edhec)
-head(edhec[,6, drop = FALSE])
-SortinoRatio(edhec[, 6])
+data(managers)
+SortinoRatio(managers[, 1])
+SortinoRatio(managers[, 1:8])
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

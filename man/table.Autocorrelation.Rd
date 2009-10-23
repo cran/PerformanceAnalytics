@@ -9,14 +9,8 @@
 table.Autocorrelation(R, digits = 4)
 }
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{digits}{ number of digits to round results to for display }
-}
-\details{
-
-}
-\value{
-data.frame with columns for the first six auto-correlation coefficients and the Q(6) test.
 }
 \references{
 Lo, Andrew W. 2001. Risk Management for Hedge Funds: Introduction and Overview. SSRN
@@ -31,6 +25,9 @@ To test returns for autocorrelation, Lo (2001) suggests the use of the Ljung-Box
 data(managers)
 t(table.Autocorrelation(managers))
 
+result = t(table.Autocorrelation(managers[,1:8]))
+textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+title(main="Autocorrelation")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

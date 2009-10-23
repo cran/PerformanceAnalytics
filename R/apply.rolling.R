@@ -1,63 +1,61 @@
 `apply.rolling` <-
-function (R, width = 12, FUN = "mean", na.pad = TRUE, ...)
+function (R, width, trim = TRUE, gap = 12, by = 1, FUN = "mean", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
-    # A wrapper to create timeseries object of rolling performance metrics 
-
-    # Inputs:
-    # R: a matrix, data frame, or timeSeries of returns
-    # FUN: any function that can be evaluated using a single set of returns
-    #   (e.g., rolling beta won't work, but Return.annualizeds will)
-
-    # Outputs:
-    # A timeseries object of the calculated series
-
     # FUNCTION:
+    R = checkData(R)
+    R = na.omit(R)
+    rows=NROW(R)
+    result = xts(, order.by = time(R))
+    dates=time(R)
 
-    # Transform input data to a matrix
-    x = checkData(R, method = "zoo")
+    calcs = matrix()
 
-    # Get dimensions and labels
-    columns = ncol(x)
-    columnnames = colnames(x)
-
-    # Calculate
-
-    for(column in 1:columns) {
-        # the drop=FALSE flag is essential for when the zoo object only has one column
-        column.Return.calc = rollapply(na.omit(x[,column,drop=FALSE]), width = width, FUN = FUN, ..., na.pad = na.pad, align = "right")
-        if(column == 1)
-            Return.calc = column.Return.calc
-        else
-            Return.calc = merge(Return.calc,column.Return.calc)
-    }
-
-    if(ncol(Return.calc) == 1) {
-        # some backflips to name the single column zoo object
-        Return.calc = as.matrix(Return.calc)
-        colnames(Return.calc) = columnnames
-        Return.calc = zoo(Return.calc, order.by = rownames(Return.calc))
+    if(width == 0) { # from inception
+        gap = gap
     }
     else
-        colnames(Return.calc) = columnnames
-
-    return(Return.calc)
-
+        gap = width
+    steps = seq(from = rows, to = gap, by = -by)
+    steps = steps[order(steps)]
+    for(row in steps) {
+        if (width == 0)  # from inception
+            r = R[1:row,]
+        else
+            r = R[(row-width+1):row,]
+        calc = apply(r, MARGIN = 2, FUN = FUN, ...=...)
+        calcs = rbind(calcs, calc)
+    }
+    calcs = xts(calcs[-1],order.by=dates[steps])
+    result = merge(result, calcs)
+# print(result)
+#     colnames(result)=colnames(R)
+    result = reclass(result, R)
+    return (result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.rolling.R,v 1.3 2008-06-02 16:05:19 brian Exp $
+# $Id: apply.rolling.R,v 1.6 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: apply.rolling.R,v $
+# Revision 1.6  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.5  2009-10-02 21:27:39  peter
+# - removed multi-column support so larger objects can be passed in
+#
+# Revision 1.4  2009-10-02 18:44:10  peter
+# - revamped to provide xtsible windows
+#
 # Revision 1.3  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

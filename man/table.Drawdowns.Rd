@@ -6,28 +6,19 @@
 Creates table showing statistics for the worst drawdowns.
 }
 \usage{
-table.Drawdowns(R, top= 5, ...)
+table.Drawdowns(R, top= 5, digits = 4)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{top}{ the number of drawdowns to include }
-  \item{\dots}{ any other passthru parameters }
+  \item{digits}{ number of digits to round results to }
 }
-\details{
-\preformatted{
-From        Trough         To       Depth         Length To Trough Recovery
-2001-02-28  2002-09-30  2003-08-31 -0.10746342     31        20       11
-1998-07-31  1998-08-31  1998-11-30 -0.05576688      5         2        3
-2006-05-31  2006-07-31  2006-11-30 -0.03385062      7         3        4
-2000-04-30  2000-05-31  2000-06-30 -0.02960503      3         2        1
-2004-04-30  2004-08-31  2004-11-30 -0.02839620      8         5        3
+
+\references{
+Bacon, C. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. p. 88 \cr
+
 }
-}
-\value{
-A data.frame organized as a table of drawdown statistics.
-}
-\references{ }
 \author{ Peter Carl }
 \seealso{
     \code{\link{DownsideDeviation}}  \cr
@@ -39,11 +30,15 @@ A data.frame organized as a table of drawdown statistics.
 }
 \examples{
 data(edhec)
-table.Drawdowns(edhec[,"Long.Short.Equity"])
-table.Drawdowns(edhec[,"Relative.Value"])
+table.Drawdowns(edhec[,1,drop=FALSE])
+table.Drawdowns(edhec[,12,drop=FALSE])
+data(managers)
+table.Drawdowns(managers[,8,drop=FALSE])
 
-table.Drawdowns(download.SP500PriceReturns(end="2006-12-31"))
-# note that this example shows a drawdown that has not yet ended
+result=table.Drawdowns(managers[,1,drop=FALSE])
+require("Hmisc")
+textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(3,4), rep(0,3))), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+title(main="Largest Drawdowns for HAM1")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

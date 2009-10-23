@@ -3,7 +3,7 @@
 \alias{managers}
 \title{Hypothetical Alternative Asset Manager and Benchmark Data}
 \description{
-A data frame that contains columns of monthly returns for six hypothetical
+A xts object that contains columns of monthly returns for six hypothetical
 asset managers (HAM1 through HAM6), the EDHEC Long-Short Equity hedge
 fund index, the S\&P 500 total returns, and total return series for
 the US Treasury 10-year bond and 3-month bill. Monthly returns for
@@ -16,7 +16,7 @@ Note that all the EDHEC indices are available in \code{\link{edhec}}.
 \details{
  Please note that the `managers' data set included with PerformanceAnalytics will be periodically updated with new managers and information.  If you intend to use this data set in automated tests, please be sure to subset your data like \code{managers[1:120,1:6]} to use the first ten years of observations on HAM1-HAM6.
 }
-\format{CSV conformed into a zoo object with monthly observations}
+\format{CSV conformed into an xts object with monthly observations}
 \examples{
 data(managers)
 
@@ -27,7 +27,7 @@ head(managers)
 summary(managers)
 
 #cumulative returns
-tail(cumprod.column(1+managers),1)
+tail(cumprod(1+managers),1)
 }
 \keyword{datasets}
 \keyword{ ts }

@@ -1,11 +1,11 @@
 `SharpeRatio` <-
-function (Ra, rf = 0)
+function (Ra, Rf = 0)
 { # @author Peter Carl
 
     # DESCRIPTION:
     # The Sharpe ratio is simply the return per unit of risk (represented by
     # variability).  The higher the Sharpe ratio, the better the combined
-    # performance of "risk" and return.
+    # peRformance of "risk" and return.
 
     # The Sharpe Ratio is a risk-adjusted measure of return that uses
     # standard deviation to represent risk.
@@ -13,37 +13,71 @@ function (Ra, rf = 0)
     # Inputs:
     # R: in this case, the function anticipates having a return stream as input,
     #    rather than prices.
-    # rf: the risk free rate MUST be in the same periodicity as the data going in.
+    # Rf: the risk free rate MUST be in the same periodicity as the data going in.
 
     # Outputs:
     # This function returns a Sharpe ratio for the same periodicity of the
     # data being input (e.g., monthly data -> monthly SR)
 
     # FUNCTION:
+    Ra = checkData(Ra)
+    if(!is.null(dim(Rf)))
+        Rf = checkData(Rf)
 
-    Ra = checkData(Ra, method = "zoo")
-    Ra.excess = Return.excess(Ra, rf)
-    return(mean(Ra.excess)/sd(Ra.excess))
+    xRa = Return.excess(Ra, Rf)
+    colnames(xRa) = colnames(Ra)
+    sr <-function (xRa)
+    {
+        xRa = na.omit(xRa)
+        SR = mean(xRa)/sd(xRa)
+        SR
+    }
 
+    result = apply(xRa, 2, sr)
+    dim(result) = c(1,NCOL(Ra))
+    colnames(result) = colnames(Ra)
+    rownames(result) = paste("Sharpe Ratio (Rf=", round(mean(Rf)*100,1), "%)", sep="")
+    return (result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.R,v 1.7 2008-06-02 16:05:19 brian Exp $
+# $Id: SharpeRatio.R,v 1.13 2009-10-13 14:27:29 peter Exp $
 #
 ###############################################################################
 # $Log: SharpeRatio.R,v $
+# Revision 1.13  2009-10-13 14:27:29  peter
+# - removed 'scale' parameter
+#
+# Revision 1.12  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.11  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.10  2009-10-06 02:56:39  peter
+# - added label to results
+#
+# Revision 1.9  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.8  2009-09-30 02:22:33  peter
+# - added multi-column support
+#
 # Revision 1.7  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #
 # Revision 1.6  2007/07/12 21:45:09  brian
-# -calculate stddev on excess return to account for a rf series, per Sharpe paper
+# -calculate stddev on excess return to account for a Rf series, per Sharpe paper
 #
 # Revision 1.5  2007/04/09 03:45:04  peter
 # - uses checkData

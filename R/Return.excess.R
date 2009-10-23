@@ -1,5 +1,5 @@
 `Return.excess` <-
-function (R, rf = 0)
+function (R, Rf = 0)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -8,7 +8,7 @@ function (R, rf = 0)
 
     # Inputs:
     # R: a matrix, data frame, or timeSeries of returns
-    # rf: a measure of the risk free rate, whether a period average
+    # Rf: a measure of the risk free rate, whether a period average
     #     (a single number) or a timeseries vector
 
     # Outputs:
@@ -16,75 +16,83 @@ function (R, rf = 0)
 
     # FUNCTION:
 
-    # Transform input data to a timeseries (zoo) object
-    R = checkData(R, method="zoo")
-    reference.name = ""
-    result.zoo = zoo(NA)
+    # Transform input data to a timeseries (xts) object
+    R = checkData(R)
+
     # if the risk free rate is delivered as a timeseries, we'll check it
-    # and convert it to a zoo object.
-    if(!is.null(dim(rf))){
-        rf = checkData(rf, method = "zoo")
-	reference.name = paste(" > ",colnames(rf),sep="")
+    # and convert it to an xts object.
+    if(!is.null(dim(Rf))){
+        Rf = checkData(Rf)
+        indexseries=index(cbind(R,Rf))
+        columnname.Rf=colnames(Rf)
     }
     else {
-	reference.name = paste(" > ",base::round(rf, 4)*100,"%",sep="")
+        indexseries=index(R)
+        columnname.Rf=Rf
+        Rf=xts(rep(Rf, length(indexseries)),order.by=indexseries)
     }
 
-    ## arithmetic on zoo objects intersects them first
-#    R.excess = R[,1,drop = FALSE] - rf
-#    R.excess = R[drop = FALSE] - rf # this won't handle multiple columns correctly
-
-    # Get dimensions and labels
-    columns.a = ncol(R)
-#    columns.b = ncol(rf)
-    columnnames.a = colnames(R)
-#    columnnames.b = colnames(rf)
-
-    for(column.a in 1:columns.a) { # for each asset passed in as R
-#        for(column.b in 1:columns.b) { # against each asset passed in as Rf
-            R.excess = zoo(NA)
-            R.excess = R[ , column.a, drop=FALSE] - rf #[ , column.b, drop=FALSE]
-            if(column.a == 1) { #& column.b == 1
-                if(rf[1] == 0){
-                    colnames(R.excess) = columnnames.a[column.a]
-                }
-                else {
-                    colnames(R.excess) = paste(columnnames.a[column.a], reference.name, sep = "")
-                }
-                result.zoo = R.excess
- #               colnames(result.zoo) = paste(columnnames.a[column.a], columnnames.b[column.b], sep = " > ")
-            }
-            else {
-#                nextcolumn = data.frame(Value = z, row.names = znames)
-                if(rf[1] == 0){
-	                colnames(R.excess) = columnnames.a[column.a]
-                }
-                else {
-	                colnames(R.excess) = paste(columnnames.a[column.a], reference.name, sep = "")
-                }
-#                 colnames(R.excess) = paste(columnnames.a[column.a], columnnames.b[column.b], sep = " > ")
-                result.zoo = merge (result.zoo, R.excess)
-            }
- #       }
+    ## prototype
+    ## xts(apply(managers[,1:6],2,FUN=function(R,Rf,order.by) {xts(R,order.by=order.by)-Rf}, Rf=xts(managers[,10,drop=F]),order.by=index(managers)),order.by=index(managers))
+    
+    return.excess <- function (R,Rf)
+    { # a function to be called by apply on the inner loop
+        xR = coredata(as.xts(R)-as.xts(Rf))
     }
-
+    
+    result = apply(R, MARGIN=2, FUN=return.excess, Rf=Rf)
+    colnames(result) = paste(colnames(R), ">", columnname.Rf)
+    result = reclass(result, R)
 
     # RESULTS:
-    return(result.zoo)
+    return(result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.excess.R,v 1.9 2008-06-02 16:05:19 brian Exp $
+# $Id: Return.excess.R,v 1.19 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: Return.excess.R,v $
+# Revision 1.19  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.18  2009-10-08 17:35:18  peter
+# - modified to fix unequal length issue between R and Rf
+#
+# Revision 1.17  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.16  2009-09-24 18:00:48  peter
+# - fixed to handle scalar Rf
+#
+# Revision 1.15  2009-09-24 17:46:31  peter
+# - fixed column renaming
+#
+# Revision 1.14  2009-09-24 17:39:22  peter
+# - fixed reclass
+# - added column renaming
+#
+# Revision 1.13  2009-09-24 17:11:30  brian
+# - convert to use apply
+#
+# Revision 1.12  2009-09-22 02:47:21  peter
+# - added reclass
+#
+# Revision 1.11  2009-09-17 03:00:38  peter
+# - reverting back to zoo until rollapply works for xts
+#
+# Revision 1.10  2009-09-15 20:35:50  peter
+# - converted to use xts internally
+#
 # Revision 1.9  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

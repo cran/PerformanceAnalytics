@@ -1,5 +1,5 @@
 `chart.Scatter` <-
-function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, ylim = NA, colorset = 1, symbolset = 1, darken = FALSE , legend.loc = NULL, ylog = FALSE, cex.axis = 0.8, cex.legend = 0.8,...)
+function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, ylim = NA, colorset = 1, symbolset = 1, element.color = "darkgray", cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -15,9 +15,6 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
     # colorset = use the name of any of the palattes above
     # reference.grid = if true, draws a grid aligned with the points on the
     #    x and y axes.
-    # darken = if true, draws the chart elements in "darkgray" rather than
-    #    "gray".  Makes it easier to print for some printers.
-
 
     # All other inputs are the same as "plot" and are principally included
     # so that some sensible defaults could be set.
@@ -26,38 +23,49 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
     # Draws a scatter chart with some sensible defaults.
 
     # FUNCTION:
-    x = checkData(x, method = "vector")
+    x = checkData(x, method = "vector") ### ???
     y = checkData(y, method = "vector")
 
-    # Set color for key elements, easy to darken for the printer
-    if(darken)
-        elementcolor = "darkgray" #better for the printer
-    else
-        elementcolor = "lightgray" #better for the screen
-
-    # Add fit line
-
-    plot(x~y, main = main, pch = symbolset, ylog = ylog, col=colorset, cex.axis = cex.axis, ...)
+    # pass in: cex.axis = cex.axis, cex.main = cex.main, cex.lab = cex.lab
+    plot(x~y, main = main, pch = symbolset, col=colorset, ...)
 
     if(reference.grid) {
-        grid(col = elementcolor)
-        abline(h = 0, col = elementcolor)
-        abline(v = 0, col = elementcolor)
+        grid(col = element.color)
+        abline(h = 0, col = element.color)
+        abline(v = 0, col = element.color)
     }
+
+    rug(side=1, x, col = element.color)
+    rug(side=2, y, col = element.color)
+
+    box(col = element.color)
+
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Scatter.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.Scatter.R,v 1.10 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Scatter.R,v $
+# Revision 1.10  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.9  2009-06-02 03:17:28  peter
+# - cleaned out old comments
+#
+# Revision 1.8  2009-04-18 02:56:53  peter
+# - argument cleanup and codoc issues
+#
+# Revision 1.7  2009-04-07 22:26:18  peter
+# - added rug and other graphic features
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

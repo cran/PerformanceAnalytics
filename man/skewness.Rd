@@ -10,7 +10,7 @@
 \details{
 
     This function was ported from the RMetrics package fUtilities to eliminate a dependency on fUtiltiies being loaded every
-time.  The function is identical except for the addition of \code{\link{checkData}}
+time.  The function is identical except for the addition of \code{\link{checkData} and column support.}
 }
 
 \usage{
@@ -43,20 +43,10 @@ skewness(x, na.rm = FALSE, method = c("moment", "fisher"), \dots)
 }
 
 \author{Diethelm Wuertz}
-\value{
-
-    \code{skewness}\cr
-    \cr
-
-    returns the value of the statistics, a numeric value. An
-    attribute which reports the used method is added.
-
-}
-
 
 \seealso{
 
-    \code{\link{kurtosis}}.
+    \code{\link{kurtosis}}
 
 }
 
@@ -71,6 +61,8 @@ skewness(x, na.rm = FALSE, method = c("moment", "fisher"), \dots)
 
 ## skewness -
    skewness(r)
+data(managers)
+skewness(managers)
 }
 
 

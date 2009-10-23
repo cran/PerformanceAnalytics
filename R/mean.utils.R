@@ -18,10 +18,19 @@ function (x, ...)
     # Returns the geometric return
 
     # FUNCTION:
-    x = checkDataVector(x)
-    mean.geometric = exp(mean(log(1+x)))-1
-    mean.geometric
-
+    if (is.vector(x)) {
+        x = na.omit(x)
+        mean.geometric = exp(mean(log(1+x)))-1
+        return(mean.geometric)
+    }
+    else {
+        x = checkData(x, method = "matrix", ... = ...)
+        result = apply(x, 2, mean.geometric, ... = ...)
+        dim(result) = c(1,NCOL(x))
+        colnames(result) = colnames(x)
+        rownames(result) = "Geometric Mean"
+        return(result)
+    }
 }
 
 `mean.stderr` <-
@@ -38,10 +47,19 @@ function (x, ...)
     # Returns the standard error of the mean for the return
 
     # FUNCTION:
-    x = checkDataVector(x)
-    stderr = sqrt(var(x)/length(x))
-    stderr
-
+    if (is.vector(x)) {
+        x = na.omit(x)
+        stderr = sqrt(var(x)/length(x))
+        return(stderr)
+    }
+    else {
+        x = checkData(x, method = "matrix", ... = ...)
+        result = apply(x, 2, mean.stderr, ... = ...)
+        result = matrix(result, nrow=1)
+        colnames(result) = colnames(x)
+        rownames(result) = "Standard Error"
+        return(result)
+    }
 }
 
 `mean.LCL` <-
@@ -60,14 +78,24 @@ function (x, ci = 0.95, ...)
     # for the confidence interval given
 
     # FUNCTION:
-    x = checkDataVector(x)
-    n = length(x)
-    if (n <= 1)
-        return(NA)
-    se.mean = sqrt(var(x)/n)
-    t.val = qt((1 - ci)/2, n - 1)
-    lcl = mean(x) + se.mean * t.val
-    lcl
+    if (is.vector(x)) {
+        x = na.omit(x)
+        n = length(x)
+        if (n <= 1)
+            return(NA)
+        se.mean = sqrt(var(x)/n)
+        t.val = qt((1 - ci)/2, n - 1)
+        lcl = mean(x) + se.mean * t.val
+        return(lcl)
+    }
+    else {
+        x = checkData(x, method = "matrix", ... = ...)
+        result = apply(x, 2, mean.LCL, ... = ...)
+        result = matrix(result, nrow=1)
+        colnames(result) = colnames(x)
+        rownames(result) = "Lower Confidence Level"
+        return(result)
+    }
 }
 
 `mean.UCL` <-
@@ -86,28 +114,48 @@ function (x, ci = 0.95, ...)
     # for the confidence interval given
 
     # FUNCTION:
-    x = checkDataVector(x)
-    n = length(x)
-    if (n <= 1)
-        return(NA)
-    se.mean = sqrt(var(x)/n)
-    t.val = qt((1 - ci)/2, n - 1)
-    ucl = mean(x) - se.mean * t.val
-    ucl
+    if (is.vector(x)) {
+        x = na.omit(x)
+        n = length(x)
+        if (n <= 1)
+            return(NA)
+        se.mean = sqrt(var(x)/n)
+        t.val = qt((1 - ci)/2, n - 1)
+        ucl = mean(x) - se.mean * t.val
+        return(ucl)
+    }
+    else {
+        x = checkData(x, method = "matrix", ... = ...)
+        result = apply(x, 2, mean.UCL, ... = ...)
+        result = matrix(result, nrow=1)
+        colnames(result) = colnames(x)
+        rownames(result) = "Upper Confidence Level"
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: mean.utils.R,v 1.8 2008-06-02 16:05:19 brian Exp $
+# $Id: mean.utils.R,v 1.12 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: mean.utils.R,v $
+# Revision 1.12  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.11  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.9  2009-09-24 02:35:41  peter
+# - added multicolumn support
+#
 # Revision 1.8  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

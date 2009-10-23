@@ -1,36 +1,60 @@
 `SortinoRatio` <-
-function (Ra, MAR = 0)
+function (R, MAR = 0)
 { # @author Brian G. Peterson
   # modified from function by Sankalp Upadhyay <sankalp.upadhyay [at] gmail [dot] com> with permission
 
     # Description:
-    # Sortino proposed to better account for skill and excess performance
+    # Sortino proposed to better account for skill and excess peRformance
     # by using only downside semivariance as the measure of risk.
 
     # R     return vector
     # MAR   minimum acceptable return
     # Function:
+    R = checkData(R)
 
-    Ra = checkData(Ra, method = "vector")
+    sr <-function (R, MAR)
+    {
+        SR = mean(Return.excess(R, MAR), na.rm=TRUE)/DownsideDeviation(R, MAR)
+        SR
+    }
 
-    result = mean (Ra - MAR) / DownsideDeviation(Ra, MAR)
-
-    #Return:
-    result
+    result = apply(R, MARGIN = 2, sr, MAR = MAR)
+    dim(result) = c(1,NCOL(R))
+    colnames(result) = colnames(R)
+    rownames(result) = paste("Sortino Ratio (MAR = ", round(MAR,1),"%)", sep="")
+    return (result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SortinoRatio.R,v 1.5 2008-06-02 16:05:19 brian Exp $
+# $Id: SortinoRatio.R,v 1.10 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: SortinoRatio.R,v $
+# Revision 1.10  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.9  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.8  2009-10-06 02:55:59  peter
+# - added label to results
+#
+# Revision 1.7  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.6  2009-10-01 01:46:19  peter
+# - added multi-column support
+#
 # Revision 1.5  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

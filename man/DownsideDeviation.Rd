@@ -9,13 +9,13 @@ Downside deviation, semideviation, and semivariance are measures of downside ris
 }
 
 \usage{
-DownsideDeviation(Ra, MAR = 0, method=c("subset","full"))
-SemiDeviation(Ra)
-SemiVariance(Ra)
+DownsideDeviation(R, MAR = 0, method=c("subset","full"))
+SemiDeviation(R)
+SemiVariance(R)
 }
 
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{MAR}{ Minimum Acceptable Return, in the same periodicity as your returns }
   \item{method}{ one of "full" or "subset", indicating whether to use the length of the full series or the length of the subset of the series below the MAR as the denominator, defaults to "subset"}
 }
@@ -39,7 +39,6 @@ In semideviation, by convention, the value of \eqn{n} is set to the full number 
 Sortino recommends calculating downside deviation utilizing a continuous fitted distribution rather than the discrete distribution of observations.  This would have significant utility, especially in cases of a small number of observations. He recommends using a lognormal distribution, or a fitted distribution based on a relevant style index, to construct the returns below the MAR to increase the confidence in the final result.  Hopefully, in the future, we'll add a fitted option to this function, and would be happy to accept a contribution of this nature.
 
 }
-\value{float value of the calculation}
 \references{
 Sortino, F. and Price, L. Performance Measurement in a Downside Risk Framework. \emph{Journal of Investing}. Fall 1994, 59-65. \cr
 
@@ -51,18 +50,15 @@ Plantinga, A., van der Meer, R. and Sortino, F. The Impact of Downside Risk on R
 
 }
 \author{ Peter Carl, Brian G. Peterson }
-\note{}
-\seealso{ }
 \examples{
-data(edhec)
-head(edhec[,6,drop=FALSE])
-sd(edhec[,6])
-DownsideDeviation(edhec[,6])  # MAR 0\%
-DownsideDeviation(edhec[,6], MAR = .04/12) #MAR 4\%
-DownsideDeviation(edhec[,6], MAR = mean(edhec[,6])) #MAR = mean return, calculate semivariance
-
-SemiDeviation(edhec[,7])
-SemiVariance (edhec[,7]) #calculated using method="subset"
+data(managers)
+sd(managers[,1:6], na.rm=TRUE)
+DownsideDeviation(managers[,1:6])  # MAR 0\%
+DownsideDeviation(managers[,1:6], MAR = .04/12) #MAR 4\%
+SemiDeviation(managers[,1,drop=FALSE])
+SemiDeviation(managers[,1:6])
+SemiVariance (managers[,1,drop=FALSE])
+SemiVariance (managers[,1:6]) #calculated using method="subset"
 }
 
 \keyword{ ts }

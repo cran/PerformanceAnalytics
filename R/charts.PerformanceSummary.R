@@ -1,16 +1,16 @@
 `charts.PerformanceSummary` <-
-function (R, rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
+function (R, Rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
-    # A wrapper to create a wealth index chart, bars for monthly performance,
+    # A wrapper to create a wealth index chart, bars for monthly peRformance,
     # and underwater chart for drawdown.
 
     # Inputs:
     # R: a matrix, data frame, or timeSeries, usually a set of monthly returns.
     #   The first column is assumed to be the returns of interest, the next
     #   columns are assumed to be relevant benchmarks for comparison.
-    # rf: this is the risk free rate.  Remember to set this to the same
+    # Rf: this is the risk free rate.  Remember to set this to the same
     #   periodicity as the data being passed in.
     # method: Used to select the risk parameter to use in the chart.BarVaR.  May
     #   be any of:
@@ -24,7 +24,7 @@ function (R, rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 
     # FUNCTION:
     begin = begin[1]
-    x = checkData(R, method = "zoo")
+    x = checkData(R)
     colnames = colnames(x)
     ncols = ncol(x)
 
@@ -70,8 +70,21 @@ function (R, rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 
     # The second row is the monthly returns bar plot
     par(mar=c(1,4,0,2))
-#    chart.BarVaR(as.matrix(R[,1]), main = "", xaxis = FALSE, ylab = "Monthly Return", method = method)
-    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = "Monthly Return", methods = methods, event.labels = NULL, ylog=FALSE, gap = gap, ...)
+
+    freq = periodicity(x)
+
+    switch(freq$scale,
+	seconds = { date.label = "Second"},
+	minute = { date.label = "Minute"},
+	hourly = {date.label = "Hourly"},
+	daily = {date.label = "Daily"},
+	weekly = {date.label = "Weekly"},
+	monthly = {date.label = "Monthly"},
+	quarterly = {date.label = "Quarterly"},
+	yearly = {date.label = "Annual"}
+    )
+
+    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = paste(date.label,"Return"), methods = methods, event.labels = NULL, ylog=FALSE, gap = gap, ...)
 
     # The third row is the underwater plot
     par(mar=c(5,4,0,2))
@@ -88,15 +101,29 @@ function (R, rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.PerformanceSummary.R,v 1.18 2008-08-16 03:38:54 peter Exp $
+# $Id: charts.PerformanceSummary.R,v 1.22 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: charts.PerformanceSummary.R,v $
+# Revision 1.22  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.21  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.20  2009-08-31 16:35:48  brian
+# - add periodicity to label of chart.BarVaR
+#
+# Revision 1.19  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.18  2008-08-16 03:38:54  peter
 # - changed chart.BarVaR call from 'method' to 'methods'
 #

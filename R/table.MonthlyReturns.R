@@ -1,9 +1,9 @@
-`table.MonthlyReturns` <-
+`table.Stats` <-
 function (R, ci = 0.95, digits = 4)
 {# @author Peter Carl
 
     # DESCRIPTION
-    # Monthly Returns Summary: Statistics and Stylized Facts
+    # Returns Summary: Statistics and Stylized Facts
 
     # Inputs:
     # R: Assumes returns rather than prices
@@ -14,7 +14,7 @@ function (R, ci = 0.95, digits = 4)
 
     # FUNCTION:
 
-    y = checkData(R, method = "matrix")
+    y = checkData(R, method = "zoo")
 
     # Set up dimensions and labels
     columns = ncol(y)
@@ -92,15 +92,24 @@ function (R, ci = 0.95, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.MonthlyReturns.R,v 1.7 2008-06-02 16:05:19 brian Exp $
+# $Id: table.MonthlyReturns.R,v 1.10 2009-10-22 17:00:51 brian Exp $
 #
 ###############################################################################
 # $Log: table.MonthlyReturns.R,v $
+# Revision 1.10  2009-10-22 17:00:51  brian
+# - rename function to table.Stats
+#
+# Revision 1.9  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.8  2008-10-14 14:37:29  brian
+# - convert from matrix or data.frame to zoo in checkData call
+#
 # Revision 1.7  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

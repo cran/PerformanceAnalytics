@@ -6,13 +6,13 @@
 The Sharpe Ratio is a risk-adjusted measure of return that uses standard deviation to represent risk.
 }
 \usage{
-SharpeRatio.annualized(Ra, rf = 0, scale = 12)
+SharpeRatio.annualized(R, Rf = 0, scale = NA, geometric=TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-  \item{rf}{ risk free rate, in same period as your returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{Rf}{ risk free rate, in same period as your returns }
   \item{scale}{ number of periods in a year (daily scale = 252, monthly scale = 12, quarterly scale = 4) }
+  \item{geometric}{ generate geometric (TRUE) or simple (FALSE) returns, default TRUE }
 }
 \details{
 The Sharpe ratio is simply the return per unit of risk (represented by variance).  The higher the Sharpe ratio, the better the combined performance of "risk" and return.
@@ -25,15 +25,11 @@ Using an annualized Sharpe Ratio is useful for comparison of multiple return str
 
 William Sharpe now recommends Information Ratio preferentially to the original Sharpe Ratio.
 }
-\value{
-annualized Sharpe Ratio
-}
+
 \references{
 Sharpe, W.F. The Sharpe Ratio,\emph{Journal of Portfolio Management},Fall 1994, 49-58.
 }
 \author{ Peter Carl }
-\note{
-}
 \seealso{
     \code{\link{SharpeRatio}} \cr
     \code{\link{InformationRatio}} \cr
@@ -42,18 +38,12 @@ Sharpe, W.F. The Sharpe Ratio,\emph{Journal of Portfolio Management},Fall 1994, 
     \code{\link{SortinoRatio}}
 }
 \examples{
-data(edhec)
-head(edhec[, 6, drop = FALSE])
-edhec.length = dim(edhec)[1]
-start = rownames(edhec[1,])
-start
-end = rownames(edhec[edhec.length,])
-rf = download.RiskFree(start=start, end=end)
-time(rf)=as.yearmon(time(rf))
-
-SharpeRatio.annualized(edhec[, 6, drop = FALSE])
-SharpeRatio.annualized(edhec[, 6, drop = FALSE], rf = .04/12)
-SharpeRatio.annualized(edhec[, 6, drop = FALSE], rf = rf)
+data(managers)
+SharpeRatio.annualized(managers[,1,drop=FALSE], Rf=.035/12) 
+SharpeRatio.annualized(managers[,1,drop=FALSE], Rf = managers[,10,drop=FALSE])
+SharpeRatio.annualized(managers[,1:6], Rf=.035/12) 
+SharpeRatio.annualized(managers[,1:6], Rf = managers[,10,drop=FALSE])
+SharpeRatio.annualized(managers[,1:6], Rf = managers[,10,drop=FALSE],geometric=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

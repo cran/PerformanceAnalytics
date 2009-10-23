@@ -1,5 +1,5 @@
 `Return.annualized` <-
-function (Ra, scale = 12, geometric = TRUE )
+function (R, scale = NA, geometric = TRUE )
 { # @author Peter Carl
 
     # Description:
@@ -18,32 +18,76 @@ function (Ra, scale = 12, geometric = TRUE )
     # @todo: don't calculate for returns less than 1 year
 
     # FUNCTION:
-
-    Ra = checkData(Ra, method="vector")
-    Ra = Ra[!is.na(Ra)]
-    n = length(Ra)
-    #do the correct thing for geometric or simple returns
-    if (geometric) {
-        # geometric returns
-        return(prod(1 + Ra)^(scale/n) - 1)
-    } else {
-        # simple returns
-        return(mean(Ra)*scale)
+    if (is.vector(R)) {
+        R = checkData (R)
+        R = na.omit(R)
+        n = length(R)
+        if(!xtsible(R) & is.na(scale))
+            stop("'R' needs to be timeBased or xtsible, or scale must be specified." )
+        if(is.na(scale)) {
+            freq = periodicity(R)
+            switch(freq$scale,
+                minute = {stop("Data periodicity too high")},
+                hourly = {stop("Data periodicity too high")},
+                daily = {scale = 252},
+                weekly = {scale = 52},
+                monthly = {scale = 12},
+                quarterly = {scale = 4},
+                yearly = {scale = 1}
+            )
+        }
+        #do the correct thing for geometric or simple returns
+        if (geometric) {
+            # geometric returns
+            result = prod(1 + R)^(scale/n) - 1
+        } else {
+            # simple returns
+            result = mean(R) * scale
+        }
+        result
+    }
+    else {
+        R = checkData(R, method = "xts")
+        result = apply(R, 2, Return.annualized, scale = scale, geometric = geometric)
+        dim(result) = c(1,NCOL(R))
+        colnames(result) = colnames(R)
+        rownames(result) = "Annualized Return"
+        return(result)
     }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.annualized.R,v 1.8 2008-06-02 16:05:19 brian Exp $
+# $Id: Return.annualized.R,v 1.13 2009-10-06 15:14:44 peter Exp $
 #
 ###############################################################################
 # $Log: Return.annualized.R,v $
+# Revision 1.13  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.12  2009-10-06 02:58:00  peter
+# - added label to results
+#
+# Revision 1.11  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.10  2009-10-02 18:38:42  peter
+# - moved scale test
+# - revised copyright
+#
+# Revision 1.9  2009-09-30 01:42:35  peter
+# - added multi-column support
+# - detects scale from periodicity
+#
 # Revision 1.8  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

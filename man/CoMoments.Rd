@@ -14,8 +14,8 @@ CoKurtosis(Ra,Rb)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-  \item{Rb}{ a vector, matrix, data frame, timeSeries or zoo object of index, benchmark, portfolio, or secondary asset returns to compare against }
+  \item{Ra}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{Rb}{ an xts, vector, matrix, data frame, timeSeries or zoo object of index, benchmark, portfolio, or secondary asset returns to compare against }
 }
 \details{
 Ranaldo and Favre (2005) define coskewness and cokurtosis as the skewness and kurtosis of a given asset analysed with the skewness and kurtosis of the reference asset or portfolio.  Adding an asset to a portfolio, such as a hedge fund with a significant level of coskewness to the portfolio, can increase or decrease the resulting portfolio's skewness. Similarly, adding a hedge fund with a positive cokurtosis coefficient will add kurtosis to the portfolio.
@@ -23,9 +23,6 @@ Ranaldo and Favre (2005) define coskewness and cokurtosis as the skewness and ku
 The co-moments are useful for measuring the marginal contribution of each asset to the portfolio's resulting risk.  As such, comoments of asset return distribution should be useful as inputs for portfolio optimization in addition to the covariance matrix.  Martellini and Ziemann (2007) point out that the problem of portfolio selection becomes one of selecting tangency points in four dimensions, incorporating expected return, second, third and fourth centered moments of asset returns.
 
 Even outside of the optimization problem, measuring the co-moments should be a useful tool for evaluating whether or not an asset is likely to provide diversification potential to a portfolio, not only in terms of normal risk (i.e. volatility) but also the risk of assymetry (skewness) and extreme events (kurtosis).
-}
-\value{
-    numeric value of the co-moment
 }
 \references{
 Boudt, Kris, Brian G. Peterson, and Christophe Croux. 2008. Estimation and Decomposition
@@ -40,9 +37,11 @@ Scott, Robert C., and Philip A. Horvath. 1980. On the Direction of Preference fo
   Higher Order than the Variance. Journal of Finance 35(4):915-919.
 }
 \author{ Kris Boudt, Peter Carl, Brian Peterson }
-\note{
+\seealso{ \code{\link{BetaCoSkewness}} \cr
+          \code{\link{BetaCoKurtosis}} \cr
+          \code{\link{BetaCoMoments}} \cr
+%          \code{\link{MultivariateMoments}}
 }
-\seealso{ \code{\link{BetaCoSkewness}}, \code{\link{BetaCoKurtosis}}, \code{\link{BetaCoMoments}}, code{\link{MultivariateMoments}} }
 \examples{
 data(managers)
 CoVariance(managers[, "HAM2", drop=FALSE], managers[, "SP500.TR", drop=FALSE])

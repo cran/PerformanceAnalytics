@@ -10,7 +10,7 @@ chart.CumReturns(R, wealth.index = FALSE, legend.loc = NULL, colorset =(1:12), b
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{wealth.index}{ if \code{wealth.index} is \code{TRUE}, shows the "value of \$1", starting the cumulation of returns at 1 rather than zero }
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{colorset}{ color palette to use, set by default to rational choices }
@@ -26,21 +26,17 @@ chart.CumReturns(R, wealth.index = FALSE, legend.loc = NULL, colorset =(1:12), b
 \details{
 Cumulates the return series and displays either as a wealth index or as cumulative returns.
 }
-\value{
-A timeseries line chart of the cumulative return series.
-}
-\references{ }
+
+\references{ Bacon, Carl. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. \cr }
 \author{ Peter Carl }
-\note{
-}
 \seealso{
     \code{\link{chart.TimeSeries}} \cr
     \code{\link{plot}}
 }
 \examples{
 data(edhec)
-chart.CumReturns(edhec[,"Funds.of.Funds",drop=FALSE],main="Cumulative Returns")
-chart.CumReturns(edhec[,"Funds.of.Funds",drop=FALSE],wealth.index=TRUE, main="Value of \$1")
+chart.CumReturns(edhec[,"Funds of Funds",drop=FALSE],main="Cumulative Returns")
+chart.CumReturns(edhec[,"Funds of Funds",drop=FALSE],wealth.index=TRUE, main="Value of \$1")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

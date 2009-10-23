@@ -1,10 +1,12 @@
 `chart.Correlation` <-
-function (x, histogram = TRUE)
+function (R, histogram = TRUE, ...)
 { # @author R Development Core Team
   # @author modified by Peter Carl
     # Visualization of a Correlation Matrix. On top the (absolute) value of the
     # correlation plus the result of the cor.test as stars. On botttom, the
     # bivariate scatterplots, with a fitted line
+
+    x = checkData(R, method="matrix")
 
     # Published at http://addictedtor.free.fr/graphiques/sources/source_137.R
     panel.cor <- function(x, y, digits=2, prefix="", use="pairwise.complete.obs", cex.cor, ...)
@@ -44,23 +46,33 @@ function (x, histogram = TRUE)
       }
     # Draw the chart
     if(histogram)
-        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel)
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel, ...)
     else
-        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, pch=".")
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, ...)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.R,v 1.5 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.Correlation.R,v 1.8 2009-10-23 02:34:49 peter Exp $
 #
 ###############################################################################
 # $Log: chart.Correlation.R,v $
+# Revision 1.8  2009-10-23 02:34:49  peter
+# - added checkData method matrix
+# - added dots to pairs
+#
+# Revision 1.7  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.6  2009-06-02 03:23:09  peter
+# - removed pch change, should parameterize it instead
+#
 # Revision 1.5  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

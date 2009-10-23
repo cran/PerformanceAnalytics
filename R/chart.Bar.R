@@ -16,7 +16,7 @@ function (R, legend.loc = NULL, colorset = (1:12), ...)
     # FUNCTION:
 
     # Transform input data to a matrix
-    x = checkDataMatrix(R)
+    x = checkData(R)
 
     chart.TimeSeries(x, type = "h", colorset = colorset, legend.loc = legend.loc, lend="butt",...)
 
@@ -25,15 +25,24 @@ function (R, legend.loc = NULL, colorset = (1:12), ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Bar.R,v 1.4 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.Bar.R,v 1.7 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Bar.R,v $
+# Revision 1.7  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.6  2009-03-06 03:06:44  peter
+# - changed checkData to use default xts
+#
+# Revision 1.5  2008-10-16 18:45:37  brian
+# - use checkData with method="zoo" instead of checkDataMatrix
+#
 # Revision 1.4  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

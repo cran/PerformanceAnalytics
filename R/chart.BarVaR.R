@@ -1,5 +1,5 @@
 `chart.BarVaR` <-
-function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR","HistoricalVaR", "StdDev"), clean = c("none", "boudt"), reference.grid = TRUE, xaxis = TRUE, main = "Title", ylab="Value", xlab="Date", date.format = "%m/%y", xlim = NA, ylim = NA, lwd = 1, colorset = 1:12, p=.99, lty = c(1,2,4,5,6), all = FALSE, show.clean = FALSE, show.horizontal = FALSE, show.symmetric = FALSE, legend.loc="bottomleft", ypad=0, legend.cex = 0.8, ...)
+function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), clean = c("none", "boudt","geltner"),  ylim = NA, lwd = 2, colorset = 1:12, p=.95, lty = c(1,2,4,5,6), all = FALSE, show.clean = FALSE, show.horizontal = FALSE, show.symmetric = FALSE, legend.loc="bottomleft", ypad=0, legend.cex = 0.8, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -18,8 +18,7 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
     # FUNCTION:
 
     # Transform input data to a timeseries object
-    x = checkData(R, method = "zoo")
-    #x = na.omit(x)
+    x = checkData(R)
 
     # Set up dimensions and labels
     columns = ncol(x)
@@ -29,8 +28,18 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
     legend.txt = NULL
     symmetric = NULL
     risk.line=TRUE
-    # Re-format the dates for the xaxis
-#     rownames = format(strptime(as.Date(rownames),format = "%Y-%m-%d"), date.format)
+
+    freq = periodicity(x)
+
+    switch(freq$scale,
+        minute = {freq.lab = "minute"},
+        hourly = {freq.lab = "hour"},
+        daily = {freq.lab = "day"},
+        weekly = {freq.lab = "week"},
+        monthly = {freq.lab = "month"},
+        quarterly = {freq.lab = "quarter"},
+        yearly = {freq.lab = "year"}
+    )
 
     time(x) = as.Date(time(x)) # this is here because merge.zoo is not behaving as expected when date formats are not consistent
     if(methods[1]=="none"){
@@ -45,8 +54,8 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
     }
     clean = clean[1]
 
-    risk = zoo(NA,order.by=time(x))
-    column.risk = zoo(0,order.by=time(x))
+    risk = xts(rep(NA,length(time(x))),order.by=time(x))
+    column.risk = xts(rep(0,length(time(x))),order.by=time(x))
 
     if (!all)
         columns = 1
@@ -59,7 +68,7 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
     x.orig = x
 
     if(show.clean){
-        x = Return.clean(x, method=clean) 
+        x = na.skip(x, Return.clean, method=clean) 
     }
 
     if(risk.line){
@@ -71,7 +80,7 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
                         if(width > 0){
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "sd")
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-month Std Dev",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-",freq.lab," Std Dev",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "sd")
@@ -82,45 +91,84 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
                     GaussianVaR = {
                         symmetric = c(symmetric, TRUE)
                         if(width > 0) {
-                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = FALSE, clean=clean)
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-Month Gaussian VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                         else {
-                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = FALSE, clean=clean)
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Gaussian VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Gaussian VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                     },
                     ModifiedVaR = {
                         symmetric = c(symmetric, FALSE)
                         if(width > 0) {
-                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR.CornishFisher", p = p, modified = TRUE, clean=clean)
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-Month Modified VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                         else {
-                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR.CornishFisher", p = p, modified = TRUE, clean=clean)
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Modified VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Modified VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                     },
                     HistoricalVaR = {
                         symmetric = c(symmetric, FALSE)
                         if(width > 0) {
-                            column.risk = -1* apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "quantile", probs = (1-p)) #hVaR = quantile(x,probs=.01)
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="historical") #hVaR = quantile(x,probs=.01)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-Month Historical VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                         else {
-                            column.risk = -1* apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "quantile", probs = (1-p))
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="historical")
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Historical VaR (1 Mo, ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Historical VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                    },
+                    GaussianES = {
+                        symmetric = c(symmetric, TRUE)
+                        if(width > 0) {
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="gaussian", clean=clean)
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                        else {
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="gaussian", clean=clean)
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Gaussian ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                    },
+                    ModifiedES = {
+                        symmetric = c(symmetric, FALSE)
+                        if(width > 0) {
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="modified", clean=clean)
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                        else {
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="modified", clean=clean)
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Modified ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                    },
+                    HistoricalES = {
+                        symmetric = c(symmetric, FALSE)
+                        if(width > 0) {
+                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="historical") #hES = quantile(x,probs=.01)
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                        }
+                        else {
+                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="historical")
+                            if(column==1)
+                                legend.txt = c(legend.txt, paste("Historical ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
                         }
                     }
                 ) # end switch
 
-                risk = merge.zoo(risk,column.risk)
+                risk = merge(risk,column.risk)
             } # end method loop
         } # end column loop
     }
@@ -133,7 +181,7 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
         ylim = c(ylim[1]-ypad,ylim[2]) # pad the bottom of the chart for the legend
     }
 
-    chart.TimeSeries(x.orig[,1, drop=FALSE], type = "h", col = bar.color, legend.loc = NULL, ylim = ylim, reference.grid = reference.grid, xaxis = xaxis, main = main, ylab = ylab, xlab = xlab, lwd = lwd, lend="butt", ...)
+    chart.TimeSeries(x.orig[,1, drop=FALSE], type = "h", col = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
 
     if(show.clean) {
         lines(1:rows, x[,1, drop=FALSE], type="h", col=colorset[1], lwd = lwd, lend="butt")
@@ -153,9 +201,9 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
             }
         }
         for(column in (risk.columns):2) {
-            lines(1:rows, -risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
+            lines(1:rows, risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
             if(show.horizontal)
-                lines(1:rows, rep(-tail(risk[,2],1),rows), col = colorset[1], lwd=1, type="l", lty=1)
+                lines(1:rows, rep(tail(risk[,2],1),rows), col = colorset[1], lwd=1, type="l", lty=1)
         }
     }
 
@@ -167,15 +215,52 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR","GaussianVaR
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R,v 1.17 2008-08-19 03:27:17 peter Exp $
+# $Id: chart.BarVaR.R,v 1.30 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.BarVaR.R,v $
+# Revision 1.30  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.29  2009-10-02 18:51:48  peter
+# - changed default p to 0.95
+# - removed negative sign from risk calculation
+#
+# Revision 1.28  2009-09-17 21:40:26  brian
+# - use wrappers for historical VaR/ES, do not pass clean for historical measures
+#
+# Revision 1.27  2009-09-04 20:42:58  brian
+# - add ES functions to as methods to chart.BarVaR, currently suffering from problems in apply.fromstart
+#
+# Revision 1.25  2009-09-01 21:40:47  brian
+# - add na.skip around call to Return.clean
+#
+# Revision 1.24  2009-09-01 20:03:53  brian
+# - move legend location to "topleft"
+#
+# Revision 1.23  2009-08-27 18:34:55  peter
+# - fixed initialization
+#
+# Revision 1.22  2009-07-01 13:31:37  peter
+# - added sensitivity to data periodicity for labeling
+#
+# Revision 1.21  2009-06-30 10:23:49  brian
+# - modify to use VaR wrapper, reverse signs
+#
+# Revision 1.20  2009-04-18 02:56:53  peter
+# - argument cleanup and codoc issues
+#
+# Revision 1.19  2009-04-07 22:17:28  peter
+# - changed to use xts internally
+#
+# Revision 1.18  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.17  2008-08-19 03:27:17  peter
 # - fixed legend formatting issues
 #

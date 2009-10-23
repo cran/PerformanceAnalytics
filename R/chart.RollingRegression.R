@@ -1,5 +1,5 @@
 `chart.RollingRegression` <-
-function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"), main = paste("Rolling ", width ,"-Month ",attribute,sep=""), xaxis = TRUE, colorset = (1:12), legend.loc = NULL, na.pad = TRUE, ...)
+function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"), main=NULL, na.pad = TRUE, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -10,9 +10,9 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
     # FUNCTION:
 
     # Transform input data to a data frame
-    Ra = checkData(Ra, method = "zoo")
-    Rb = checkData(Rb, method = "zoo")
-    #rf = checkDataMatrix(rf)
+    Ra = checkData(Ra, method="zoo")
+    Rb = checkData(Rb, method="zoo")
+    #Rf = checkDataMatrix(Rf)
     attribute=attribute[1]
 
     # Get dimensions and labels
@@ -22,8 +22,8 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
     columnnames.b = colnames(Rb)
 
     # @todo: make an excess return function and use it here
-    Ra.excess = Return.excess(Ra, rf)
-    Rb.excess = Return.excess(Rb, rf)
+    Ra.excess = Return.excess(Ra, Rf)
+    Rb.excess = Return.excess(Rb, Rf)
 
     # Calculate
     for(column.a in 1:columns.a) { # for each asset passed in as R
@@ -37,9 +37,9 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
                 column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) summary(lm(x[,1,drop=FALSE]~x[,2,drop=FALSE]))$r.squared, by = 1, by.column = FALSE, na.pad = na.pad, align = "right")
 
             # some backflips to name the single column zoo object
-            column.result.tmp = as.matrix(column.result)
+            column.result.tmp = xts(column.result)
             colnames(column.result.tmp) = paste(columnnames.a[column.a], columnnames.b[column.b], sep = " to ")
-            column.result = zoo(column.result.tmp, order.by = time(column.result))
+            column.result = xts(column.result.tmp, order.by = time(column.result))
 
             if(column.a == 1 & column.b == 1)
                 Result.calc = column.result
@@ -48,22 +48,63 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
         }
     }
 
-    chart.TimeSeries(Result.calc, xaxis = xaxis, main = main, legend.loc = legend.loc, col = colorset, ...)
+    if(is.null(main)){
+      freq = periodicity(Ra)
+
+      switch(freq$scale,
+          minute = {freq.lab = "minute"},
+          hourly = {freq.lab = "hour"},
+          daily = {freq.lab = "day"},
+          weekly = {freq.lab = "week"},
+          monthly = {freq.lab = "month"},
+          quarterly = {freq.lab = "quarter"},
+          yearly = {freq.lab = "year"}
+      )
+
+      main = paste("Rolling ",width,"-",freq.lab," ", attribute, sep="")
+    }
+    chart.TimeSeries(Result.calc, main = main, ...)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingRegression.R,v 1.14 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.RollingRegression.R,v 1.23 2009-10-22 03:33:36 peter Exp $
 #
 ###############################################################################
 # $Log: chart.RollingRegression.R,v $
+# Revision 1.23  2009-10-22 03:33:36  peter
+# - fixed title
+#
+# Revision 1.22  2009-10-15 21:41:13  brian
+# - updates to add automatic periodicity to chart labels, and support different frequency data
+#
+# Revision 1.21  2009-10-11 12:19:03  brian
+# - rf to Rf
+#
+# Revision 1.20  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.19  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.18  2009-10-03 05:01:09  peter
+# - reversion to prior, still working, version
+#
+# Revision 1.16  2009-04-18 02:56:53  peter
+# - argument cleanup and codoc issues
+#
+# Revision 1.15  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.14  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #
@@ -86,7 +127,7 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 # - replace drop=F with drop=FALSE for R CMD check compatibility
 #
 # Revision 1.7  2007/03/14 22:54:13  peter
-# - fixed rf calc
+# - fixed Rf calc
 #
 # Revision 1.6  2007/03/14 04:53:47  peter
 # - uses checkData function
@@ -99,10 +140,10 @@ function (Ra, Rb, width = 12, rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 #
 # Revision 1.4  2007/02/07 15:45:33  peter
 # - repaired graphic parameter passing
-# - rf needs a data check and testing
+# - Rf needs a data check and testing
 #
 # Revision 1.3  2007/02/07 14:58:36  peter
-# - added rf and calculation of excess returns
+# - added Rf and calculation of excess returns
 #
 # Revision 1.2  2007/02/07 13:24:49  brian
 # - fix pervasive comment typo

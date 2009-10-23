@@ -15,7 +15,7 @@ kurtosis <-
     # Method:
     method = match.arg(method)
 
-    R=checkData(x,method="zoo")
+    R=checkData(x,method="matrix")
 
     columns = ncol(R)
     columnnames=colnames(R)
@@ -62,9 +62,10 @@ kurtosis <-
         # some backflips to name the single column zoo object
         result = as.numeric(result)
     }
-    else
+    else{
         colnames(result) = columnnames
-
+        rownames(result) = "Excess Kurtosis"
+    }
     # Return Value:
     result
 
@@ -73,15 +74,28 @@ kurtosis <-
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: kurtosis.R,v 1.2 2008-06-25 23:07:59 brian Exp $
+# $Id: kurtosis.R,v 1.6 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: kurtosis.R,v $
+# Revision 1.6  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.5  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.4  2009-10-06 02:54:31  peter
+# - added label to results
+#
+# Revision 1.3  2009-09-24 02:54:11  peter
+# - changed checkData from zoo to matrix
+#
 # Revision 1.2  2008-06-25 23:07:59  brian
 # - update functions to deal with multi-column zoo/xts data
 #

@@ -13,14 +13,19 @@ sortDrawdowns(runs)
 \arguments{
   \item{runs}{ pass in runs array from findDrawdowns to be sorted }
 }
-\value{
-  sorted list
+\details{
+Returns a sorted list:
+\itemize{
   \item{return }{depth of drawdown}
   \item{from }{starting period}
   \item{to }{ending period}
   \item{length }{length in periods}
 }
-\references{}
+}
+\references{
+Bacon, C. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. p. 88 \cr
+
+}
 \author{
 Peter Carl \cr
 modified with permission from prototype function by Sankalp Upadhyay
@@ -36,9 +41,8 @@ modified with permission from prototype function by Sankalp Upadhyay
 }
 \examples{
 data(edhec)
-R=edhec[,"Funds.of.Funds"]
-findDrawdowns(R)
-sortDrawdowns(findDrawdowns(R))
+findDrawdowns(edhec[,"Funds of Funds", drop=FALSE])
+sortDrawdowns(findDrawdowns(edhec[,"Funds of Funds", drop=FALSE]))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

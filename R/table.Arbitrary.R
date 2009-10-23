@@ -19,11 +19,11 @@ function (R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard D
 
     # metrics = c(DownsideDeviation(x,MAR=mean(x)), sd(subset(x,x>0)),
     # sd(subset(x,x<0)), DownsideDeviation(x,MAR=MAR),
-    # DownsideDeviation(x,MAR=rf), DownsideDeviation(x,MAR=0),maxDrawdown(x))
+    # DownsideDeviation(x,MAR=Rf), DownsideDeviation(x,MAR=0),maxDrawdown(x))
 
     # metricsNames = c("Semi Deviation", "Gain Deviation", "Loss Deviation",
     # paste("Downside Deviation (MAR=",MAR*scale*100,"%)", sep=""),
-    # paste("Downside Deviation (rf=",rf*scale*100,"%)", sep=""),
+    # paste("Downside Deviation (Rf=",Rf*scale*100,"%)", sep=""),
     # paste("Downside Deviation (0%)", sep=""), "Maximum Drawdown" )
 
     # Here's how it's working right now:
@@ -47,7 +47,7 @@ function (R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard D
 
     # FUNCTION:
 
-    y = checkData(R, method = "matrix")
+    y = checkData(R, method = "zoo")
 
     # Set up dimensions and labels
     columns = ncol(y)
@@ -97,15 +97,26 @@ function(R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard De
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Arbitrary.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: table.Arbitrary.R,v 1.9 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: table.Arbitrary.R,v $
+# Revision 1.9  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.8  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.7  2008-10-14 14:37:29  brian
+# - convert from matrix or data.frame to zoo in checkData call
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

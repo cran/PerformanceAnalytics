@@ -11,31 +11,45 @@ function (R)
     # peak equity.
 
     # FUNCTION:
-
-    x = checkDataVector(R)
-
-
-    Return.cumulative = cumprod(1+na.omit(x)) 
-    maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]
-    drawdown = Return.cumulative/maxCumulativeReturn - 1
-
-    # if you want to see the drawdown series, plot(drawdown,type="l")
-    return(min(drawdown))
-
+    if (is.vector(R)) {
+        R = na.omit(R)
+        Return.cumulative = cumprod(1 + R) 
+        maxCumulativeReturn = cummax(c(1, Return.cumulative))[-1]
+        drawdown = Return.cumulative/maxCumulativeReturn - 1
+        return(min(drawdown))
+    }
+    else {
+        R = checkData(R, method = "matrix")
+        result = apply(R, 2, maxDrawdown)
+        dim(result) = c(1,NCOL(R))
+        colnames(result) = colnames(R)
+        rownames(result) = "Worst Drawdown"
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: maxDrawdown.R,v 1.4 2008-06-02 16:05:19 brian Exp $
+# $Id: maxDrawdown.R,v 1.8 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: maxDrawdown.R,v $
+# Revision 1.8  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.7  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.5  2009-09-24 02:05:53  peter
+# - added multicolumn support
+#
 # Revision 1.4  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

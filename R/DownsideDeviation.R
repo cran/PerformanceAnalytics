@@ -1,5 +1,5 @@
 `DownsideDeviation` <-
-function (Ra, MAR = 0, method=c("subset","full"))
+function (R, MAR = 0, method=c("subset","full"))
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -12,35 +12,59 @@ function (Ra, MAR = 0, method=c("subset","full"))
     # This is also useful for calculating semi-deviation by setting
     # MAR = mean(x)
 
-    method = method[1] # grab the first value if this is still a vector, to avoid varnings
-    # FUNCTION:
+    method = method[1] 
 
-    Ra = checkData(Ra, method="vector")
-    if(!is.null(dim(MAR)))
-        MAR = mean(checkData(MAR, method = "vector"))
-    # we have to assume that Ra and a vector of Rf passed in for MAR both cover the same time period
-    # subset won't work with zoo objects
-    r = subset(Ra,Ra < MAR)
+    if (is.vector(R)) {
+        R = na.omit(R)
 
-    switch(method,
-        full   = {len = length(Ra)},
-        subset = {len = length(r)} #previously length(R)
-    ) # end switch
-    return(sqrt(sum((r - MAR)^2)/len))
+        if(!is.null(dim(MAR)))
+            MAR = mean(checkData(MAR, method = "vector"))
+        # we have to assume that Ra and a vector of Rf passed in for MAR both cover the same time period
+
+        r = subset(R, R < MAR)
+
+        switch(method,
+            full   = {len = length(R)},
+            subset = {len = length(r)} #previously length(R)
+        ) # end switch
+        result = sqrt(sum((r - MAR)^2)/len)
+        return(result)
+    }
+    else {
+        R = checkData(R, method = "matrix")
+        result = apply(R, MARGIN = 2, DownsideDeviation, MAR = MAR, method = method)
+        dim(result) = c(1,NCOL(R))
+        colnames(result) = colnames(R)
+        rownames(result) = paste("Downside Deviation (MAR = ", round(MAR*100,1),"%)", sep="")
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R,v 1.10 2008-09-30 21:17:24 brian Exp $
+# $Id: DownsideDeviation.R,v 1.14 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: DownsideDeviation.R,v $
+# Revision 1.14  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.13  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.12  2009-10-06 02:59:49  peter
+# - added label to results
+#
+# Revision 1.11  2009-09-24 03:35:59  peter
+# - added multi-column support
+#
 # Revision 1.10  2008-09-30 21:17:24  brian
 # - both DownsideDeviation and UpsidePotentialRatio now support "method argument to use full or subset of series
 # - use subset as default method

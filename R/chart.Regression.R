@@ -1,5 +1,5 @@
 `chart.Regression` <-
-function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, darken = FALSE , legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "conditional", "quadratic"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"),  ylim = NA, evaluation = 50, legend.cex= 0.8, cex = 0.8, lwd = 2, ...)
+function (Ra, Rb, Rf = 0, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, element.color = "darkgray", legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "conditional", "quadratic"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"),  ylim = NA, evaluation = 50, legend.cex= 0.8, cex = 0.8, lwd = 2, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -12,9 +12,6 @@ function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Tit
     # colorset = use the name of any of the palattes above
     # reference.grid = if true, draws a grid aligned with the points on the
     #    x and y axes.
-    # darken = if true, draws the chart elements in "darkgray" rather than
-    #    "gray".  Makes it easier to print for some printers.
-
 
     # All other inputs are the same as "plot" and are principally included
     # so that some sensible defaults could be set.
@@ -43,10 +40,10 @@ function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Tit
 
 
     # Transform input data to a data frame
-    Ra = checkData(Ra, method = "zoo")
-    Rb = checkData(Rb, method = "zoo")
+    Ra = checkData(Ra)
+    Rb = checkData(Rb)
     if(!is.null(dim(Rf))){
-        Rf = checkData(Rf, method = "zoo")
+        Rf = checkData(Rf)
     }
     if(excess.returns){
         Ra = Return.excess(Ra, Rf)
@@ -78,11 +75,6 @@ function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Tit
         else
             ylab = "Return of Assets"
     }
-
-    if(darken)
-        elementcolor = "darkgray" #better for the printer
-    else
-        elementcolor = "lightgray" #better for the screen
 
     # Calculate
     color.tic = 0
@@ -138,18 +130,18 @@ function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Tit
                 color.tic = color.tic + 1
         }
     if(reference.grid) {
-        grid(col = elementcolor)
-        abline(h = 0, col = elementcolor)
-        abline(v = 0, col = elementcolor)
+        grid(col = element.color)
+        abline(h = 0, col = element.color)
+        abline(v = 0, col = element.color)
     }
-    axis(1, col = elementcolor, ...)
-    axis(2, col = elementcolor, ...)
-    box(col = elementcolor)
+    axis(1, col = element.color, ...)
+    axis(2, col = element.color, ...)
+    box(col = element.color)
 
     if(!is.null(legend.loc)){
         # There's no good place to put this automatically, except under the graph.
         # That requires a different solution, but here's the quick fix
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, pch = symbolset, cex=legend.cex, border.col = elementcolor, lwd = 1, bg = "white", legend = legendnames)
+        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, pch = symbolset, cex=legend.cex, border.col = element.color, lwd = 1, bg = "white", legend = legendnames)
     }
 
     }
@@ -158,15 +150,25 @@ function (Ra, Rb, Rf, excess.returns = FALSE, reference.grid = TRUE, main = "Tit
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Regression.R,v 1.9 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.Regression.R,v 1.12 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: chart.Regression.R,v $
+# Revision 1.12  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.11  2009-10-02 18:53:17  peter
+# - changed checkData to use xts
+# - changed default Rf to 0
+#
+# Revision 1.10  2009-04-07 22:22:53  peter
+# - uses element.color parameter
+#
 # Revision 1.9  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

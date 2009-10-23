@@ -3,15 +3,17 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Creates a time series chart with some extensions. }
 \description{
-Draws a line chart and labels the x-axis with the appropriate dates.  This is really a "primitive", since it extends the base \code{\link{plot}} and standardizes the elements of a chart.  Adds attributes for shading areas of the timeline or aligning vertical lines along the timeline.
+Draws a line chart and labels the x-axis with the appropriate dates.  This is really a "primitive", since it extends the base \code{\link{plot}} and standardizes the elements of a chart.  Adds attributes for shading areas of the timeline or aligning vertical lines along the timeline. This function is intended to be used inside other charting functions.
 }
 \usage{
-chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = FALSE, type = "l", lty = 1, lwd = 1, main = NULL, ylab = NULL, xlab = "Date", date.format.in = "\%Y-\%m-\%d", date.format = "\%m/\%y", xlim = NULL, ylim = NULL, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color  = "darkgray", period.color = "lightgray", colorset = (1:12), pch = (1:12), darken = FALSE, legend.loc =  NULL, ylog = FALSE, cex.axis = 0.8, cex.legend = 0.8, cex.labels = 0.8, ...)
+chart.TimeSeries(R, auto.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = FALSE, type = "l", lty = 1, lwd = 2, main = NULL, ylab = NULL, xlab = "Date", date.format.in = "\%Y-\%m-\%d", date.format = NULL, xlim = NULL, ylim = NULL, element.color = "darkgray", event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "aliceblue", colorset = (1:12), pch = (1:12), legend.loc = NULL, ylog = FALSE, cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.labels = 0.8, cex.main = 1, major.ticks = "auto", minor.ticks = TRUE, grid.color = "lightgray", grid.lty = "dotted", xaxis.labels = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-  \item{reference.grid}{ if true, draws a grid aligned with the points on the x and y axes }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{auto.grid}{ if true, draws a grid aligned with the points on the x and y axes }
+  \item{grid.color}{ sets the color for the reference grid }
+  \item{grid.lty}{ defines the line type for the grid }
   \item{xaxis}{ if true, draws the x axis }
   \item{yaxis}{ if true, draws the y axis }
   \item{yaxis.right}{ if true, draws the y axis on the right-hand side of the plot }
@@ -31,52 +33,50 @@ chart.TimeSeries(R, reference.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.rig
   \item{period.color}{ draws the shaded region described by \code{period.areas} in the color specified }
   \item{colorset}{ color palette to use, set by default to rational choices }
   \item{pch}{ symbols to use, see also \code{\link{plot}} }
-  \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers. }
+  \item{element.color}{ provides the color for drawing chart elements, such as the box lines, axis lines, etc. Default is "darkgray" } 
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{ylog}{ TRUE/FALSE set the y-axis to logarithmic scale, similar to \code{\link{plot}}, default FALSE }
   \item{date.format.in}{ allows specification of other date formats in the data object, defaults to "\%Y-\%m-\%d" }
   \item{cex.axis}{ The magnification to be used for axis annotation relative to the current setting of 'cex', same as in \code{\link{plot}}.  }
   \item{cex.legend}{ The magnification to be used for sizing the legend relative to the current setting of 'cex'.  }
   \item{cex.labels}{ The magnification to be used for event line labels relative to the current setting of 'cex'.  }
+  \item{cex.lab}{ The magnification to be used for x- and y-axis labels relative to the current setting of 'cex'.  }
+  \item{cex.main}{ The magnification to be used for the chart title relative to the current setting of 'cex'.  }
+  \item{major.ticks}{ Should major tickmarks be drawn and labeled, default 'auto'}
+  \item{minor.ticks}{ Should minor tickmarks be drawn, default TRUE}
+  \item{xaxis.labels}{ Allows for non-date labeling of date axes, default is NULL }
   \item{\dots}{ any other passthru parameters }
+
 }
-\details{
-  This function is intended to be used in a wrapper that is written for a particular purpose.
-}
-\value{
-  Draws a timeseries plot of type "line" with some sensible defaults.
-}
-\references{ }
 \author{ Peter Carl }
-\note{ }
-\seealso{ \code{\link{plot}}, \code{\link{par}} }
+\seealso{ \code{\link{plot}}, \code{\link{par}}, \code{\link[xts]{axTicksByTime}} }
 \examples{
 
 # These are start and end dates, formatted the same way as the default axis labels
 cycles.dates = list(
-    c("10/26","11/27"),
-    c("08/29","03/33"),
-    c("05/37","06/38"),
-    c("02/45","10/45"),
-    c("11/48","10/49"),
-    c("07/53","05/54"),
-    c("08/57","04/58"),
-    c("04/60","02/61"),
-    c("12/69","11/70"),
-    c("11/73","03/75"),
-    c("01/80","07/80"),
-    c("07/81","11/82"),
-    c("07/90","03/91"),
-    c("03/01","11/01"))
+    c("Oct 26","Nov 27"),
+    c("Aug 29","Mar 33"),
+    c("May 37","Jun 38"),
+    c("Feb 45","Oct 45"),
+    c("Nov 48","Oct 49"),
+    c("Jul 53","May 54"),
+    c("Aug 57","Apr 58"),
+    c("Apr 60","Feb 61"),
+    c("Dec 69","Nov 70"),
+    c("Nov 73","Mar 75"),
+    c("Jan 80","Jul 80"),
+    c("Jul 81","Nov 82"),
+    c("Jul 90","Mar 91"),
+    c("Mar 01","Nov 01"))
 # Event lists - FOR BEST RESULTS, KEEP THESE DATES IN ORDER
 risk.dates = c(
-    "10/87",
-    "02/94",
-    "07/97",
-    "08/98",
-    "10/98",
-    "07/00",
-    "09/01")
+    "Oct 87",
+    "Feb 94",
+    "Jul 97",
+    "Aug 98",
+    "Oct 98",
+    "Jul 00",
+    "Sep 01")
 risk.labels = c(
     "Black Monday",
     "Bond Crash",
@@ -87,8 +87,8 @@ risk.labels = c(
     "Sept 11")
 data(edhec)
 
-R=edhec[,"Funds.of.Funds",drop=FALSE]
-Return.cumulative = cumprod.column(1+R) - 1
+R=edhec[,"Funds of Funds",drop=FALSE]
+Return.cumulative = cumprod(1+R) - 1
 chart.TimeSeries(Return.cumulative)
 chart.TimeSeries(Return.cumulative, colorset = "darkblue", legend.loc = "bottomright", period.areas = cycles.dates, period.color = "lightblue", event.lines = risk.dates, event.labels = risk.labels, event.color = "red", lwd = 2)
 }

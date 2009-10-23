@@ -10,26 +10,21 @@ InformationRatio = ActivePremium/TrackingError
 This relates the degree to which an investment has beaten the benchmark to the consistency with which the investment has beaten the benchmark.
 }
 \usage{
-InformationRatio(Ra, Rb, scale = 12)
+InformationRatio(Ra, Rb, scale = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{Ra}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{Rb}{ return vector of the benchmark asset }
   \item{scale}{ number of periods in a year (daily scale = 252, monthly scale = 12, quarterly scale = 4) }
 }
-\details{
+\note{
 William Sharpe now recommends \code{InformationRatio} preferentially to the original \code{\link{SharpeRatio}}.
-}
-\value{
-information ratio (number)
 }
 \references{
 Sharpe, W.F. The Sharpe Ratio,\emph{Journal of Portfolio Management},Fall 1994, 49-58.
 }
 \author{ Peter Carl }
-\note{
-}
 \seealso{
     \code{\link{TrackingError}} \cr
     \code{\link{ActivePremium}} \cr
@@ -37,7 +32,9 @@ Sharpe, W.F. The Sharpe Ratio,\emph{Journal of Portfolio Management},Fall 1994, 
 }
 \examples{
 data(managers)
-InformationRatio(managers[,"HAM1",drop=FALSE], managers[, "SP500.TR", drop=FALSE])
+InformationRatio(managers[,"HAM1",drop=FALSE], managers[, "SP500 TR", drop=FALSE])
+InformationRatio(managers[,1:6], managers[,8,drop=FALSE])
+InformationRatio(managers[,1:6], managers[,8:7])
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

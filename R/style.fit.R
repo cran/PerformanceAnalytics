@@ -1,5 +1,5 @@
 `style.fit` <-
-function(R.fund, R.style, model=FALSE, method = c("constrained", "unconstrained", "normalized"), leverage = FALSE, ...) 
+function(R.fund, R.style, model=FALSE, method = c("constrained", "unconstrained", "normalized"), leverage = FALSE, selection = c("none", "AIC"), ...) 
 {
 # INPUTS
 # R.fund   Vector of a fund return time series
@@ -17,13 +17,14 @@ function(R.fund, R.style, model=FALSE, method = c("constrained", "unconstrained"
 # http://www.stanford.edu/~wfsharpe/art/sa/sa.htm
 
     method = method[1]
+    selection = selection[1]
 
     # Check to see if the required libraries are loaded
 #     if(!require("quadprog", quietly=TRUE))
 #         stop("package", sQuote("quadprog"), "is needed.  Stopping")
 
-    R.fund = checkData(R.fund, method="data.frame")
-    R.style = checkData(R.style, method="data.frame")
+    R.fund = checkData(R.fund)
+    R.style = checkData(R.style)
 
     # @todo: Missing data is not allowed, use = "pairwise.complete.obs" ?
     style.rows = dim(R.style)[1]
@@ -56,8 +57,22 @@ function(R.fund, R.style, model=FALSE, method = c("constrained", "unconstrained"
             #      + 0' or 'y ~ 0 + x'.
 
             column.lm = lm(R.fund[, fund.col] ~ 0 + ., data = R.style)
-            column.result = column.lm # this will accomodate AIC steps later
-            column.weights = as.data.frame(coef(column.lm))
+            if (selection == "AIC") { # @todo: add "BIC" case, where k = log(n) and n is style.cols?
+                # @todo: support multiple colums
+                column.result = step(column.lm) # find the model with minimum AIC value
+                if(fund.col == 1 )
+                    column.weights=data.frame(matrix(rep(0,length(style.colnames)*fund.cols), nrow = length(style.colnames), ncol = fund.cols),row.names=style.colnames)
+                column.coef = as.data.frame(coef(column.result))
+
+                if(length(coef(column.result))>0){
+                    row.loc = match(rownames(column.coef), rownames(column.weights))
+                    for(i in 1:length(row.loc)) column.weights[row.loc[i],fund.col]=column.coef[i,1]
+                }
+            }
+            else {
+                column.result = column.lm
+                column.weights = as.data.frame(coef(column.lm))
+            }
 #             column.weights = as.data.frame(coef(column.result)[-1])
 #             colnames(column.weights)= style.colnames[fund.col]
             rownames(column.weights) = colnames(R.style)
@@ -89,41 +104,5 @@ function(R.fund, R.style, model=FALSE, method = c("constrained", "unconstrained"
     result = list(weights = result.weights, R.squared = result.R2, adj.R.squared = result.adjR2 )
 
     return(result)
-
-    # EXAMPLE:
-    # > head(R.fund)
-    #          SP500.TR
-    # Jan 1996   0.0340
-    # Feb 1996   0.0093
-    # Mar 1996   0.0096
-    # Apr 1996   0.0147
-    # May 1996   0.0258
-    # Jun 1996   0.0038
-    # > head(R.style)
-    #          Russell.1000.Growth Russell.1000.Value
-    # Jan 1996              0.0335             0.0312
-    # Feb 1996              0.0183             0.0076
-    # Mar 1996              0.0013             0.0170
-    # Apr 1996              0.0263             0.0038
-    # May 1996              0.0349             0.0125
-    # Jun 1996              0.0014             0.0008
-    # > style.QPfit(R.fund, R.style)
-    # [1] 0.5047724 0.4952276
-    # > style.QPfit(R.fund, R.style, all=T)
-    # $solution
-    # [1] 0.5047724 0.4952276
-    # 
-    # $value
-    # [1] -0.0008888153
-    # 
-    # $unconstrainted.solution
-    # [1] 0.5040111 0.4815228
-    # 
-    # $iterations
-    # [1] 2 0
-    # 
-    # $iact
-    # [1] 1
-    # 
 
 }

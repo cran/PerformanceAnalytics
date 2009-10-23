@@ -10,12 +10,11 @@ maxDrawdown(R)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-}
-\value{
-maximum drawdown
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
 }
 \references{
+Bacon, C. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. p. 88 \cr
+
 }
 \author{ Peter Carl }
 \seealso{
@@ -27,8 +26,9 @@ maximum drawdown
 }
 \examples{
 data(edhec)
-R=edhec[,"Funds.of.Funds"]
-maxDrawdown(R)
+maxDrawdown(edhec[,"Funds of Funds"])
+data(managers)
+maxDrawdown(managers)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

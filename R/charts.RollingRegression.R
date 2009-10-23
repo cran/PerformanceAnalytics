@@ -1,4 +1,4 @@
-charts.RollingRegression = function (Ra, Rb, width = 12, rf = 0, darken = FALSE, main = NULL, legend.loc = NULL, event.labels=NULL, ...)
+charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, legend.loc = NULL, event.labels=NULL, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -11,7 +11,7 @@ charts.RollingRegression = function (Ra, Rb, width = 12, rf = 0, darken = FALSE,
     #   columns are assumed to be relevant benchmarks for comparison.
     # Rb: a matrix, data frame, or timeSeries that is a set of returns of the
     #   same scale and periodicity as R.
-    # rf: the risk free rate.  Remember to set this to the same periodicity
+    # Rf: the risk free rate.  Remember to set this to the same periodicity
     #   as the data being passed in.
     # attribute: Used to select the regression parameter to use in the chart  May
     #   be any of:
@@ -41,18 +41,30 @@ charts.RollingRegression = function (Ra, Rb, width = 12, rf = 0, darken = FALSE,
 
     par(mar=c(1,4,4,2))
     if(is.null(main)){
-         main = paste("Rolling ",width,"-Month Regression",sep="")
+      freq = periodicity(Ra)
+
+      switch(freq$scale,
+          minute = {freq.lab = "minute"},
+          hourly = {freq.lab = "hour"},
+          daily = {freq.lab = "day"},
+          weekly = {freq.lab = "week"},
+          monthly = {freq.lab = "month"},
+          quarterly = {freq.lab = "quarter"},
+          yearly = {freq.lab = "year"}
+      )
+
+      main = paste("Rolling ",width,"-",freq.lab," Regressions", sep="")
     }
 
-    chart.RollingRegression(Ra, Rb, width = width, rf = rf, darken = darken , attribute = "Alpha", xaxis = FALSE, main = main, ylab = "Alpha", legend.loc=legend.loc, event.labels = event.labels, ...)
+    chart.RollingRegression(Ra, Rb, width = width, Rf = Rf, attribute = "Alpha", xaxis = FALSE, main = main, ylab = "Alpha", legend.loc=legend.loc, event.labels = event.labels, ...)
 
     par(mar=c(1,4,0,2))
 
-    chart.RollingRegression(Ra, Rb, width = width, rf = rf, darken = darken, attribute = "Beta", main = "", ylab = "Beta", xaxis = FALSE, event.labels = NULL, ...)
+    chart.RollingRegression(Ra, Rb, width = width, Rf = Rf, attribute = "Beta", main = "", ylab = "Beta", xaxis = FALSE, event.labels = NULL, ...)
 
     par(mar=c(5,4,0,2))
 
-    chart.RollingRegression(Ra, Rb, width = width, rf = rf, attribute = "R-Squared", darken = darken, main = "", ylab = "R-Squared", event.labels = NULL, ...)
+    chart.RollingRegression(Ra, Rb, width = width, Rf = Rf, attribute = "R-Squared", main = "", ylab = "R-Squared", event.labels = NULL, ...)
 
     par(op)
 }
@@ -60,15 +72,35 @@ charts.RollingRegression = function (Ra, Rb, width = 12, rf = 0, darken = FALSE,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingRegression.R,v 1.15 2008-06-02 16:05:19 brian Exp $
+# $Id: charts.RollingRegression.R,v 1.21 2009-10-22 03:33:53 peter Exp $
 #
 ###############################################################################
 # $Log: charts.RollingRegression.R,v $
+# Revision 1.21  2009-10-22 03:33:53  peter
+# - fixed title
+#
+# Revision 1.20  2009-10-15 21:41:13  brian
+# - updates to add automatic periodicity to chart labels, and support different frequency data
+#
+# Revision 1.19  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.18  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.17  2009-10-02 19:17:45  peter
+# - changed parameter Rf to Rf
+#
+# Revision 1.16  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.15  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

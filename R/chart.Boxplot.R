@@ -1,5 +1,5 @@
 `chart.Boxplot` <-
-function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = FALSE, darken = FALSE, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison",...)
+function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -20,7 +20,7 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 
     sort.by = sort.by[1]
 
-    #op <- par(no.readonly=TRUE)
+    op <- par(no.readonly=TRUE)
 
     if(names){
         par(mar=c(5,12,4,2) + 0.1)
@@ -34,11 +34,6 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 
     if(length(mean.symbol) < columns)
         mean.symbol = rep(mean.symbol, length.out = columns)
-
-    if(darken)
-        elementcolor = "darkgray" #better for the printer
-    else
-        elementcolor = "lightgray" #better for the screen
 
     means = sapply(R, mean, na.rm = TRUE)
 
@@ -70,29 +65,35 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
         boxplot(R[,column.order], horizontal = TRUE, names = names, main = main, xlab = xlab, ylab = "", pars = list(boxcol = colorset[column.order], medlwd = 1, medcol = colorset[column.order], whisklty = c(1,1), whiskcol = colorset[column.order], staplelty = 1, staplecol = colorset[column.order], staplecex = .5, outpch = outlier.symbol, outcex = .5, outcol = colorset[column.order] ), axes = FALSE, boxwex=.6, ...)
     } # end else
 
+    if(!is.null(show.data)) {
+      highlight.color=1:24
+      for (item in show.data) {
+        points(as.vector(R[item,column.order]), 1:columns, col=highlight.color[item]) #, pch = mean.symbol[column.order], col=symbol.color[column.order])
+      }
+    }
     if(add.mean)
         points(means[column.order], 1:columns, pch = mean.symbol[column.order], col=symbol.color[column.order])
 
     if(names){
         labels = columnnames
-        axis(2, cex.axis = 0.8, col = elementcolor, labels = labels[column.order], at = 1:columns, las = 1)
+        axis(2, cex.axis = 0.8, col = element.color, labels = labels[column.order], at = 1:columns, las = 1)
     }
     else{
         labels = ""
-        axis(2, cex.axis = 0.8, col = elementcolor, labels = labels[column.order], at = 1:columns, las = 1, tick = FALSE)
+        axis(2, cex.axis = 0.8, col = element.color, labels = labels[column.order], at = 1:columns, las = 1, tick = FALSE)
     }
-    axis(1, cex.axis = 0.8, col = elementcolor)
+    axis(1, cex.axis = 0.8, col = element.color)
     
 
 #     if(names)
 #         title(sub=ylab)
 #     else
 #         title(sub=ylab)
-    box(col=elementcolor)
+    box(col=element.color)
 
-    abline(v=0, lty="solid",col=elementcolor)
+    abline(v=0, lty="solid",col=element.color)
 
-    #par(op)
+    par(op)
 }
 
 
@@ -104,15 +105,27 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Boxplot.R,v 1.5 2008-06-02 16:05:19 brian Exp $
+# $Id: chart.Boxplot.R,v 1.9 2009-10-23 02:52:30 peter Exp $
 #
 ###############################################################################
 # $Log: chart.Boxplot.R,v $
+# Revision 1.9  2009-10-23 02:52:30  peter
+# - added back par reset
+#
+# Revision 1.8  2009-10-22 13:45:23  brian
+# - change show.data to be a numerical vector of observations to overplot
+#
+# Revision 1.7  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.6  2009-04-07 22:18:25  peter
+# - added element.color as a parameter
+#
 # Revision 1.5  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

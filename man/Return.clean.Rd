@@ -6,13 +6,14 @@
 A function that provides access to multiple methods for cleaning outliers from return data.
 }
 \usage{
-Return.clean(R, method = "boudt", ...)
+Return.clean(R, method = c("none", "boudt", "geltner"), alpha = .01, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-  \item{method}{ currently only one method is supported, "boudt", which applies the function \code{\link{clean.boudt}} to R }
-  \item{...}{ parameters passed into the underlying cleaning function }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{method}{ one of "none", "boudt", which applies the function \code{\link{clean.boudt}} or "geltner" which applies the function \code{\link{Return.Geltner}}to R }
+  \item{alpha}{ the percentage of outliers you want to clean }
+  \item{\dots}{ additional parameters passed into the underlying cleaning function }
 }
 \details{
 This is a wrapper for offering multiple data cleaning methods for data objects containing returns.
@@ -31,24 +32,18 @@ particular combination of assets under consideration.
 
 In this version, only one method is supported.  See \code{\link{clean.boudt}} for more details.
 }
-\value{
-zoo object with the same dimensions as R, containing data cleaned with the method selected.
-}
-\references{
-
-}
 
 \author{
 Peter Carl
 }
-\note{
+\seealso{
+  \code{\link{clean.boudt}} \cr
+  \code{\link{Return.Geltner}} \cr
 }
-
-\seealso{ \code{\link{clean.boudt}} }
 
 \examples{
 data(managers)
-Return.clean(managers)
+head(Return.clean(managers[,1:4]),n=20)
 chart.BarVaR(managers[,1,drop=FALSE], show.clean=TRUE, clean="boudt", lwd=2, methods="ModifiedVaR")
 }
 

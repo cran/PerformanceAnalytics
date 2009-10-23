@@ -3,14 +3,14 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ relative performance chart between multiple return series }
 \description{
-A wrapper to create a chart of relative returns through time
+Plots a time series chart that shows the ratio of the cumulative performance for two assets at each point in time and makes periods of under- or out-performance easier to see. 
 }
 \usage{
 chart.RelativePerformance(Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12), legend.loc = NULL, ylog = FALSE, elementcolor = "darkgray", lty = 1, cex.legend=0.7, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{Ra}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{Rb}{ return vector of the benchmark asset }
   \item{main}{ set the chart title, same as in \code{plot} }
   \item{xaxis}{ if true, draws the x axis }
@@ -22,31 +22,22 @@ chart.RelativePerformance(Ra, Rb, main = "Relative Performance", xaxis = TRUE, c
   \item{lty}{ set the line type, same as in \code{\link{plot}} }
   \item{\dots}{ any other passthru parameters }
 }
-\value{
-chart of relative returns
+\details{
+To show under- and out-performance through different periods of time, a time series view
+is more helpful. The value of the chart is less important than the slope of the line. If
+the slope is positive, the first asset (numerator) is outperforming the second, and vice versa.
+May be used to look at the returns of a fund relative to each member of the peer
+group and the peer group index.
+Alternatively, it might be used to assess the peers individually against an asset class or peer group index.
 }
-\references{ }
+
 \author{ Peter Carl }
-\seealso{ }
+\seealso{
+\code{\link{Return.relative}}
+}
 \examples{
-# First we get the data
-data(edhec)
-edhec.length = dim(edhec)[1]
-start = rownames(edhec[1,])
-start
-end = rownames(edhec[edhec.length,])
-
-edhec.zoo = zoo(edhec, order.by = rownames(edhec))
-sp500.zoo = download.SP500PriceReturns(start = "1996-12-31", end = end)
-
-# Then align the dates as "monthly" data
-time(edhec.zoo) = as.yearmon(time(edhec.zoo))
-time(sp500.zoo) = as.yearmon(time(sp500.zoo))
-data.zoo = merge(edhec.zoo[,9,drop=FALSE],sp500.zoo)
-time(data.zoo) = as.Date(time(data.zoo),format="\%b \%Y")
-
-# Finally, plot it
-chart.RelativePerformance(data.zoo[, 1, drop=FALSE], data.zoo[, 2, drop=FALSE], colorset=rich8equal, legend.loc="bottomright", lwd=2)
+data(managers)
+chart.RelativePerformance(managers[, 1:6, drop=FALSE], managers[, 8, drop=FALSE], colorset=rich8equal, legend.loc="bottomright", main="Relative Performance to S&P")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

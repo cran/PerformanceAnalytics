@@ -1,5 +1,5 @@
 `Return.read` <-
-function (filename=stop("Please specify a filename"), frequency = c("m","d","q","i","o"), format.in = c("ISO8601","excel","oo","gnumeric"), sep = ",", header = TRUE, check.names = FALSE, ...)
+function (filename=stop("Please specify a filename"), frequency = c("d","m","q","i","o"), format.in = c("ISO8601","excel","oo","gnumeric"), sep = ",", header = TRUE, check.names = FALSE, ...)
 { # @author Peter Carl
 
 # A simple wrapper with some defaults for read.zoo
@@ -28,7 +28,7 @@ function (filename=stop("Please specify a filename"), frequency = c("m","d","q",
     )
 
 # Sets the date format conditioned on the frequency passed in
-
+# @todo: indexFormat(x) <- "%b %Y" instead
     switch(frequency,
         d = { # set to daily timeseries
             FUN = as.Date
@@ -47,7 +47,8 @@ function (filename=stop("Please specify a filename"), frequency = c("m","d","q",
         }
     )
     result = read.zoo(filename, sep=sep, format=format, FUN=FUN, header=header, check.names = check.names, ...)
-    rownames(result) = as.character(as.Date(time(result)))
+    if(xtsible(result)) result = xts(result)
+#     rownames(result) = as.character(as.Date(time(result)))
 
     result
 
@@ -55,15 +56,27 @@ function (filename=stop("Please specify a filename"), frequency = c("m","d","q",
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.read.R,v 1.5 2008-08-13 03:32:10 peter Exp $
+# $Id: Return.read.R,v 1.9 2009-10-15 02:47:31 peter Exp $
 #
 ###############################################################################
 # $Log: Return.read.R,v $
+# Revision 1.9  2009-10-15 02:47:31  peter
+# - switched default for frequency parameter
+#
+# Revision 1.8  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.7  2009-03-20 03:23:40  peter
+# - now returns an xts object by default
+#
+# Revision 1.6  2009-03-02 03:26:41  peter
+# - returns an xts object rather than zoo
+#
 # Revision 1.5  2008-08-13 03:32:10  peter
 # - sets rownames for the resulting 'zoo' object
 #

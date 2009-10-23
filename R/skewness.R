@@ -15,7 +15,7 @@ skewness <-
     # Method:
     method = match.arg(method)
 
-    R=checkData(x,method="zoo")
+    R=checkData(x,method="matrix")
 
     columns = ncol(R)
     columnnames=colnames(R)
@@ -64,9 +64,10 @@ skewness <-
         # some backflips to name the single column zoo object
         result = as.numeric(result)
     }
-    else
+    else{
         colnames(result) = columnnames
-
+        rownames(result) = "Skewness"
+    }
     # Return Value:
     result
 
@@ -75,15 +76,24 @@ skewness <-
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: skewness.R,v 1.2 2008-06-25 23:07:59 brian Exp $
+# $Id: skewness.R,v 1.5 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: skewness.R,v $
+# Revision 1.5  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.4  2009-10-06 02:53:38  peter
+# - added label to results
+#
+# Revision 1.3  2009-09-24 02:54:39  peter
+# - changed checkData from zoo to matrix
+#
 # Revision 1.2  2008-06-25 23:07:59  brian
 # - update functions to deal with multi-column zoo/xts data
 #

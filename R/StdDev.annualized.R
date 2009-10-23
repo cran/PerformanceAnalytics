@@ -1,54 +1,81 @@
 `sd.multiperiod` <-
-function (x, na.rm=TRUE, periods = 12, ...)
+function (x, scale = NA)
 {
     if (is.vector(x)) {
-        x = checkData (x,na.rm=na.rm, method="vector", ...=...)
         #scale standard deviation by multiplying by the square root of the number of periods to scale by
-        sqrt(periods)*sd(x, na.rm=na.rm)
-    } else {
-        x = checkData (x,na.rm=na.rm, method="matrix", ...=...)
-        apply(x, 2, sd.multiperiod, na.rm = na.rm, periods=periods, ...=...)
+        if(!xtsible(x) & is.na(scale))
+            stop("'x' needs to be timeBased or xtsible, or scale must be specified." )
+        x = checkData (x)
+        if(is.na(scale)) {
+            freq = periodicity(x)
+            switch(freq$scale,
+                minute = {stop("Data periodicity too high")},
+                hourly = {stop("Data periodicity too high")},
+                daily = {scale = 252},
+                weekly = {scale = 52},
+                monthly = {scale = 12},
+                quarterly = {scale = 4},
+                yearly = {scale = 1}
+            )
+        }
+        sqrt(scale)*sd(x, na.rm=TRUE)
+    } else { 
+        result = apply(x, 2, sd.multiperiod, scale=scale)
+        dim(result) = c(1,NCOL(x))
+        colnames(result) = colnames(x)
+        rownames(result) = "Annualized Standard Deviation"
+        return(result)
     }
 }
 
 `sd.annualized` <-
-function (x, na.rm=TRUE, periods = 12, ...)
+function (x, scale = NA)
 {   # wrapper function for backwards compatibility
-    sd.multiperiod(x, na.rm=na.rm, periods = periods, ...=...)
+    sd.multiperiod(x, scale = scale)
 }
 
 `StdDev.annualized` <-
-function (Ra, na.rm=TRUE, scale = 12, ...)
+function (R, scale = NA)
 {   # wrapper function for backwards compatibility
-    sd.multiperiod(Ra, na.rm=na.rm, periods = scale, ...=...)
-}
-
-###############################################################################
-# sd function wrappers for backwards compatibility
-`StdDev` <-
-function(Ra)
-{ # wrapper for backwards compatibility
-    return(sd(Ra))
-}
-
-`std` <-
-function(Ra) {
-    # NOTE: std function is listed in the doc for fBasics, but not implemented
-    return(sd(Ra))
+    sd.multiperiod(R, scale = scale)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.annualized.R,v 1.13 2008-06-02 16:05:19 brian Exp $
+# $Id: StdDev.annualized.R,v 1.20 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: StdDev.annualized.R,v $
+# Revision 1.20  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.19  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.18  2009-10-06 02:55:38  peter
+# - added label to results
+#
+# Revision 1.17  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.16  2009-10-02 18:36:38  peter
+# - fixed scale testing
+#
+# Revision 1.15  2009-09-30 03:00:04  peter
+# - added periodicity for setting scale
+#
+# Revision 1.14  2008-10-14 14:37:29  brian
+# - convert from matrix or data.frame to zoo in checkData call
+#
 # Revision 1.13  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

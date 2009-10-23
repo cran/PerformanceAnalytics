@@ -1,5 +1,5 @@
 `TrackingError` <-
-function (Ra, Rb, scale = 12)
+function (Ra, Rb, scale = NA)
 { # @author Peter Carl
 
     # DESCRIPTION
@@ -10,27 +10,76 @@ function (Ra, Rb, scale = 12)
     # Outputs:
 
     # FUNCTION
-    assetReturns.vec = checkDataVector(Ra)
-    benchmarkReturns.vec = checkDataVector(Rb)
+    Ra = checkData(Ra)
+    Rb = checkData(Rb)
 
-    #TrackingError = sqrt(sum(assetReturns.vec - benchmarkReturns.vec)^2 / (length(assetReturns.vec) - 1)) * sqrt(scale)
-    TrackingError = sd(assetReturns.vec - benchmarkReturns.vec) * sqrt(scale)
-    TrackingError
+    Ra.ncols = NCOL(Ra) 
+    Rb.ncols = NCOL(Rb)
 
+    pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
+
+    if(is.na(scale)) {
+        freq = periodicity(Ra)
+        switch(freq$scale,
+            minute = {stop("Data periodicity too high")},
+            hourly = {stop("Data periodicity too high")},
+            daily = {scale = 252},
+            weekly = {scale = 52},
+            monthly = {scale = 12},
+            quarterly = {scale = 4},
+            yearly = {scale = 1}
+        )
+    }
+
+    te <-function (Ra, Rb, scale)
+    {
+        TE = sd(Return.excess(Ra, Rb), na.rm=TRUE) * sqrt(scale)
+        return(TE)
+    }
+
+    result = apply(pairs, 1, FUN = function(n, Ra, Rb, scale) te(Ra[,n[1]], Rb[,n[2]], scale), Ra = Ra, Rb = Rb, scale = scale)
+
+    if(length(result) ==1)
+        return(result)
+    else {
+        dim(result) = c(Ra.ncols, Rb.ncols)
+        colnames(result) = paste("Tracking Error:", colnames(Rb))
+        rownames(result) = colnames(Ra)
+        return(t(result))
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: TrackingError.R,v 1.8 2008-06-30 21:42:09 peter Exp $
+# $Id: TrackingError.R,v 1.13 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: TrackingError.R,v $
+# Revision 1.13  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.12  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.11  2009-10-06 02:55:27  peter
+# - added label to results
+#
+# Revision 1.10  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.9  2009-09-30 14:01:31  peter
+# - added multi-column support
+# - added periodicity-based scaling
+#
 # Revision 1.8  2008-06-30 21:42:09  peter
 # - fixed bad encoding
 #

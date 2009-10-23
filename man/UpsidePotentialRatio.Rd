@@ -6,11 +6,11 @@
 Sortino proposed an improvement on the Sharpe Ratio to better account for skill and excess performance by using only downside semivariance as the measure of risk.  That measure is the \code{\link{SortinoRatio}}. This function, Upside Potential Ratio, was a further improvement, extending the measurement of only upside on the numerator, and only downside of the denominator of the ratio equation.
 }
 \usage{
-UpsidePotentialRatio(Ra, MAR = 0, method=c("subset","full"))
-UPR(Ra, MAR = 0, method=c("subset","full"))
+UpsidePotentialRatio(R, MAR = 0, method=c("subset","full"))
+UPR(R, MAR = 0, method=c("subset","full"))
 }
 \arguments{
-  \item{Ra}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{MAR}{ Minimum Acceptable Return, in the same periodicity as your returns }
   \item{method}{ one of "full" or "subset", indicating whether to use the length of the full series or the length of the subset of the series above(below) the MAR as the denominator, defaults to "subset"}
 }
@@ -27,9 +27,6 @@ Choosing the MAR carefully is very important, especially when comparing disparat
 
  The numerator in \code{UpsidePotentialRatio} only uses returns that exceed the MAR, and the denominator (in \code{\link{DownsideDeviation}}) only uses returns that fall short of the MAR by default.  Sortino contends that this is a more accurate and balanced protrayal of return potential, wherase \code{\link{SortinoRatio}} can reward managers most at the peak of a cycle, without adequately penalizing them for past mediocre performance.  Others have used the full series, and this is provided as an option by the \code{method} argument.
 
-}
-\value{
-Upside potential ratio
 }
 \references{
 Sortino, F. and Price, L. Performance Measurement in a Downside Risk Framework. \emph{Journal of Investing}. Fall 1994, 59-65.
@@ -50,7 +47,7 @@ Plantinga, A., van der Meer, R. and Sortino, F. The Impact of Downside Risk on R
 \examples{
 data(edhec)
 UpsidePotentialRatio(edhec[, 6], MAR=.05/12) #5 percent/yr MAR
-
+UpsidePotentialRatio(edhec[, 1:6], MAR=0)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

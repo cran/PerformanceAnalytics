@@ -2,66 +2,109 @@
 # CAPM.alpha and CAPM.beta could probably have gone in here too, but they're already in separate files
 
 `CAPM.CML.slope` <-
-function (Rb, rf = 0 )
+function (Rb, Rf = 0 )
 { #author Brian G. Peterson
 
-  #the Capital Market Line slope is a wrapper for the Sharpe Ratio on the benchmark asset
-  #
-  # Rb = Return vector of the benchmark or market portfolio
-  return(SharpeRatio(Rb,rf))
+    #the Capital Market Line slope is a wrapper for the Sharpe Ratio on the benchmark asset
+    #
+    # Rb = Return vector of the benchmark or market portfolio
+    result = SharpeRatio(Rb,Rf)
+    names = colnames(Rb)
+    rownames(result) = paste("Capital Market Line Slope:", names)
+    return(result) 
 }
 
 `CAPM.CML` <-
-function (Ra, Rb, rf = 0)
+function (Ra, Rb, Rf = 0)
 { #@author Brian G. Peterson
 
-    Ra = checkData(Ra, method="zoo")
-    Rb = checkData(Rb, method="zoo")
-    rf = checkData(rf, method="zoo")
+    Ra = checkData(Ra)
+    Rb = checkData(Rb)
+    if(!is.null(dim(Rf)))
+        Rf = checkData(Rf)
 
-    if (length(Ra) != length(Rb))
-        stop("Returns to be assessed have unequal time periods. Are there NAs in the data?")
+    Ra.ncols = NCOL(Ra) 
+    Rb.ncols = NCOL(Rb)
 
-    CML = mean(rf) + CAPM.CML.slope(Rb, rf)*mean(Ra)
+    pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
-    return(CML)
+    cml <-function (Ra, Rb, Rf)
+    {
+        CML = mean(Rf, na.rm=TRUE) + CAPM.CML.slope(Rb, Rf)*mean(Ra, na.rm=TRUE)
+        return(CML)
+    }
+
+    result = apply(pairs, 1, FUN = function(n, Ra, Rb, Rf) cml(Ra[,n[1]], Rb[,n[2]], Rf), Ra = Ra, Rb = Rb, Rf = Rf)
+
+    if(length(result) ==1)
+        return(result)
+    else {
+        dim(result) = c(Ra.ncols, Rb.ncols)
+        colnames(result) = paste("Capital Market Line:", colnames(Rb))
+        rownames(result) = colnames(Ra)
+        return(t(result))
+    }
 }
 
 `CAPM.RiskPremium` <-
-function (Ra, rf = 0)
+function (Ra, Rf = 0)
 { #@author Brian G. Peterson
 
-    Ra = checkDataVector(Ra)
-    rf = checkDataVector(rf)
+    Ra = checkData(Ra)
+    if(!is.null(dim(Rf)))
+        Rf = checkData(Rf)
 
-    riskpremium = mean(Ra - rf)
-
-    return (riskpremium)
+    xRa = Return.excess(Ra, Rf)
+    result = apply(xRa, 2, mean, na.rm=TRUE)
+    dim(result) = c(1,NCOL(Ra))
+    colnames(result) = colnames(Ra)
+    rownames(result) = paste("Risk Premium (Rf=", round(mean(Rf)*100,1),"%)", sep="")
+    return (result)
 }
 
 `CAPM.SML.slope` <-
-function (Rb, rf = 0)
+function (Rb, Rf = 0)
 { #@author Brian G. Peterson
 
-    Rb = checkDataVector(Rb)
-
-    SML.slope = 1/CAPM.RiskPremium(Rb, rf)
-
-    return(SML.slope)
+    result = 1/CAPM.RiskPremium(Rb, Rf)
+    names = colnames(Rb)
+    rownames(result) = paste("Security Market Line:", names)
+    return(result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.utils.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: CAPM.utils.R,v 1.12 2009-10-14 14:09:37 peter Exp $
 #
 ###############################################################################
 # $Log: CAPM.utils.R,v $
+# Revision 1.12  2009-10-14 14:09:37  peter
+# - fixed error in CAPM.SML.slope
+#
+# Revision 1.11  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.10  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.9  2009-10-06 03:00:52  peter
+# - added label to results
+#
+# Revision 1.8  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.7  2009-09-30 02:22:59  peter
+# - added multi-column support
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #
@@ -72,7 +115,7 @@ function (Rb, rf = 0)
 # - changed checkData to use zoo instead of vector
 #
 # Revision 1.3  2007/08/14 20:53:27  peter
-# - changed rf to mean(rf) in CAPM.CML
+# - changed Rf to mean(Rf) in CAPM.CML
 #
 # Revision 1.2  2007/03/11 16:53:19  brian
 # - add equations and text to documentation

@@ -6,11 +6,11 @@
 A wrapper to create box and whiskers plot with some defaults useful for comparing distributions.
 }
 \usage{
-chart.Boxplot(R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = FALSE, darken = FALSE, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison",...)
+chart.Boxplot(R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab = "Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{horizontal}{ TRUE/FALSE plot horizontal (TRUE) or vertical (FALSE)  }
   \item{names}{ logical. if TRUE, show the names of each series }
   \item{as.Tufte}{ logical. default FALSE. if TRUE use method derived for Tufte for limiting chartjunk }
@@ -21,11 +21,11 @@ chart.Boxplot(R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(
   \item{mean.symbol}{ symbol to use for the mean of the distribution }
   \item{median.symbol}{ symbol to use for the median of the distribution }
   \item{outlier.symbol}{ symbol to use for the outliers of the distribution }
-  \item{show.data}{ logical. default FALSE. if TRUE, show the scatter of all observations }
+  \item{show.data}{ numerical vector of column numbers to display on top of boxplot, default NULL }
   \item{add.mean}{ logical. if TRUE, show a line for the mean of all distributions plotted}
   \item{xlab}{ set the x-axis label, same as in \code{\link{plot}} }
   \item{main}{ set the chart title, same as in \code{\link{plot}} }
-  \item{darken}{ if true, draws the chart elements in "darkgray" rather than "gray".  Makes it easier to print for some printers. }
+  \item{element.color}{ specify the color of chart elements.  Default is "darkgray" }
   \item{\dots}{ any other passthru parameters }
 }
 \value{

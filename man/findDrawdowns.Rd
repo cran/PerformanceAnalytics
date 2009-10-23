@@ -16,16 +16,21 @@ Drawdowns(R)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
 }
-\value{
-  unordered list \cr
+\details{
+Returns an unordered list: \cr
+\itemize{
   \item{return }{depth of drawdown}
   \item{from }{starting period}
   \item{to }{ending period}
   \item{length }{length in periods}
 }
-\references{}
+}
+\references{
+Bacon, C. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. p. 88 \cr
+
+}
 \author{
 Peter Carl
 
@@ -42,9 +47,8 @@ Peter Carl
 }
 \examples{
 data(edhec)
-R=edhec[,"Funds.of.Funds"]
-findDrawdowns(R)
-sortDrawdowns(findDrawdowns(R))
+findDrawdowns(edhec[,"Funds of Funds", drop=FALSE])
+sortDrawdowns(findDrawdowns(edhec[,"Funds of Funds", drop=FALSE]))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

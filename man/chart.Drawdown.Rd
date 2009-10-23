@@ -10,7 +10,7 @@ chart.Drawdown(R, legend.loc = NULL, colorset = (1:12), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{colorset}{ color palette to use, set by default to rational choices }
   \item{legend.loc}{ places a legend into one of nine locations on the chart: bottomright, bottom, bottomleft, left, topleft, top, topright, right, or center. }
   \item{\dots}{ any other passthru parameters }
@@ -18,13 +18,8 @@ chart.Drawdown(R, legend.loc = NULL, colorset = (1:12), ...)
 \details{
 Any time the cumulative returns dips below the maximum cumulative returns, it's a drawdown.  Drawdowns are measured as a percentage of that maximum cumulative return, in effect, measured from peak equity.
 }
-\value{
-  A chart with time on the x-axis and the value peak equity attained on the y-axis.
-}
-\references{ }
+
 \author{ Peter Carl }
-\note{
-}
 \seealso{
 
     \code{\link{plot}} \cr

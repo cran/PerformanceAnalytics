@@ -12,16 +12,16 @@ function(prices, method = c("compound","simple"))
     # FUNCTION:
 
     method = method[1]
-    prices = checkData(prices, method = "zoo")
+    pr = checkData(prices, method = "xts")
 
     if(method=="simple")
-        Returns = prices/lag(prices,-1) - 1
+        Returns = pr/lag(pr,k=1) - 1
 
     if(method=="compound") {
-        Returns = diff(log(prices))
+        Returns = diff(log(pr))
     }
 
-    Returns
+    reclass(Returns,match.to=pr)
 
 }
 
@@ -33,15 +33,29 @@ function(prices, method = c("compound","simple"))
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.calculate.R,v 1.10 2008-06-02 16:05:19 brian Exp $
+# $Id: Return.calculate.R,v 1.14 2009-10-15 18:20:26 peter Exp $
 #
 ###############################################################################
 # $Log: Return.calculate.R,v $
+# Revision 1.14  2009-10-15 18:20:26  peter
+# - fixed reclass reference
+#
+# Revision 1.13  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.12  2009-09-22 02:43:57  peter
+# - function now using cleaned data for 'simple' method
+#
+# Revision 1.11  2009-09-02 12:14:25  brian
+# - convert to xts internally
+# - use positive lag for lag.xts
+# - add reclass to returned series
+#
 # Revision 1.10  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

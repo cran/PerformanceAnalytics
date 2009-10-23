@@ -1,9 +1,9 @@
 `chart.RollingPerformance` <-
-function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN = "Return.annualized", na.pad = TRUE, type = "l", pch = NULL, lty = 1, bg = NULL, cex.axis=0.8, cex.legend = 0.8, cex.labels = 0.7, lwd = 1, xlim = NULL, ylim = NULL, log = "", main = paste(width,"-Month Rolling Performance", sep=""), sub = NULL, xlab = NULL, ylab = NULL, ann = par("ann"), axes = TRUE, frame.plot = axes, panel.first = NULL, panel.last = NULL, asp = NA, ylog = FALSE, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", darken = FALSE , date.format = "%m/%y", ...)
+function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN = "Return.annualized", na.pad = TRUE, type = "l", pch = NULL, lty = 1, bg = NULL, cex.axis=0.8, cex.legend = 0.8, cex.labels = 0.7, lwd = 2, xlim = NULL, ylim = NULL, log = "", main=NULL, sub = NULL, xlab = "Date", ylab = NULL, ann = par("ann"), axes = TRUE, frame.plot = axes, panel.first = NULL, panel.last = NULL, asp = NA, ylog = FALSE, event.lines = NULL, event.labels = NULL, period.areas = NULL, event.color = "darkgray", period.color = "lightgray", element.color = "darkgray", major.ticks='auto', minor.ticks=TRUE, grid.color="lightgray", grid.lty="dotted", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
-    # A wrapper to create a chart of rolling performance metrics in a line chart
+    # A wrapper to create a chart of rolling peRformance metrics in a line chart
 
     # Inputs:
     # R: a matrix, data frame, or timeSeries of returns
@@ -16,19 +16,20 @@ function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN
     # FUNCTION:
 
     # Transform input data to a matrix
-    x = checkData(R, method = "zoo")
+    x = checkData(R)
 
     # Get dimensions and labels
     columns = ncol(x)
     columnnames = colnames(x)
 
     # Calculate
-
+#     Return.calc = xts:::rollapply.xts(x, width = width, FUN = function(x, FUNCT=FUNCT, ... = ...) { if(class(na.action(na.omit(x)))=="omit") return(NA) else {FUN <- match.fun(FUNCT); FUN}}, FUNCT=FUNCT, ...=..., na.pad = na.pad, align = "right")
+#     print(Return.calc)
     for(column in 1:columns) {
         # the drop=FALSE flag is essential for when the zoo object only has one column
-        column.Return.calc = rollapply(na.omit(x[,column,drop=FALSE]), width = width, FUN = FUN, ..., na.pad = na.pad, align = "right")
+        column.Return.calc = xts:::rollapply.xts(na.omit(x[,column,drop=FALSE]), width = width, FUN = FUN, ..., na.pad = na.pad, align = "right")
         if(column == 1)
-            Return.calc = column.Return.calc
+            Return.calc = xts(column.Return.calc)
         else
             Return.calc = merge(Return.calc,column.Return.calc)
     }
@@ -36,22 +37,62 @@ function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN
     ylim = c(min(0,min(Return.calc, na.rm=TRUE)),max(Return.calc, na.rm=TRUE))
     colnames(Return.calc) = columnnames
 
-    chart.TimeSeries(Return.calc, xaxis = xaxis, colorset = colorset, legend.loc = legend.loc, type = type, pch = pch, lty = lty, bg = bg, cex.axis=cex.axis, cex.legend = cex.legend, cex.labels = cex.labels, lwd = lwd, xlim = xlim, ylim = ylim, main = main, sub = sub, xlab = xlab, ylab = ylab, ann = ann, panel.first = panel.first, panel.last = panel.last, asp = asp, ylog = ylog, event.lines = event.lines, event.labels = event.labels, period.areas = period.areas, event.color = event.color, period.color = period.color, darken = darken, date.format = date.format )
+    if(is.null(main)){
+
+        freq = periodicity(R)
+
+        switch(freq$scale,
+            minute = {freq.lab = "minute"},
+            hourly = {freq.lab = "hour"},
+            daily = {freq.lab = "day"},
+            weekly = {freq.lab = "week"},
+            monthly = {freq.lab = "month"},
+            quarterly = {freq.lab = "quarter"},
+            yearly = {freq.lab = "year"}
+        )
+
+        main = paste(columnnames[1], " Rolling ",width,"-",freq.lab," Performance",sep="")
+    }
+
+    chart.TimeSeries(Return.calc, xaxis = xaxis, colorset = colorset, legend.loc = legend.loc, type = type, pch = pch, lty = lty, bg = bg, cex.axis=cex.axis, cex.legend = cex.legend, cex.labels = cex.labels, lwd = lwd, xlim = xlim, ylim = ylim, main = main, sub = sub, xlab = xlab, ylab = ylab, ann = ann, panel.first = panel.first, panel.last = panel.last, asp = asp, ylog = ylog, event.lines = event.lines, event.labels = event.labels, period.areas = period.areas, event.color = event.color, period.color = period.color, element.color = element.color, major.ticks=major.ticks, minor.ticks=minor.ticks, grid.color=grid.color, grid.lty=grid.lty  )
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingPerformance.R,v 1.10 2008-06-23 02:41:35 peter Exp $
+# $Id: chart.RollingPerformance.R,v 1.17 2009-10-15 21:41:13 brian Exp $
 #
 ###############################################################################
 # $Log: chart.RollingPerformance.R,v $
+# Revision 1.17  2009-10-15 21:41:13  brian
+# - updates to add automatic periodicity to chart labels, and support different frequency data
+#
+# Revision 1.16  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.15  2009-10-08 19:47:02  peter
+# - added the new xts rollapply function
+#
+# Revision 1.14  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.13  2009-10-02 19:04:48  peter
+# - uses apply.rolling rather than rollapply
+#
+# Revision 1.12  2009-09-17 03:02:38  peter
+# - added new attributes
+#
+# Revision 1.11  2009-03-20 03:22:53  peter
+# - added xts
+#
 # Revision 1.10  2008-06-23 02:41:35  peter
 # - added ylimit to include zero
 #

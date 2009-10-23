@@ -2,8 +2,7 @@
 function(R, distribution="norm", ylab=NULL,
         xlab=paste(distribution, "Quantiles"), main=NULL, las=par("las"),
         envelope=FALSE, labels=FALSE, col=c(1,4), lwd=2, pch=1, cex=1,
-        line=c("quartiles", "robust", "none"), elementcolor = "lightgray", ...)
-#function (R, colorset = c("#00008F", "#005AFF", "#23FFDC", "#ECFF13", "#FF4A00", "#800000"), symbolset = 1, xlab = NULL, ylab = NULL, main = NULL, darken = FALSE, distribution = "normal", line = TRUE, elementcolor = "lightgray", ...)
+        line=c("quartiles", "robust", "none"), element.color = "darkgray", cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -19,6 +18,7 @@ function(R, distribution="norm", ylab=NULL,
 
     x = checkData(R, method = "vector", na.rm = TRUE)
 #     n = length(x)
+    op <- par(no.readonly=TRUE)
 
     if(is.null(main)){ 
         if(!is.null(colnames(R)[1])) 
@@ -39,7 +39,7 @@ function(R, distribution="norm", ylab=NULL,
     P <- ppoints(n)
     z <- q.function(P, ...)
     plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, col=col[1], pch=pch,
-        cex=cex, axes=FALSE)
+        cex=cex, cex.main = cex.main, cex.lab = cex.lab, axes=FALSE, ...)
     if (line=="quartiles"){
         Q.x<-quantile(ord.x, c(.25,.75))
         Q.z<-q.function(c(.25,.75), ...)
@@ -118,25 +118,36 @@ function(R, distribution="norm", ylab=NULL,
 # 
 #     if(line) abline(int, slope, col = colorset[2], lwd = 2)
 
-    axis(1, cex.axis = 0.8, col = elementcolor)
-    axis(2, cex.axis = 0.8, col = elementcolor)
+    axis(1, cex.axis = cex.axis, col = element.color)
+    axis(2, cex.axis = cex.axis, col = element.color)
 
-    box(col=elementcolor)
+    box(col=element.color)
+    par(op)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.QQPlot.R,v 1.8 2008-06-25 03:33:13 peter Exp $
+# $Id: chart.QQPlot.R,v 1.11 2009-10-23 02:54:59 peter Exp $
 #
 ###############################################################################
 # $Log: chart.QQPlot.R,v $
+# Revision 1.11  2009-10-23 02:54:59  peter
+# - added par reset
+#
+# Revision 1.10  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.9  2009-04-07 22:22:03  peter
+# - added element.color parameter
+# - passes cex.* for main, axis labels, and axis titles
+#
 # Revision 1.8  2008-06-25 03:33:13  peter
 # - changed package test to load MASS quietly
 #

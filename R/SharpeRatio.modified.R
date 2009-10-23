@@ -1,11 +1,11 @@
 `SharpeRatio.modified` <-
-function (Ra, rf = 0, p=0.95, scale=1)
+function (R, Rf = 0, p = 0.95, FUNCT=c("VaR","ES"), ...)
 { # @author Brian G. Peterson
 
     # DESCRIPTION:
     # The Sharpe ratio is simply the return per unit of risk (represented by
     # variability).  The higher the Sharpe ratio, the better the combined
-    # performance of "risk" and return.
+    # peRformance of "risk" and return.
 
     # The Sharpe Ratio is a risk-adjusted measure of return that uses
     # standard deviation to represent risk.
@@ -17,7 +17,7 @@ function (Ra, rf = 0, p=0.95, scale=1)
     # R: in this case, the function anticipates having a return stream as input,
     #    rather than prices.
     #
-    # rf: the risk free rate MUST be in the same periodicity as the data going in.
+    # Rf: the risk free rate MUST be in the same periodicity as the data going in.
     #
     # p: probability at which to calculate the modified VaR (defaults to 95%)
 
@@ -25,36 +25,66 @@ function (Ra, rf = 0, p=0.95, scale=1)
     # This function returns a modified Sharpe ratio for the same periodicity of the
     # data being input (e.g., monthly data -> monthly SR)
 
+    # @todo: loop over FUNCT and type
+    # @todo: annualize using multiperiod VaR and ES calcs
+
     # FUNCTION:
 
-    Ra = checkData(Ra, method = "zoo")
-    if(!is.null(dim(rf)))
-        rf = checkData(rf, method = "zoo")
-    Re = Return.excess(Ra, rf)
-    return( mean(Re)/VaR.CornishFisher(Ra, p) )
+    R = checkData(R)
+    if(!is.null(dim(Rf)))
+        Rf = checkData(Rf)
 
-}
+    FUNCT=FUNCT[1] # use the first method passed in
 
-`modSharpe` <-
-function (Ra, rf = 0, p=0.95, scale=1)
-{ # @author Brian G. Peterson
+    srm <-function (R, Rf, p, FUNCT, ...)
+    {
+        xR = Return.excess(R, Rf)
+        FUNCT <- match.fun(FUNCT)
+        SRM = mean(xR, na.rm=TRUE)/FUNCT(R, p, invert=FALSE, ...)
+        SRM
+    }
 
-    # wrapper for SharpeRatio.modified
-    return(SharpeRatio.modified(Ra, rf, p, scale ))
+    result = apply(R, 2, srm, Rf=Rf, p=p, FUNCT=FUNCT, ...)
+    dim(result) = c(1,NCOL(R))
+    colnames(result) = colnames(R)
+    rownames(result) = paste("Modified Sharpe: ", FUNCT, " (p=", round(p*100,1),"%)", sep="")
+    return (result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.modified.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: SharpeRatio.modified.R,v 1.14 2009-10-15 15:45:22 peter Exp $
 #
 ###############################################################################
 # $Log: SharpeRatio.modified.R,v $
+# Revision 1.14  2009-10-15 15:45:22  peter
+# - fixed function parameter confusion with apply
+#
+# Revision 1.11  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.10  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.9  2009-10-06 02:57:18  peter
+# - added label to results
+#
+# Revision 1.8  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.7  2009-10-01 02:41:35  peter
+# - added multi-column support
+# - substituted VaR wrapper and added dots to pass parameters
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

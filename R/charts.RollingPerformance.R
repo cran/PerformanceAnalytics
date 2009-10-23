@@ -1,5 +1,5 @@
 `charts.RollingPerformance` <-
-function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, legend.loc=NULL, ...)
+function (R, width = 12, Rf = 0, main = NULL, trim = TRUE, event.labels = NULL, legend.loc=NULL, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -10,7 +10,7 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
     # R: a matrix, data frame, or timeSeries, usually a set of monthly returns.
     #   The first column is assumed to be the returns of interest, the next
     #   columns are assumed to be relevant benchmarks for comparison.
-    # rf: this is the risk free rate.  Remember to set this to the same
+    # Rf: this is the risk free rate.  Remember to set this to the same
     #   periodicity as the data being passed in.
     #
 
@@ -18,13 +18,26 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
     # A stack of three related timeseries line charts
 
     # FUNCTION:
-    x = checkData(R, method = "matrix")
+    x = checkData(R)
     colnames = colnames(x)
     ncols = ncol(x)
 
-    if(is.null(main))
-        main = paste(colnames[1]," Rolling ",width,"-Month Performance",sep="")
+    if(is.null(main)){
+      freq = periodicity(R)
 
+      switch(freq$scale,
+          minute = {freq.lab = "minute"},
+          hourly = {freq.lab = "hour"},
+          daily = {freq.lab = "day"},
+          weekly = {freq.lab = "week"},
+          monthly = {freq.lab = "month"},
+          quarterly = {freq.lab = "quarter"},
+          yearly = {freq.lab = "year"}
+      )
+
+      main = paste("Rolling",width,freq.lab, "Performance", sep=" ")
+    }
+    
     op <- par(no.readonly=TRUE)
 
     # First, we lay out the graphic as a three row, one column format
@@ -47,7 +60,7 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
 
     # The third row is the annualized SR
     par(mar=c(5,4,0,2))
-    chart.RollingPerformance(R, width = width, main = "", ylab = "Annualized Sharpe Ratio", rf = rf, FUN = "SharpeRatio.annualized", event.labels= NULL, ...)
+    chart.RollingPerformance(R, width = width, main = "", ylab = "Annualized Sharpe Ratio", Rf = Rf, FUN = "SharpeRatio.annualized", event.labels= NULL, ...)
 
     par(op)
 }
@@ -55,15 +68,35 @@ function (R, width = 12, rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingPerformance.R,v 1.7 2008-06-02 16:05:19 brian Exp $
+# $Id: charts.RollingPerformance.R,v 1.13 2009-10-15 21:41:13 brian Exp $
 #
 ###############################################################################
 # $Log: charts.RollingPerformance.R,v $
+# Revision 1.13  2009-10-15 21:41:13  brian
+# - updates to add automatic periodicity to chart labels, and support different frequency data
+#
+# Revision 1.12  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.11  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.10  2009-10-02 18:57:47  peter
+# - changed parameter Rf to Rf
+#
+# Revision 1.9  2009-03-20 03:22:53  peter
+# - added xts
+#
+# Revision 1.8  2008-10-14 14:37:29  brian
+# - convert from matrix or data.frame to zoo in checkData call
+#
 # Revision 1.7  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

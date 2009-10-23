@@ -1,18 +1,19 @@
 \name{chart.VaRSensitivity}
 \alias{chart.VaRSensitivity}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ show the sensitivity of Value-at-Risk estimates }
+\title{ show the sensitivity of Value-at-Risk or Expected Shortfall estimates }
 \description{
-Creates a chart of Value-at-Risk estimates by confidence interval for multiple methods.
+Creates a chart of Value-at-Risk and/or Expected Shortfall estimates by confidence interval for multiple methods.
 }
 \usage{
-chart.VaRSensitivity(R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR"), clean = c("none", "boudt"), elementcolor = "darkgray", reference.grid = TRUE, xlab = "Confidence Level", ylab = "Value at Risk", type = "l", lty = c(1, 2, 4), lwd = 1, colorset = (1:12), pch = (1:12), legend.loc = "bottomleft", cex.legend = 0.8, main = NULL, ...)
+chart.VaRSensitivity(R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","GaussianES", "ModifiedES", "HistoricalES"), clean = c("none", "boudt", "geltner"), elementcolor = "darkgray", reference.grid = TRUE, xlab = "Confidence Level", ylab = "Value at Risk", type = "l", lty = c(1, 2, 4), lwd = 1, colorset = (1:12), pch = (1:12), legend.loc = "bottomleft", cex.legend = 0.8, main = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
-  \item{methods}{ one or more calculation methods indicated "GaussianVaR", "ModifiedVaR", "HistoricalVaR".  See \code{\link{VaR.CornishFisher}} for more detail. }
-  \item{clean} { method for data cleaning through \code{\link{Return.clean}}.  Current options are "none" or "boudt". }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{methods}{ one or more calculation methods indicated "GaussianVaR", "ModifiedVaR", "HistoricalVaR", "GaussianES", "ModifiedES", "HistoricalES".  See \code{\link{VaR}} or \code{\link{ES}} for more detail. }
+  \item{clean}{ method for data cleaning through \code{\link{Return.clean}}.  Current options are "none" or "boudt" or 
+"geltner". }
   \item{elementcolor}{ the color used to draw chart elements. The default is "darkgray" }
   \item{reference.grid}{ if true, draws a grid aligned with the points on the x and y axes }
   \item{ylab}{ set the y-axis label, same as in \code{\link{plot}} }
@@ -34,9 +35,7 @@ chart.VaRSensitivity(R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR
 and Decomposition of Downside Risk for Portfolios with Non-Normal Returns. Journal of
 Risk, forthcoming. }
 \author{ Peter Carl }
-\note{ 
-}
-\seealso{ \code{\link{VaR.CornishFisher}} }
+\seealso{ \code{\link{VaR}} \cr \code{\link{ES}} }
 \examples{
 data(managers)
 chart.VaRSensitivity(managers[,1,drop=FALSE], methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), colorset=bluefocus, lwd=2)

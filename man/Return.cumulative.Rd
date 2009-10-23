@@ -10,12 +10,10 @@ Return.cumulative(R, geometric = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{R}{ a vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{geometric}{ generate geometric (TRUE) or simple (FALSE) returns, default TRUE }
 }
-\value{
-cumulative simple or geometric return
-}
+
 \details{
 product of all the individual period returns
 
@@ -30,10 +28,10 @@ Bacon, Carl. \emph{Practical Portfolio Performance Measurement and Attribution}.
    \code{\link{Return.annualized}}
 }
 \examples{
-data(edhec)
-head(edhec[,13,drop=FALSE])
-Return.cumulative(edhec[,13])
-Return.cumulative(edhec[,13], geometric = FALSE)
+data(managers)
+Return.cumulative(managers[,1,drop=FALSE])
+Return.cumulative(managers[,1:8])
+Return.cumulative(managers[,1:8],geometric=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

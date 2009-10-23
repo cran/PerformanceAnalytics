@@ -1,43 +1,60 @@
 `KellyRatio` <-
-function (Ra, rf = 0, method = "half")
+function (R, Rf = 0, method = "half")
 { # @author Brian G. Peterson
 
     # DESCRIPTION:
     # The Kelly Criterion was identified by Bell Labs scientist
-    #
     # can be basically stated as
-    #
     # bet size is the ratio of edge over odds
-    #
     # mathematically, you are maximizing log-utility
     #
     # Kelly criterion says: f should equal the expected excess return of the strategy divided by the expected variance of the excess return, or
-    #
     # f = (m-r)/s2
 
     # FUNCTION:
+    R = checkData(R)
+    if(!is.null(dim(Rf)))
+        Rf = checkData(Rf)
 
-    Ra = checkDataVector(Ra)
-    leverage =  mean(Ra - rf)/std(Ra)^2
-
-    if (method == "half") {
-        leverage = leverage/2
+    kr <- function (R, Rf, method)
+    {
+        xR = Return.excess(R, Rf)
+        KR =  mean(xR, na.rm=TRUE)/sd(R, na.rm=TRUE)^2
+        if (method == "half") {
+            KR = KR/2
+        }
+        return(KR)
     }
-    return(leverage)
+
+    result = apply(R, 2, kr, Rf = Rf, method = method)
+    dim(result) = c(1,NCOL(R))
+    colnames(result) = colnames(R)
+    rownames(result) = "Kelly Ratio"
+    return (result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: KellyRatio.R,v 1.4 2008-06-02 16:05:19 brian Exp $
+# $Id: KellyRatio.R,v 1.8 2009-10-10 12:40:08 brian Exp $
 #
 ###############################################################################
 # $Log: KellyRatio.R,v $
+# Revision 1.8  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.7  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.5  2009-10-01 01:45:47  peter
+# - added multi-column support
+#
 # Revision 1.4  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #

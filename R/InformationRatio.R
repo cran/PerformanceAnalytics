@@ -1,37 +1,82 @@
 `InformationRatio` <-
-function (Ra, Rb, scale = 12)
+function (Ra, Rb, scale = NA)
 { # @author Peter Carl
 
     # DESCRIPTION
     # InformationRatio = ActivePremium/TrackingError
 
-    # Inputs:
-    # Outputs:
-
     # FUNCTION
-    assetReturns.vec = checkDataVector(Ra)
-    benchmarkReturns.vec = checkDataVector(Rb)
+    Ra = checkData(Ra)
+    Rb = checkData(Rb)
 
-    ActivePremium = ActivePremium(assetReturns.vec,benchmarkReturns.vec, scale = scale)
-    TrackingError = TrackingError(assetReturns.vec,benchmarkReturns.vec, scale = scale)
+    Ra.ncols = NCOL(Ra) 
+    Rb.ncols = NCOL(Rb)
 
-    InformationRatio = ActivePremium/TrackingError
+    pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
-    InformationRatio
+    if(is.na(scale)) {
+        freq = periodicity(Ra)
+        switch(freq$scale,
+            minute = {stop("Data periodicity too high")},
+            hourly = {stop("Data periodicity too high")},
+            daily = {scale = 252},
+            weekly = {scale = 52},
+            monthly = {scale = 12},
+            quarterly = {scale = 4},
+            yearly = {scale = 1}
+        )
+    }
+
+    ir <-function (Ra, Rb, scale)
+    {
+        ap = ActivePremium(Ra, Rb, scale = scale)
+        te = TrackingError(Ra, Rb, scale = scale)
+        IR = ap/te
+        return(IR)
+    }
+
+    result = apply(pairs, 1, FUN = function(n, Ra, Rb, scale) ir(Ra[,n[1]], Rb[,n[2]], scale), Ra = Ra, Rb = Rb, scale = scale)
+
+    if(length(result) ==1)
+        return(result)
+    else {
+        result = matrix(result, ncol=Ra.ncols, nrow=Rb.ncols, byrow=TRUE)
+        rownames(result) = paste("Information Ratio:", colnames(Rb))
+        colnames(result) = colnames(Ra)
+        return(result)
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: InformationRatio.R,v 1.6 2008-06-02 16:05:19 brian Exp $
+# $Id: InformationRatio.R,v 1.12 2009-10-13 14:29:04 peter Exp $
 #
 ###############################################################################
 # $Log: InformationRatio.R,v $
+# Revision 1.12  2009-10-13 14:29:04  peter
+# - fixed ordering of results
+#
+# Revision 1.11  2009-10-10 12:40:08  brian
+# - update copyright to 2004-2009
+#
+# Revision 1.10  2009-10-06 15:14:44  peter
+# - fixed rownames
+# - fixed scale = 12 replacement errors
+#
+# Revision 1.8  2009-10-03 18:23:55  brian
+# - multiple Code-Doc mismatches cleaned up for R CMD check
+# - further rationalized use of R,Ra,Rf
+# - rationalized use of period/scale
+#
+# Revision 1.7  2009-09-30 14:01:47  peter
+# - added multi-column support
+#
 # Revision 1.6  2008-06-02 16:05:19  brian
 # - update copyright to 2004-2008
 #
