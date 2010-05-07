@@ -181,18 +181,15 @@ function (R, auto.grid=TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = FALSE, ty
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.TimeSeries.R,v 1.26 2009-10-10 12:40:08 brian Exp $
+# $Id: chart.TimeSeries.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: chart.TimeSeries.R,v $
-# Revision 1.26  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.25  2009-08-31 22:30:41  brian
 # - update timestamp formatting for more compact format if start and end of series are in same year
 #

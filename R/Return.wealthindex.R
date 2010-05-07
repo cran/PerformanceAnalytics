@@ -1,4 +1,4 @@
-`Return.index` <-
+`Return.wealthindex` <-
 function (R, wealth.index = TRUE, ...)
 { # @author Peter Carl
 
@@ -49,7 +49,7 @@ function (R, wealth.index = TRUE, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.index.R 1503 2010-01-02 11:48:32Z braverock $
+# $Id: Return.wealthindex.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
 # $Log: not supported by cvs2svn $

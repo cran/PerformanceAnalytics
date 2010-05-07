@@ -11,13 +11,13 @@
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: MultivariateMoments.R,v 1.6 2009-10-10 12:40:08 brian Exp $
+# $Id: MultivariateMoments.R 1503 2010-01-02 11:48:32Z braverock $
 ###############################################################################
 
 
-M3.MM = function(R){
+M3.MM = function(R,...){
    cAssets = ncol(R); T = nrow(R);
-   mu = apply(R,2,'mean');
+   if(!hasArg(mu)) mu = apply(R,2,'mean') else mu=match.call(expand.dots=TRUE)$mu
    M3 = matrix(rep(0,cAssets^3),nrow=cAssets,ncol=cAssets^2)
    for(t in c(1:T))
    {
@@ -27,9 +27,9 @@ M3.MM = function(R){
    return( 1/T*M3 );
 }
 
-M4.MM = function(R){
+M4.MM = function(R,...){
    cAssets = ncol(R); T = nrow(R);
-   mu = apply(R,2,'mean');
+   if(!hasArg(mu))   mu = apply(R,2,'mean') else mu=match.call(expand.dots=TRUE)$mu
    M4 = matrix(rep(0,cAssets^4),nrow=cAssets,ncol=cAssets^3);
    for(t in c(1:T))
    {
@@ -141,18 +141,15 @@ SR.mES.MM = function(w, mu, sigma, M3 , M4 , p){
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson and Kris Boudt
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson and Kris Boudt
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: MultivariateMoments.R,v 1.6 2009-10-10 12:40:08 brian Exp $
+# $Id: MultivariateMoments.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: MultivariateMoments.R,v $
-# Revision 1.6  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.5  2009-10-03 18:23:55  brian
 # - multiple Code-Doc mismatches cleaned up for R CMD check
 # - further rationalized use of R,Ra,Rf

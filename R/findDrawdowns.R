@@ -1,5 +1,5 @@
 `findDrawdowns` <-
-function (R)
+function (R, geometric = TRUE, ...)
 { # @author Peter Carl
 
     # modified with permission from function by Sankalp Upadhyay
@@ -12,11 +12,12 @@ function (R)
 
     # FUNCTION:
 
-    x = checkData(R, method="matrix") # matrix?
+    x = checkData(R[,1,drop=FALSE], method="matrix") # matrix?
 
-    Return.cumulative = cumprod(1+na.omit(x)) 
-    maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]
-    drawdowns = Return.cumulative/maxCumulativeReturn - 1
+#     Return.cumulative = cumprod(1+na.omit(x)) 
+#     maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]
+#     drawdowns = Return.cumulative/maxCumulativeReturn - 1
+    drawdowns = Drawdowns(x, geometric = geometric)
     # if you want to see the drawdown series, plot(drawdown,type="l")
 
     draw = c()
@@ -68,18 +69,15 @@ function (R)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: findDrawdowns.R,v 1.9 2009-10-10 12:40:08 brian Exp $
+# $Id: findDrawdowns.R 1512 2010-01-05 04:50:17Z peter_carl $
 #
 ###############################################################################
-# $Log: findDrawdowns.R,v $
-# Revision 1.9  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.8  2009-04-07 22:32:03  peter
 # - changed checkData to a matrix
 #

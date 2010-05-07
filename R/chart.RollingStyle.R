@@ -56,13 +56,10 @@ function (R.fund, R.style, method = c("constrained","unconstrained","normalized"
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingStyle.R,v 1.5 2009-10-16 16:15:58 peter Exp $
+# $Id: chart.RollingStyle.R 1408 2009-11-09 13:57:00Z braverock $
 #
 ###############################################################################
-# $Log: chart.RollingStyle.R,v $
-# Revision 1.5  2009-10-16 16:15:58  peter
-# - use rollapply.xts instead of rollapply
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.4  2009-10-15 21:50:19  brian
 # - updates to add automatic periodicity to chart labels, and support different frequency data
 #

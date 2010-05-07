@@ -72,18 +72,15 @@ charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, le
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingRegression.R,v 1.21 2009-10-22 03:33:53 peter Exp $
+# $Id: charts.RollingRegression.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: charts.RollingRegression.R,v $
-# Revision 1.21  2009-10-22 03:33:53  peter
-# - fixed title
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.20  2009-10-15 21:41:13  brian
 # - updates to add automatic periodicity to chart labels, and support different frequency data
 #

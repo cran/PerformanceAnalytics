@@ -22,6 +22,7 @@ export(
     CAPM.CML.slope,
     CAPM.RiskPremium,
     CAPM.SML.slope,
+    CDD,
     checkData,
     clean.boudt,
     CoKurtosis,
@@ -65,6 +66,7 @@ export(
     SmoothingIndex,
     sortDrawdowns,
     SortinoRatio,
+    StdDev,
     StdDev.annualized,
     SterlingRatio,
     style.fit,
@@ -102,7 +104,9 @@ export(
     chart.ACF,
     chart.ACFplus,
     chart.Bar,
+    charts.Bar,
     chart.BarVaR,
+    charts.BarVaR,
     chart.Boxplot,
     chart.CaptureRatios,
     chart.Correlation,
@@ -120,6 +124,7 @@ export(
     chart.RollingMean,
     chart.RollingPerformance,
     chart.RollingRegression,
+    chart.RollingQuantileRegression,
     chart.RollingStyle,
     chart.Scatter,
     chart.SnailTrail,
@@ -384,7 +389,6 @@ S3method(textplot, matrix)
 # SR.StdDev.MM
 # statsTable
 # std
-# StdDev
 # StdDev.annualized
 # StdDev.MM
 # textplot.character

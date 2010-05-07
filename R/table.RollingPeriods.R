@@ -127,20 +127,15 @@ Rb=checkData(Rb)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.RollingPeriods.R,v 1.9 2009-10-02 19:11:00 peter Exp $
+# $Id: table.RollingPeriods.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: table.RollingPeriods.R,v $
-# Revision 1.9  2009-10-02 19:11:00  peter
-# - added relative value table function
-# - removed window, using xts:::last
-# - revised periodicity labeling for changes in xts:::periodicity
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.8  2009-04-18 02:56:53  peter
 # - argument cleanup and codoc issues
 #

@@ -52,10 +52,7 @@ function (R, dates, prior=12, post=12, main = NULL, xlab=NULL, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Events.R,v 1.1 2009-05-15 01:40:31 peter Exp $
+# $Id: chart.Events.R 1408 2009-11-09 13:57:00Z braverock $
 #
 ###############################################################################
-# $Log: chart.Events.R,v $
-# Revision 1.1  2009-05-15 01:40:31  peter
-# - first draft of code
-#
+# $Log: not supported by cvs2svn $

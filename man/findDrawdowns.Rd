@@ -11,12 +11,14 @@ Often used with \code{\link{sortDrawdowns}} to get the largest drawdowns.
 \code{Drawdowns} will calculate the drawdown levels as percentages, for use in \code{\link{chart.Drawdown}}.
 }
 \usage{
-findDrawdowns(R)
-Drawdowns(R)
+findDrawdowns(R, geometric = TRUE, ...)
+Drawdowns(R, geometric = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
+  \item{geometric}{ generate geometric (TRUE) or simple (FALSE) returns, default TRUE }
+  \item{\dots}{ any other passthru parameters }
 }
 \details{
 Returns an unordered list: \cr

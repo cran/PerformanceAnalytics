@@ -59,19 +59,15 @@ function (R, scale = NA, geometric = TRUE )
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.annualized.R,v 1.13 2009-10-06 15:14:44 peter Exp $
+# $Id: Return.annualized.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: Return.annualized.R,v $
-# Revision 1.13  2009-10-06 15:14:44  peter
-# - fixed rownames
-# - fixed scale = 12 replacement errors
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.12  2009-10-06 02:58:00  peter
 # - added label to results
 #

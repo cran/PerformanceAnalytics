@@ -21,30 +21,29 @@ na.skip <- function (x, FUN=NULL, ...) # maybe add a trim capability?
     # An xts time series that has the same index and NA's as the data 
     # passed in, after applying FUN
 
-
-  tx <- xts(,order.by=index(x))
-  nx <- na.omit(x)
-  fx <- FUN(nx,...=...)
-  if (is.vector(fx)) fx <- xts(fx, order.by=index(nx))
-  result<-merge(tx,fx)
-  return(result)
+    nx <- na.omit(x)
+    fx <- FUN(nx, ... = ...)
+    if (is.vector(fx)) {
+        result <- .xts(fx, .index(x), .indexCLASS = indexClass(x))
+    }
+    else {
+        result <- merge(fx, .xts(, .index(x)))
+    }
+    return(result)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: na.skip.R,v 1.2 2009-10-10 12:40:08 brian Exp $
+# $Id: na.skip.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: na.skip.R,v $
-# Revision 1.2  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.1  2009-08-31 20:51:27  brian
 # - add new function na.skip to deal with non-contiguous NA's in data, may eventually go to xts
 # - fix components of charts.PerformanceSummary to use na.skip

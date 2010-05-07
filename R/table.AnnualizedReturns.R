@@ -56,18 +56,15 @@ function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.AnnualizedReturns.R,v 1.13 2009-10-23 14:03:03 peter Exp $
+# $Id: table.AnnualizedReturns.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: table.AnnualizedReturns.R,v $
-# Revision 1.13  2009-10-23 14:03:03  peter
-# - added scale
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.12  2009-10-10 12:40:08  brian
 # - update copyright to 2004-2009
 #

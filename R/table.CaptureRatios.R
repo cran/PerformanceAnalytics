@@ -39,18 +39,15 @@ function (Ra, Rb, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CaptureRatios.R,v 1.5 2009-10-10 12:40:08 brian Exp $
+# $Id: table.CaptureRatios.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: table.CaptureRatios.R,v $
-# Revision 1.5  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.4  2009-10-06 18:31:25  peter
 # - updated method tags
 #

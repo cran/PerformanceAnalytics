@@ -27,7 +27,7 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
     y = checkData(y, method = "vector")
 
     # pass in: cex.axis = cex.axis, cex.main = cex.main, cex.lab = cex.lab
-    plot(x~y, main = main, pch = symbolset, col=colorset, ...)
+    plot(y~x, main = main, pch = symbolset, col=colorset, ...)
 
     if(reference.grid) {
         grid(col = element.color)
@@ -45,18 +45,15 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Scatter.R,v 1.10 2009-10-10 12:40:08 brian Exp $
+# $Id: chart.Scatter.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: chart.Scatter.R,v $
-# Revision 1.10  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.9  2009-06-02 03:17:28  peter
 # - cleaned out old comments
 #

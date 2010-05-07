@@ -8,7 +8,7 @@ function (Rb, Rf = 0 )
     #the Capital Market Line slope is a wrapper for the Sharpe Ratio on the benchmark asset
     #
     # Rb = Return vector of the benchmark or market portfolio
-    result = SharpeRatio(Rb,Rf)
+    result = SharpeRatio(Rb,Rf,FUN="StdDev")
     names = colnames(Rb)
     rownames(result) = paste("Capital Market Line Slope:", names)
     return(result) 
@@ -75,18 +75,15 @@ function (Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.utils.R,v 1.12 2009-10-14 14:09:37 peter Exp $
+# $Id: CAPM.utils.R 1504 2010-01-03 16:48:31Z braverock $
 #
 ###############################################################################
-# $Log: CAPM.utils.R,v $
-# Revision 1.12  2009-10-14 14:09:37  peter
-# - fixed error in CAPM.SML.slope
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.11  2009-10-10 12:40:08  brian
 # - update copyright to 2004-2009
 #

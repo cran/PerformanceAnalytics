@@ -1,5 +1,5 @@
 `chart.CumReturns` <-
-function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin = c("first","axis"), ...)
+function (R, wealth.index = FALSE, geometric = TRUE, legend.loc = NULL, colorset = (1:12), begin = c("first","axis"), ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -43,8 +43,10 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
             start.row = start.row + 1
         }
         x = x[start.row:length.column.one,]
-
-        reference.index = na.skip(x[,1],FUN=function(x) {cumprod(1+na.omit(x))})
+        if(geometric)
+            reference.index = na.skip(x[,1],FUN=function(x) {cumprod(1+x)})
+        else
+            reference.index = na.skip(x[,1],FUN=function(x) {cumsum(x)})
     }
     for(column in 1:columns) {
         if(begin == "axis")
@@ -56,20 +58,19 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
                 start.row = start.row + 1
             }
             start.index=ifelse(start.row > 1,TRUE,FALSE)
-		
         }
-	
-        
         if(start.index){
 	    # we need to "pin" the beginning of the shorter series to the (start date - 1 period) 
-	    # value of the reference index while preserving NA's in the shorter series 
-            z = na.skip(x[,column],FUN = function(x,index=reference.index[(start.row - 1)]) {rbind(index,1+x)})
+	    # value of the reference index while preserving NA's in the shorter series
+            if(geometric)
+                z = na.skip(x[,column],FUN = function(x,index=reference.index[(start.row - 1)]) {rbind(index,1+x)})
+            else
+                z = na.skip(x[,column],FUN = function(x,index=reference.index[(start.row - 1)]) {rbind(1+index,1+x)})
         }
         else{
-            z = na.skip(x[,column],FUN = function(x) {1+x})
-	}
-
-        column.Return.cumulative = na.skip(z,FUN = function(x,one) {cumprod(x) - one},one=one)
+            z = 1+x[,column] ### 
+        }
+        column.Return.cumulative = na.skip(z,FUN = function(x, one, geometric) {if(geometric) cumprod(x)-one else (1-one) + cumsum(x-1)},one=one, geometric=geometric)
         if(column == 1)
             Return.cumulative = column.Return.cumulative
         else
@@ -87,18 +88,15 @@ function (R, wealth.index = FALSE, legend.loc = NULL, colorset = (1:12), begin =
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.CumReturns.R,v 1.14 2009-10-10 12:40:08 brian Exp $
+# $Id: chart.CumReturns.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: chart.CumReturns.R,v $
-# Revision 1.14  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.13  2009-09-01 20:18:41  brian
 # - add comments to describe the handling of na.skip for rbind'ing correct start value to shorter series
 #

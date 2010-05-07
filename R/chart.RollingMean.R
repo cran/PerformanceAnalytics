@@ -56,18 +56,15 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingMean.R,v 1.8 2009-10-15 21:41:13 brian Exp $
+# $Id: chart.RollingMean.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: chart.RollingMean.R,v $
-# Revision 1.8  2009-10-15 21:41:13  brian
-# - updates to add automatic periodicity to chart labels, and support different frequency data
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.7  2009-10-10 12:40:08  brian
 # - update copyright to 2004-2009
 #

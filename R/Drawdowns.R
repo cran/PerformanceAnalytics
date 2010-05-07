@@ -1,5 +1,5 @@
 `Drawdowns` <-
-function (R)
+function (R, geometric = TRUE, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -13,14 +13,17 @@ function (R)
     columns = ncol(x)
     columnnames = colnames(x)
 
-    colDrawdown <- function(x) {
-        Return.cumulative = cumprod(1+x) 
+    colDrawdown <- function(x, geometric) {
+        if(geometric)
+            Return.cumulative = cumprod(1+x)
+        else
+            Return.cumulative = 1+cumsum(x)
         maxCumulativeReturn = cummax(c(1,Return.cumulative))[-1]
         column.drawdown = Return.cumulative/maxCumulativeReturn - 1
     }
 
     for(column in 1:columns) {
-	column.drawdown <- na.skip(x[,column],FUN=colDrawdown)
+	column.drawdown <- na.skip(x[,column],FUN=colDrawdown, geometric = geometric)
 
         if(column == 1)
             drawdown = column.drawdown
@@ -36,18 +39,15 @@ function (R)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Drawdowns.R,v 1.6 2009-10-10 12:40:08 brian Exp $
+# $Id: Drawdowns.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: Drawdowns.R,v $
-# Revision 1.6  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.5  2009-09-22 02:56:13  peter
 # - added reclass
 #

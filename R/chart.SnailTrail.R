@@ -155,20 +155,15 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.SnailTrail.R,v 1.10 2009-10-03 18:23:55 brian Exp $
+# $Id: chart.SnailTrail.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: chart.SnailTrail.R,v $
-# Revision 1.10  2009-10-03 18:23:55  brian
-# - multiple Code-Doc mismatches cleaned up for R CMD check
-# - further rationalized use of R,Ra,Rf
-# - rationalized use of period/scale
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.9  2009-10-02 18:46:13  peter
 # - modified to use apply.rolling to replace rollapply
 #

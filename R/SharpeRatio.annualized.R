@@ -51,18 +51,15 @@ function (R, Rf = 0, scale = NA, geometric=TRUE)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.annualized.R,v 1.14 2009-10-22 13:36:16 brian Exp $
+# $Id: SharpeRatio.annualized.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
-# $Log: SharpeRatio.annualized.R,v $
-# Revision 1.14  2009-10-22 13:36:16  brian
-# - add 'geometric' passthrough at the request of Philipp Lincoln on R-SIG-Finance
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.13  2009-10-06 15:14:44  peter
 # - fixed rownames
 # - fixed scale = 12 replacement errors

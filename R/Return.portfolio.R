@@ -7,18 +7,27 @@ Return.rebalancing <- function (R, weights, ...)
     weights=checkData(weights,method="xts")
     R=checkData(R,method="xts")
 
+    if(as.Date(first(index(R))) > (as.Date(index(weights[1,]))+1)) {
+        warning(paste('data series starts on',as.Date(first(index(R))),', which is after the first rebalancing period',as.Date(first(index(weights)))+1)) 
+    }
+    if(as.Date(last(index(R))) < (as.Date(index(weights[1,]))+1)){
+        stop(paste('last date in series',as.Date(last(index(R))),'occurs before beginning of first rebalancing period',as.Date(first(index(weights)))+1))
+    }
     # loop:
     for (row in 1:nrow(weights)){
-        from =as.Date(index(weights[row,]))
+        from =as.Date(index(weights[row,]))+1
         if (row == nrow(weights)){
-           to = as.Date(index(last(R)))
+           to = as.Date(index(last(R))) # this is correct
         } else {
-           to = as.Date(index(weights[(row+1),]))-1
+           to = as.Date(index(weights[(row+1),]))
         }
         if(row==1){
             startingwealth=1
         }
-        resultreturns=Return.portfolio(R[paste(from,to,sep="/"),],weights=weights[row,], ...=...)
+        tmpR<-R[paste(from,to,sep="/"),]
+        if (nrow(tmpR)>=1){
+            resultreturns=Return.portfolio(tmpR,weights=weights[row,], ...=...)
+        }
         if(row==1){
             result = resultreturns
         } else {
@@ -32,7 +41,7 @@ Return.rebalancing <- function (R, weights, ...)
 
 # ------------------------------------------------------------------------------
 # Return.portfolio
-Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contribution=FALSE,method=c("compound","simple"), ...)
+Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contribution=FALSE,geometric=TRUE, ...)
 {   # @author Brian G. Peterson
 
     # Function to calculate weighted portfolio returns
@@ -55,9 +64,16 @@ Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contributio
 
     # Setup:
     R=checkData(R,method="xts")
-
+    if(!nrow(R)>=1){
+        warning("no data passed for R(eturns)")
+        return(NULL)
+    }
     # take only the first method
-    method = method[1]
+    if(hasArg(method) & !is.null(list(...)$method)) 
+        method = list(...)$method[1]
+    else if(!isTRUE(geometric)) 
+        method='simple' 
+    else method=FALSE
 
     if (is.null(weights)){
         # set up an equal weighted portfolio
@@ -68,7 +84,7 @@ Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contributio
         weights=checkData(weights,method="matrix") # do this to make sure we have columns, and not just a vector
     }
     if (nrow(weights)>1){
-        if ((nrow(weights)==ncol(R)) & (ncol(weights)==1)) {
+        if ((nrow(weights)==ncol(R) |nrow(weights)==ncol(R[,names(weights)])  ) & (ncol(weights)==1)) {
           weights = t(weights) #this was a vector that got transformed
         } else {
           stop("Use Return.rebalancing for multiple weighting periods.  This function is for portfolios with a single set of weights.")
@@ -79,35 +95,47 @@ Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contributio
     #Function:
 
 
-    # construct the wealth index of unweighted assets
-    wealthindex.assets=cumprod(1+R[,colnames(weights)])
+    # construct the wealth index
+    if(method=="simple") {
+      # weights=as.vector(weights)
+      weightedreturns = R[,colnames(weights)] * as.vector(weights) # simple weighted returns
+      returns = R[,colnames(weights)] %*% as.vector(weights) # simple compound returns
+      if(wealth.index) {
+        wealthindex = as.matrix(cumsum(returns),ncol=1) # simple wealth index
+      } else {
+        result = returns
+      }
+    } else {
+      #things are a little more complicated for the geometric case
 
-    wealthindex.weighted = matrix(nrow=nrow(R),ncol=ncol(R[,colnames(weights)]))
-    colnames(wealthindex.weighted)=colnames(wealthindex.assets)
-    rownames(wealthindex.weighted)=as.character(index(wealthindex.assets))
-    # weight the results
-    for (col in colnames(weights)){
-        wealthindex.weighted[,col]=weights[,col]*wealthindex.assets[,col]
+      # first construct an unweighted wealth index of the assets
+      wealthindex.assets=cumprod(1+R[,colnames(weights)])
+
+      wealthindex.weighted = matrix(nrow=nrow(R),ncol=ncol(R[,colnames(weights)]))
+      colnames(wealthindex.weighted)=colnames(wealthindex.assets)
+      rownames(wealthindex.weighted)=as.character(index(wealthindex.assets))
+      # weight the results
+      for (col in colnames(weights)){
+          wealthindex.weighted[,col]=weights[,col]*wealthindex.assets[,col]
+      }
+      wealthindex=apply(wealthindex.weighted,1,sum)
+
+      # weighted cumulative returns
+      weightedcumcont=t(apply (wealthindex.assets,1, function(x,weights){ as.vector((x-1)* weights)},weights=weights))
+      weightedreturns=diff(rbind(0,weightedcumcont)) # compound returns
+      colnames(weightedreturns)=colnames(wealthindex.assets)
+      if (!wealth.index){
+        result=as.matrix(apply(weightedreturns,1,sum),ncol=1)
+      } else {
+        wealthindex=matrix(cumprod(1 + as.matrix(apply(weightedreturns,1, sum), ncol = 1)),ncol=1)
+      }
     }
-    wealthindex=apply(wealthindex.weighted,1,sum)
 
-    # weighted cumulative returns
-    weightedcumcont=t(apply (wealthindex.assets,1, function(x,weights){ as.vector((x-1)* weights)},weights=weights))
-    weightedreturns=diff(rbind(0,weightedcumcont)) # compound returns
-    colnames(weightedreturns)=colnames(wealthindex.assets)
-    #browser()
-    wealthindex=matrix(cumprod(1 + as.matrix(apply(weightedreturns,1, sum), ncol = 1)),ncol=1)
-    wealthindex=reclass(wealthindex,match.to=R)
-
-    if(method=="simple"){
-       weightedreturns=Return.calculate(wealthindex, method="simple")
-       weightedreturns[1,]=wealthindex[1,]-1 # I think this is still correct to get the first period return
-    }
 
     if (!wealth.index){
-        result=as.matrix(apply(weightedreturns,1,sum),ncol=1)
         colnames(result)="portfolio.returns"
     } else {
+        wealthindex=reclass(wealthindex,match.to=R)
         result=wealthindex
         colnames(result)="portfolio.wealthindex"
     }
@@ -131,19 +159,15 @@ pfolioReturn <- function (x, weights=NULL, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.portfolio.R,v 1.10 2009-10-22 12:47:12 brian Exp $
+# $Id: Return.portfolio.R 1635 2010-03-14 18:49:50Z braverock $
 #
 ###############################################################################
-# $Log: Return.portfolio.R,v $
-# Revision 1.10  2009-10-22 12:47:12  brian
-# - fix passing in unnamed vector, single column matrix, and other edge cases for weights
-# - restore proper working of simple returns
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.9  2009-10-15 18:17:15  brian
 # - add dots back in as parameter
 # - add stop error for multirow weights in Return.portfolio, perhaps automatically call appropriate fn in the future

@@ -1,5 +1,5 @@
 `charts.PerformanceSummary` <-
-function (R, Rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", ...)
+function (R, Rf = 0, main = NULL, geometric=TRUE, methods = "none", width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", p=0.95,...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -66,7 +66,7 @@ function (R, Rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 
     # The first row is the cumulative returns line plot
     par(mar=c(1,4,4,2))
-    chart.CumReturns(x, main = main, xaxis = FALSE, ylab = NULL, legend.loc = legend.loc, event.labels = event.labels, ylog = ylog, wealth.index = wealth.index, begin = begin, ...)
+    chart.CumReturns(x, main = main, xaxis = FALSE, legend.loc = legend.loc, event.labels = event.labels, ylog = ylog, wealth.index = wealth.index, begin = begin, geometric = geometric, ylab="Cumulative Return",...)
 
     # The second row is the monthly returns bar plot
     par(mar=c(1,4,0,2))
@@ -84,15 +84,13 @@ function (R, Rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 	yearly = {date.label = "Annual"}
     )
 
-    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = paste(date.label,"Return"), methods = methods, event.labels = NULL, ylog=FALSE, gap = gap, ...)
+    chart.BarVaR(x, main = "", xaxis = FALSE, width = width, ylab = paste(date.label,"Return"), methods = methods, event.labels = NULL, ylog=FALSE, gap = gap, p=p, ...)
 
     # The third row is the underwater plot
     par(mar=c(5,4,0,2))
-    chart.Drawdown(x, main = "", ylab = "From Peak", event.labels = NULL, ylog=FALSE, ...)
+    chart.Drawdown(x, geometric = geometric, main = "", ylab = "Drawdown", event.labels = NULL, ylog=FALSE, ...)
 
     # If we wanted to add a fourth row with the table of monthly returns
-    # Unfortunately, the textplot function doesn't provide a lot of control over
-    # formatting.  Also, it requires the gplots package.
     #par(mar=c(0,0,0,0))
     #textplot(table.Returns(as.matrix(R)),cex=.7,cmar=1.5,rmar=0.5,halign="center", valign="center")
     par(op)
@@ -101,18 +99,15 @@ function (R, Rf = 0, main = NULL, methods = c("ModifiedVaR","HistoricalVaR"), wi
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.PerformanceSummary.R,v 1.22 2009-10-10 12:40:08 brian Exp $
+# $Id: charts.PerformanceSummary.R 1637 2010-03-16 02:32:08Z peter_carl $
 #
 ###############################################################################
-# $Log: charts.PerformanceSummary.R,v $
-# Revision 1.22  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.21  2009-10-03 18:23:55  brian
 # - multiple Code-Doc mismatches cleaned up for R CMD check
 # - further rationalized use of R,Ra,Rf

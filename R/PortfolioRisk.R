@@ -5,7 +5,7 @@
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: PortfolioRisk.R,v 1.14 2009-10-10 12:40:08 brian Exp $
+# $Id: PortfolioRisk.R 1607 2010-03-05 13:06:37Z braverock $
 ###############################################################################
 
 
@@ -232,8 +232,12 @@ Portsd =  function(w,sigma)
    dersd = (0.5*as.vector(dpm2))/sqrt(pm2);
    contrib = dersd*as.vector(w)
    # check
-   if( abs( sum(contrib)-sqrt(pm2))>0.01*sqrt(pm2)) { print("error") } else {
-   return(list(  sqrt(pm2) , contrib , contrib/sqrt(pm2) )) }
+   if( abs( sum(contrib)-sqrt(pm2))>0.01*sqrt(pm2)) { print("error") 
+   } else {
+       ret<-list(  sqrt(pm2) , contrib , contrib/sqrt(pm2) )
+       names(ret) <- c("StdDev","contribution","pct_contrib_StdDev")
+   }
+   return(ret)
 }
 
 VaR.Gaussian.portfolio =  function(p,w,mu,sigma)
@@ -548,6 +552,22 @@ ES.historical.portfolio = function(R,p,w)
     return(ret)
 }
 
+VaR.historical = function(R,p)
+{
+    alpha = .setalphaprob(p)
+    for(column in 1:ncol(R)) {
+        r = na.omit(as.vector(R[,column]))
+        rq = -quantile(r,probs=alpha)
+        if (column==1) {
+            result=data.frame(rq=rq)
+        } else {
+            rq=data.frame(rq=rq)
+            result=cbind(result,rq)
+        }
+    }
+    colnames(result)<-colnames(R)
+    return(result)
+}    
 VaR.historical.portfolio = function(R,p,w)
 {
     alpha = .setalphaprob(p)
@@ -564,18 +584,15 @@ VaR.historical.portfolio = function(R,p,w)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson and Kris Boudt
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson and Kris Boudt
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: PortfolioRisk.R,v 1.14 2009-10-10 12:40:08 brian Exp $
+# $Id: PortfolioRisk.R 1607 2010-03-05 13:06:37Z braverock $
 #
 ###############################################################################
-# $Log: PortfolioRisk.R,v $
-# Revision 1.14  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.13  2009-10-03 18:23:55  brian
 # - multiple Code-Doc mismatches cleaned up for R CMD check
 # - further rationalized use of R,Ra,Rf

@@ -38,13 +38,10 @@ function (R.fund, R.style, method = c("constrained", "unconstrained", "normalize
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Style.R,v 1.8 2009-10-20 02:44:16 peter Exp $
+# $Id: chart.Style.R 1408 2009-11-09 13:57:00Z braverock $
 #
 ###############################################################################
-# $Log: chart.Style.R,v $
-# Revision 1.8  2009-10-20 02:44:16  peter
-# - fixed chart.Stacked bar to accomodate different kinds of data
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.7  2008-07-11 03:24:52  peter
 # - fixed error with alignment of results
 #

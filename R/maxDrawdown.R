@@ -1,48 +1,82 @@
-`maxDrawdown` <-
-function (R)
+maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 { # @author Peter Carl
+	
+	# DESCRIPTION:
+	# To find the maximum drawdown in a return series, we need to first
+	# calculate the cumulative returns and the maximum cumulative return to
+	# that point.  Any time the cumulative returns dips below the maximum
+	# cumulative returns, it's a drawdown.  Drawdowns are measured as a
+	# percentage of that maximum cumulative return, in effect, measured from
+	# peak equity.
+	
+	# FUNCTION:
+	if (is.vector(R) || ncol(R)==1 ) {
+		R = na.omit(R)
+        drawdown = Drawdowns(R, geometric = geometric)
+        result = min(drawdown)
+        if (invert) result<- -result
+		return(result)
+	}
+	else {
+        if(is.null(weights)) {
+            R = checkData(R, method = "matrix")
+    		result = apply(R, 2, maxDrawdown, geometric=geometric, invert=invert, ...=...)
+    		dim(result) = c(1,NCOL(R))
+    		colnames(result) = colnames(R)
+    		rownames(result) = "Worst Drawdown"
+            return(result)
+        } else {
+            # we have weights, do the portfolio calc
+            portret<-Return.portfolio(R,weights=weights,geometric=geometric)
+            result<-maxDrawdown(portret, geometric=geometric, invert=invert, ...=...)
+            if (invert) result<- -result
+            return(result)
+        }
+	}
+}
 
-    # DESCRIPTION:
-    # To find the maximum drawdown in a return series, we need to first
-    # calculate the cumulative returns and the maximum cumulative return to
-    # that point.  Any time the cumulative returns dips below the maximum
-    # cumulative returns, it's a drawdown.  Drawdowns are measured as a
-    # percentage of that maximum cumulative return, in effect, measured from
-    # peak equity.
-
-    # FUNCTION:
-    if (is.vector(R)) {
+CDD <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, p=.95 ,  ...)
+{
+    p=.setalphaprob(p)
+    if (is.vector(R) || ncol(R)==1) {
         R = na.omit(R)
-        Return.cumulative = cumprod(1 + R) 
-        maxCumulativeReturn = cummax(c(1, Return.cumulative))[-1]
-        drawdown = Return.cumulative/maxCumulativeReturn - 1
-        return(min(drawdown))
-    }
+        drawdowns =     sortDrawdowns(findDrawdowns(R))
+        result = quantile(drawdowns$return,p)
+        if(invert) result<- -result
+        return(result)
+    }    
     else {
         R = checkData(R, method = "matrix")
-        result = apply(R, 2, maxDrawdown)
-        dim(result) = c(1,NCOL(R))
-        colnames(result) = colnames(R)
-        rownames(result) = "Worst Drawdown"
+        if(is.null(weights)) {
+            result=matrix(nrow=1,ncol=ncol(R))
+            for(i in 1:ncol(R) ) {
+                result[i]<-CDD(R[,i,drop=FALSE],p=p, geometric=geometric, invert=invert, ...=...)
+            }
+            dim(result) = c(1,NCOL(R))
+            colnames(result) = colnames(R)
+            rownames(result) = paste("Conditional Drawdown ",p*100,"%",sep='')
+        } else {
+            # we have weights, do the portfolio calc
+            portret<-Return.portfolio(R,weights=weights,geometric=geometric)
+            result<-CDD(portret,p=p, geometric=geometric, invert=invert, ...=...)
+        }
         return(result)
     }
+    # TODO add modified Cornish Fisher and copula methods to this to account for small number of observations likely on real data
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: maxDrawdown.R,v 1.8 2009-10-10 12:40:08 brian Exp $
+# $Id: maxDrawdown.R 1652 2010-04-06 18:20:41Z braverock $
 #
 ###############################################################################
-# $Log: maxDrawdown.R,v $
-# Revision 1.8  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.7  2009-10-06 15:14:44  peter
 # - fixed rownames
 # - fixed scale = 12 replacement errors

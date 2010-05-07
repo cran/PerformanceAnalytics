@@ -105,18 +105,15 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Boxplot.R,v 1.9 2009-10-23 02:52:30 peter Exp $
+# $Id: chart.Boxplot.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: chart.Boxplot.R,v $
-# Revision 1.9  2009-10-23 02:52:30  peter
-# - added back par reset
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.8  2009-10-22 13:45:23  brian
 # - change show.data to be a numerical vector of observations to overplot
 #

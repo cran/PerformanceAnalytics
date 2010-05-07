@@ -45,18 +45,15 @@ function (Ra, Rb, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.relative.R,v 1.4 2009-10-11 12:55:58 brian Exp $
+# $Id: Return.relative.R 1503 2010-01-02 11:48:32Z braverock $
 #
 ###############################################################################
-# $Log: Return.relative.R,v $
-# Revision 1.4  2009-10-11 12:55:58  brian
-# - trim
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.3  2009-10-10 12:40:08  brian
 # - update copyright to 2004-2009
 #

@@ -79,11 +79,8 @@ function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingQuantileRegression.R,v 1.1 2009-10-15 21:41:13 brian Exp $
+# $Id: chart.RollingQuantileRegression.R 1408 2009-11-09 13:57:00Z braverock $
 #
 ###############################################################################
-# $Log: chart.RollingQuantileRegression.R,v $
-# Revision 1.1  2009-10-15 21:41:13  brian
-# - updates to add automatic periodicity to chart labels, and support different frequency data
-#
+# $Log: not supported by cvs2svn $
 ###############################################################################

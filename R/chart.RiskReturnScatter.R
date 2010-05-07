@@ -34,7 +34,7 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
     x = checkData(R, method = "zoo")
     if(!is.null(dim(Rf)))
         Rf = checkData(Rf, method = "zoo")
-    op <- par(no.readonly=TRUE)
+#     op <- par(no.readonly=TRUE)
     columns = ncol(x)
     rows = nrow(x)
     columnnames = colnames(x)
@@ -131,21 +131,21 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
         boxplot(risk, horizontal = TRUE, axes = FALSE, ylim=xlim)
         title(xlab = xlab, line = 1, cex.lab = cex.lab)
 
-        #par(original.layout)
+        par(original.layout)
     }
-    par(op)
+#     par(op)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RiskReturnScatter.R,v 1.17 2009-10-23 02:58:15 peter Exp $
+# $Id: chart.RiskReturnScatter.R 1510 2010-01-04 03:41:19Z peter_carl $
 #
 ###############################################################################
 # $Log: chart.RiskReturnScatter.R,v $

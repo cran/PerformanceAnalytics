@@ -1,5 +1,5 @@
 `chart.BarVaR` <-
-function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), clean = c("none", "boudt","geltner"),  ylim = NA, lwd = 2, colorset = 1:12, p=.95, lty = c(1,2,4,5,6), all = FALSE, show.clean = FALSE, show.horizontal = FALSE, show.symmetric = FALSE, legend.loc="bottomleft", ypad=0, legend.cex = 0.8, ...)
+function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), p=0.95, clean = c("none", "boudt","geltner"), all = FALSE, ..., show.clean = FALSE, show.horizontal = FALSE, show.symmetric = FALSE, legend.loc="bottomleft", ylim = NA, lwd = 2, colorset = 1:12, lty = c(1,2,4,5,6), ypad=0, legend.cex = 0.8 )
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -78,12 +78,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                     StdDev = {
                         symmetric = c(symmetric, TRUE)
                         if(width > 0){
-                            column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "sd")
+                            column.risk = -1 * apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "sd")
                             if(column==1)
                                 legend.txt = c(legend.txt, paste("Rolling ",width,"-",freq.lab," Std Dev",sep=""))
                         }
                         else {
-                            column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "sd")
+                            column.risk = -1 * apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "sd")
                             if(column==1)
                                 legend.txt = c(legend.txt, "Std Dev")
                         }
@@ -93,12 +93,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Gaussian VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Gaussian VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     },
                     ModifiedVaR = {
@@ -106,12 +106,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Modified VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Modified VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     },
                     HistoricalVaR = {
@@ -119,12 +119,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "VaR", p = p, method="historical") #hVaR = quantile(x,probs=.01)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "VaR", p = p, method="historical")
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Historical VaR (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Historical VaR (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     },
                     GaussianES = {
@@ -132,12 +132,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Gaussian ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="gaussian", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Gaussian ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Gaussian ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     },
                     ModifiedES = {
@@ -145,12 +145,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab, " Modified ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="modified", clean=clean)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Modified ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Modified ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     },
                     HistoricalES = {
@@ -158,12 +158,12 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
                         if(width > 0) {
                             column.risk = apply.rolling(na.omit(x.orig[,column,drop=FALSE]), width = width, FUN = "ES", p = p, method="historical") #hES = quantile(x,probs=.01)
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Rolling ",width,"-", freq.lab," Historical ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                         else {
                             column.risk = apply.fromstart(na.omit(x.orig[,column,drop=FALSE]), gap = gap, FUN = "ES", p = p, method="historical")
                             if(column==1)
-                                legend.txt = c(legend.txt, paste("Historical ES (1 ", freq.lab, ", ",p*100,"%)",sep=""))
+                                legend.txt = c(legend.txt, paste("Historical ES (1 ", freq.lab, ", ",base::round(p,4)*100,"%)",sep=""))
                         }
                     }
                 ) # end switch
@@ -197,7 +197,7 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
             lty = rep(lty, risk.columns)
         for(column in (risk.columns):2) {
             if (show.symmetric && symmetric[column-1]){
-                lines(1:rows, risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
+                lines(1:rows, -risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
             }
         }
         for(column in (risk.columns):2) {
@@ -215,18 +215,15 @@ function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVa
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R,v 1.30 2009-10-10 12:40:08 brian Exp $
+# $Id: chart.BarVaR.R 1634 2010-03-14 17:52:45Z peter_carl $
 #
 ###############################################################################
-# $Log: chart.BarVaR.R,v $
-# Revision 1.30  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.29  2009-10-02 18:51:48  peter
 # - changed default p to 0.95
 # - removed negative sign from risk calculation

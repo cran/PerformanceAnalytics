@@ -1,5 +1,5 @@
 `charts.Bar` <-
-function (R,  space = 0, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
+function (R, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -14,23 +14,14 @@ function (R,  space = 0, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
     columns = NCOL(R)
     columnnames = colnames(R)
 
-# Create a page of bar chart panels (using chart.Bar) that are in a single column.
-# Option to add a "total" exposure chart, which shows the positive and negative "gross" exposures in bars
-# and the net exposure in an overlaid line
-# Option to add an "R.squared" panel that shows the R-squared value through time in a line chart
-
-# Establish common ylim across the bar charts
-# Title at the top of the page
-# x-axis in the bottom bar chart and the optional charts? or just in the bottom chart
-# each bar chart title labeled with the factor name, left justified
-# each panel may have a different color from colorset, but default set to the same color across all
     ymax = max(R, na.rm=TRUE)
     ymin = min(R, na.rm=TRUE)
     # mar: a numerical vector of the form c(bottom, left, top, right) which
     # gives the number of lines of margin to be specified on the four sides
     # of the plot. The default is c(5, 4, 4, 2) + 0.1
-    op <- par(oma = c(2,0,4,0), mar=c(0,4,0,4))
+
     layout(matrix(c(1:columns), nc = 1, byrow = TRUE), width=1)
+    op <- par(oma = c(5,0,4,0), mar=c(0,4,0,4))
     xaxis=FALSE
     yaxis=TRUE
     for(i in 1:columns){
@@ -73,7 +64,7 @@ function (R,  space = 0, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.Bar.R,v 1.2 2009-09-17 03:15:37 peter Exp $
+# $Id: charts.Bar.R 1520 2010-01-06 05:01:06Z peter_carl $
 #
 ###############################################################################
 # $Log: charts.Bar.R,v $

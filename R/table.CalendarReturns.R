@@ -54,7 +54,7 @@ function (R, digits = 1, as.perc = TRUE)
     month = format(strptime(as.POSIXct(time(ri)), "%Y-%m-%d"), "%b")
 
     # create an empty target data frame, labeled correctly
-    monthlabels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    monthlabels = strftime(seq.Date(as.Date('2000-01-01'),length=12,by='months'),format='%b')
     rowlabels = (firstyear:lastyear)
 
     # for the column specified, do the following:
@@ -120,18 +120,15 @@ function (R, digits = 1, as.perc = TRUE)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CalendarReturns.R,v 1.8 2009-10-10 12:40:08 brian Exp $
+# $Id: table.CalendarReturns.R 1542 2010-02-09 14:04:21Z braverock $
 #
 ###############################################################################
-# $Log: table.CalendarReturns.R,v $
-# Revision 1.8  2009-10-10 12:40:08  brian
-# - update copyright to 2004-2009
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.7  2009-03-02 03:22:13  peter
 # - fixed date formatting issues with yearmon, other date classes
 #

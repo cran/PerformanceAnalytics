@@ -33,8 +33,9 @@ function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN
         else
             Return.calc = merge(Return.calc,column.Return.calc)
     }
-
-    ylim = c(min(0,min(Return.calc, na.rm=TRUE)),max(Return.calc, na.rm=TRUE))
+    if(is.null(ylim)){
+        ylim = c(min(0,min(Return.calc, na.rm=TRUE)),max(Return.calc, na.rm=TRUE))
+    }    
     colnames(Return.calc) = columnnames
 
     if(is.null(main)){
@@ -61,18 +62,15 @@ function (R, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), FUN
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingPerformance.R,v 1.17 2009-10-15 21:41:13 brian Exp $
+# $Id: chart.RollingPerformance.R 1541 2010-01-20 12:26:09Z braverock $
 #
 ###############################################################################
-# $Log: chart.RollingPerformance.R,v $
-# Revision 1.17  2009-10-15 21:41:13  brian
-# - updates to add automatic periodicity to chart labels, and support different frequency data
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.16  2009-10-10 12:40:08  brian
 # - update copyright to 2004-2009
 #

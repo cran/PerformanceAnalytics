@@ -1,9 +1,9 @@
 ###############################################################################
-# $Id: ES.R,v 1.10 2009-10-17 15:42:48 brian Exp $
+# $Id: ES.R 1610 2010-03-06 16:29:42Z braverock $
 ###############################################################################
 
 ES <-
-function (R , p=0.95, method=c("modified","gaussian","historical", "kernel"), clean=c("none","boudt", "geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL, m3=NULL, m4=NULL, invert=TRUE, operational=TRUE, ...)
+function (R=NULL , p=0.95, ..., method=c("modified","gaussian","historical", "kernel"), clean=c("none","boudt", "geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL, m3=NULL, m4=NULL, invert=TRUE, operational=TRUE)
 { # @author Brian G. Peterson
 
     # Descripion:
@@ -14,63 +14,76 @@ function (R , p=0.95, method=c("modified","gaussian","historical", "kernel"), cl
     #if(exists(modified)({if( modified == TRUE) { method="modified" }}
     #if(method == TRUE or is.null(method) ) { method="modified" }
     method = method[1]
+    clean = clean[1]
     portfolio_method = portfolio_method[1]
-    R <- checkData(R, method="xts", ...)
-
-    # check weights options
     if (is.null(weights) & portfolio_method != "single"){
-        warning("no weights passed in, assuming equal weighted portfolio")
+        message("no weights passed in, assuming equal weighted portfolio")
         weights=t(rep(1/dim(R)[[2]], dim(R)[[2]]))
     }
-    if (!is.null(weights)) {
-        if (portfolio_method == "single") {
-            warning("weights passed as parameter, but portfolio_method set to 'single', assuming 'component'")
-            portfolio_method="component"
-        }
-        if (is.vector(weights)){
-            warning("weights are a vector, will use same weights for entire time series") # remove this warning if you call function recursively
-            if (length (weights)!=ncol(R)) {
-                stop("number of items in weighting vector not equal to number of columns in R")
+    if(!is.null(R)){
+        R <- checkData(R, method="xts", ...)
+        columns=colnames(R)
+        if (!is.null(weights) & portfolio_method != "single") {
+            if ( length(weights) != ncol(R)) {
+                stop("number of items in weights not equal to number of columns in R")
             }
-        } else {
-            weights = checkData(weights, method="matrix", ...)
-            if (ncol(weights) != ncol(R)) {
-                stop("number of columns in weighting timeseries not equal to number of columns in R")
-            }
-            #@todo: check for date overlap with R and weights
         }
-    } # end weight checks
-
-    if(clean[1]!="none"){
-        R = as.matrix(Return.clean(R, method=clean))
+        # weights = checkData(weights, method="matrix", ...) #is this necessary?
+        # TODO check for date overlap with R and weights
+        if(clean!="none" & is.null(mu)){ # the assumption here is that if you've passed in any moments, we'll leave R alone
+            R = as.matrix(Return.clean(R, method=clean))
+        }
+        if(portfolio_method != "single"){
+            # get the moments ready
+            if (is.null(mu)) { mu =  apply(R,2,'mean' ) }
+            if (is.null(sigma)) { sigma = cov(R) }
+            if(method=="modified"){
+                if (is.null(m3)) {m3 = M3.MM(R)}
+                if (is.null(m4)) {m4 = M4.MM(R)}
+            }
+        } 
+    } else { 
+        #R is null, check for moments
+        if(is.null(mu)) stop("Nothing to do! You must pass either R or the moments mu, sigma, etc.")
+        if ( length(weights) != length(mu)) {
+            stop("number of items in weights not equal to number of items in the mean vector")
+        }
     }
     
     switch(portfolio_method,
         single = {
-            columns=colnames(R)
-            switch(method,
-                modified = { if (operational) rES =  operES.CornishFisher(R=R,p=p)
-			     else rES = ES.CornishFisher(R=R,p=p) 
-			   }, # mu=mu, sigma=sigma, skew=skew, exkurt=exkurt))},)
-                gaussian = { rES = ES.Gaussian(R=R,p=p) },
-                historical = { rES = ES.historical(R=R,p=p) }
-            ) # end sigle switch calc
-            
-	    # convert from vector to columns
-            rES=as.matrix(rES)
-            colnames(rES)=columns
-	    
-	    # check for unreasonable results
+            if(is.null(weights)){
+                columns=colnames(R)
+                switch(method,
+                    modified = { if (operational) rES =  operES.CornishFisher(R=R,p=p)
+    			     else rES = ES.CornishFisher(R=R,p=p) 
+    			   }, # mu=mu, sigma=sigma, skew=skew, exkurt=exkurt))},)
+                    gaussian = { rES = ES.Gaussian(R=R,p=p) },
+                    historical = { rES = ES.historical(R=R,p=p) }
+                ) # end single method switch calc
+                
+    	        # convert from vector to columns
+                rES=as.matrix(rES)
+                colnames(rES)=columns
+            } else { # we have weights, so we should use the .MM calc
+                weights=as.vector(weights)
+                switch(method,
+                        modified = { rES=mES.MM(w=weights, mu=mu, sigma=sigma, M3=m3 , M4=m4 , p=p) }, 
+                        gaussian = { rES=GES.MM(w=weights, mu=mu, sigma=sigma, p=p) },
+                        historical = { rES = (ES.historical(R=R,p=p) %*% weights) } # note that this is not tested for weighting the univariate calc by the weights
+                ) # end multivariate method
+            }
+	        # check for unreasonable results
             columns<-ncol(rES)
             for(column in 1:columns) {
                 tmp=rES[,column]
                 if (eval(0 > tmp)) { #eval added previously to get around Sweave bitching
-                    warning(c("ES calculation produces unreliable result (inverse risk) for column: ",column," : ",rES[,column]))
+                    message(c("ES calculation produces unreliable result (inverse risk) for column: ",column," : ",rES[,column]))
                     # set ES to NA, since inverse risk is unreasonable
                     rES[,column] <- NA
                 } else
                 if (eval(1 < tmp)) { #eval added previously to get around Sweave bitching
-                    warning(c("ES calculation produces unreliable result (risk over 100%) for column: ",column," : ",rES[,column]))
+                    message(c("ES calculation produces unreliable result (risk over 100%) for column: ",column," : ",rES[,column]))
                     # set ES to 1, since greater than 100% is unreasonable
                     rES[,column] <- 1
                 }
@@ -87,15 +100,7 @@ function (R , p=0.95, method=c("modified","gaussian","historical", "kernel"), cl
             #}
             # for now, use as.vector
             weights=as.vector(weights)
-	    names(weights)<-colnames(R)
-            if (is.null(mu)) { mu =  apply(R,2,'mean' ) }
-            if (is.null(sigma)) { sigma = cov(R) }
-            # if (is.null(m1)) {m1 = multivariate_mean(weights, mu)}
-            # if (is.null(m2)) {m2 = StdDev.MM(weights, sigma)}
-            if (is.null(m3)) {m3 = M3.MM(R)}
-            if (is.null(m4)) {m4 = M4.MM(R)}
-            # if (is.null(skew)) { skew = skewness.MM(weights,sigma,m3) }
-            # if (is.null(exkurt)) { exkurt = kurtosis.MM(weights,sigma,m4) - 3 }
+	        names(weights)<-colnames(R)
 
             switch(method,
                 modified = { if (operational) return(operES.CornishFisher.portfolio(p,weights,mu,sigma,m3,m4))
@@ -105,7 +110,7 @@ function (R , p=0.95, method=c("modified","gaussian","historical", "kernel"), cl
                 historical = { return(ES.historical.portfolio(R, p,weights)) }
             )
 
-        }, # end component portfolio switch
+        } # end component portfolio switch
     )
 
 } # end ES wrapper function
@@ -113,19 +118,15 @@ function (R , p=0.95, method=c("modified","gaussian","historical", "kernel"), cl
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2009 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
 # This library is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ES.R,v 1.10 2009-10-17 15:42:48 brian Exp $
+# $Id: ES.R 1610 2010-03-06 16:29:42Z braverock $
 #
 ###############################################################################
-# $Log: ES.R,v $
-# Revision 1.10  2009-10-17 15:42:48  brian
-# - add option for clean="geltner" to ES() and to docs
-# - minor updates to docs for clarity and accuracy, thanks Kris
-#
+# $Log: not supported by cvs2svn $
 # Revision 1.9  2009-10-15 21:42:30  brian
 # - updates to pass R CMD check
 #
