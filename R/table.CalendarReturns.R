@@ -1,5 +1,5 @@
-`table.CalendarReturns` <-
-function (R, digits = 1, as.perc = TRUE)
+table.CalendarReturns <-
+function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 {# @author Peter Carl
 
     # DESCRIPTION:
@@ -76,8 +76,11 @@ function (R, digits = 1, as.perc = TRUE)
 
         #    next, calculate the cumulative return for each year
         for (i in 1:length(yearcol[,1])) {
-            yearcol[i,columnnames[column]] = prod(1 + na.omit(as.numeric(target.df[i,])))-1
-            if(yearcol[i,columnnames[column]]== 0) 
+			if(geometric)
+				yearcol[i,columnnames[column]] = prod(1 + na.omit(as.numeric(target.df[i,])))-1
+			else
+				yearcol[i,columnnames[column]] = sum(as.numeric(target.df[i,]), na.rm=TRUE)
+			if(yearcol[i,columnnames[column]]== 0) 
                 yearcol[i,columnnames[column]] = NA
         }
         #Now, append the results to the other data.frame
@@ -110,11 +113,11 @@ function (R, digits = 1, as.perc = TRUE)
 
 }
 
-`table.Returns` <-
-function (R, digits = 1, as.perc = TRUE)
+table.Returns <-
+function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 {
     # deprecated wrapper function
-    table.CalendarReturns(R=R, digits = digits, as.perc = as.perc)
+    table.CalendarReturns(R=R, digits = digits, as.perc = as.perc, geometric = geometric)
 }
 
 ###############################################################################
@@ -122,51 +125,9 @@ function (R, digits = 1, as.perc = TRUE)
 #
 # Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
-# This library is distributed under the terms of the GNU Public License (GPL)
+# This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CalendarReturns.R 1542 2010-02-09 14:04:21Z braverock $
-#
-###############################################################################
-# $Log: not supported by cvs2svn $
-# Revision 1.7  2009-03-02 03:22:13  peter
-# - fixed date formatting issues with yearmon, other date classes
-#
-# Revision 1.6  2008-10-14 14:37:29  brian
-# - convert from matrix or data.frame to zoo in checkData call
-#
-# Revision 1.5  2008-06-02 16:05:19  brian
-# - update copyright to 2004-2008
-#
-# Revision 1.4  2007/09/02 01:51:18  peter
-# - puts NAs where data is missing, rather than zeros
-#
-# Revision 1.3  2007/08/15 20:14:32  brian
-# - add notes on deprecated table.Returns, with wrapper to table.CalendarReturns
-#
-# Revision 1.2  2007/08/14 21:43:29  peter
-# - fixed the name of the function
-#
-# Revision 1.1  2007/08/11 16:57:05  peter
-# - replaces table.Returns.R
-#
-# Revision 1.6  2007/04/02 21:55:35  peter
-# - removed column parameter
-#
-# Revision 1.5  2007/03/22 14:03:25  peter
-# - uses checkData
-#
-# Revision 1.4  2007/02/25 18:23:40  brian
-# - change call to round() to call base::round() to fix conflict with newest fCalendar
-#
-# Revision 1.3  2007/02/22 22:14:46  brian
-# - standardize use of 'digits' as a parameter to round()
-#
-# Revision 1.2  2007/02/07 13:24:49  brian
-# - fix pervasive comment typo
-#
-# Revision 1.1  2007/02/02 19:06:15  brian
-# - Initial Revision of packaged files to version control
-# Bug 890
+# $Id: table.CalendarReturns.R 1738 2010-08-04 00:18:31Z peter_carl $
 #
 ###############################################################################

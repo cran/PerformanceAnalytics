@@ -1,4 +1,4 @@
-`chart.RollingQuantileRegression` <-
+chart.RollingQuantileRegression <-
 function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"), main=NULL, na.pad = TRUE, ...)
 { # @author Peter Carl, Brian Peterson
 
@@ -76,11 +76,9 @@ function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 #
 # Copyright (c) 2004-2008 Peter Carl and Brian G. Peterson
 #
-# This library is distributed under the terms of the GNU Public License (GPL)
+# This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingQuantileRegression.R 1408 2009-11-09 13:57:00Z braverock $
+# $Id: chart.RollingQuantileRegression.R 1730 2010-08-03 19:31:06Z braverock $
 #
-###############################################################################
-# $Log: not supported by cvs2svn $
 ###############################################################################

@@ -3,10 +3,10 @@
 #
 # Copyright (c) 2004-2010 Kris Boudt, Peter Carl and Brian G. Peterson
 #
-# This library is distributed under the terms of the GNU Public License (GPL)
+# This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: zerofill.R 1503 2010-01-02 11:48:32Z braverock $
+# $Id: zerofill.R 1730 2010-08-03 19:31:06Z braverock $
 #
 ###############################################################################
 

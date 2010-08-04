@@ -65,36 +65,70 @@ CDD <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, p=.95 ,  ...)
     # TODO add modified Cornish Fisher and copula methods to this to account for small number of observations likely on real data
 }
 
+DrawdownDeviation <-
+function (R, ...) {
+
+    # Calculates a standard deviation-type statistic using individual drawdowns.
+    # 
+    # DD = sqrt(sum[j=1,2,...,d](D_j^2/n)) where
+    # D_j = jth drawdown over the entire period
+    # d = total number of drawdowns in entire period
+    # n = number of observations
+
+    R = checkData(R)
+
+    dd <- function(R) {
+        R = na.omit(R)
+        n=length(R)
+        Dj=findDrawdowns(as.matrix(R))$return
+        result = sqrt(sum((Dj[Dj<0]^2)/n))
+        return(result)
+    }
+
+    result = apply(R, MARGIN = 2, dd)
+    dim(result) = c(1,NCOL(R))
+    colnames(result) = colnames(R)
+    rownames(result) = "Drawdown Deviation"
+    return (result)
+}
+
+AverageDrawdown <-
+function (R, ...) {
+
+    # Calculates the average of the observed drawdowns.
+    # 
+    # ADD = abs(sum[j=1,2,...,d](D_j/d)) where
+    # D'_j = jth drawdown over entire period
+    # d = total number of drawdowns in the entire period
+
+    R = checkData(R)
+
+    ad <- function(R) {
+        R = na.omit(R)
+        Dj = findDrawdowns(as.matrix(R))$return
+        d = length(Dj[Dj<0])
+        result = abs(sum(Dj[Dj<0]/d))
+        return(result)
+    }
+
+    result = apply(R, MARGIN = 2, ad)
+    dim(result) = c(1,NCOL(R))
+    colnames(result) = colnames(R)
+    rownames(result) = "Average Drawdown"
+    return (result)
+}
+
+
+
+
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
-# This library is distributed under the terms of the GNU Public License (GPL)
+# This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: maxDrawdown.R 1652 2010-04-06 18:20:41Z braverock $
-#
-###############################################################################
-# $Log: not supported by cvs2svn $
-# Revision 1.7  2009-10-06 15:14:44  peter
-# - fixed rownames
-# - fixed scale = 12 replacement errors
-#
-# Revision 1.5  2009-09-24 02:05:53  peter
-# - added multicolumn support
-#
-# Revision 1.4  2008-06-02 16:05:19  brian
-# - update copyright to 2004-2008
-#
-# Revision 1.3  2007/06/05 13:10:10  peter
-# - fixed calculation for negative value in first month
-#
-# Revision 1.2  2007/02/07 13:24:49  brian
-# - fix pervasive comment typo
-#
-# Revision 1.1  2007/02/02 19:06:15  brian
-# - Initial Revision of packaged files to version control
-# Bug 890
+# $Id: maxDrawdown.R 1730 2010-08-03 19:31:06Z braverock $
 #
 ###############################################################################

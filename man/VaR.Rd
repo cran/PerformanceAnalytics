@@ -83,11 +83,12 @@ and may be accessed with \code{method="gaussian"}.
 
 Other forms of parametric mean-VaR estimation utilize a different distribution for the distribution of losses 
  to better account for the possible fat-tailed nature of downside risk.
- The package \code{VaR} contains methods for simulating and estimating lognormal \code{\link[VaR]{VaR.norm}} 
- and generalized Pareto \code{\link[VaR]{VaR.gpd}} distributions to overcome some of the problems with nonparametric 
+ The package \code{VaR}, now orphaned,  contains methods for simulating and estimating lognormal \kbd{VaR.norm} 
+ and generalized Pareto \kbd{VaR.gpd} distributions to overcome some of the problems with nonparametric 
  or parametric mean-VaR calculations on a limited sample size or on potentially fat-tailed distributions. 
-  There is also a \code{\link[VaR]{VaR.backtest}} function to apply simulation methods to create a more robust 
+  There is also a \kbd{VaR.backtest} function to apply simulation methods to create a more robust 
   estimate of the potential distribution of losses. Less commonly a covariance matrix of multiple risk factors may be applied.
+We will attempt to incorporate this orphaned functionality into PerformanceAnalytics in a future release.
 
 The limitations of mean Value-at-Risk are well covered in the literature.
  The limitations of traditional mean-VaR are all related to the use of a symetrical distribution function.  
@@ -157,6 +158,13 @@ We have chosen the more common usage of calling this difference in VaR's in port
 This is incredibly confusing, and hasn't been resolved in the literature at this time.
 Simon Keel and David Ardia (2009) attempt to reconcile some of the definitional issues and address some of the shortcomings of this measure in their working paper titled \dQuote{Generalized Marginal Risk}.
    Hopefully their improved Marginal Risk measures may be included here in the future. 
+   
+In the case of an existing portfolio, with existing weights, we do not feel that Marginal VaR is very useful, and prefer to use Component VaR. 
+In the case where the portfolio manager is trying to evaluate two or more similar instruments for possible inclusion in a portfolio,
+or considering replacing one instrument with a similar instrument, Marginal VaR can be instructive.  In this case, it demonstrates the specific 
+diversification and substitution effect that each of the instruments under consideration has on the portfolio, and can provide additional 
+information to the asset manager by indicating which instrument has less marginal impact on the risk of the portfolio, and the difference in overall portfolio risk from the potential portfolio.
+  
 }
 \references{
 Boudt, Kris, Peterson, Brian, and Christophe Croux. 2008. Estimation and decomposition of downside risk for portfolios with non-normal returns. 2008. The Journal of Risk, vol. 11, 79-103.
@@ -185,7 +193,7 @@ Return to RiskMetrics: Evolution of a Standard
 Zangari, Peter. A VaR Methodology for Portfolios that include Options. 1996. RiskMetrics Monitor, First Quarter, 4-12.
 
 
-%Rockafellar, Terry and Uryasev, Stanislav. Optimization of Conditional VaR. The Journal of Risk, 2000, vol. 2, 21-41.
+Rockafellar, Terry and Uryasev, Stanislav. Optimization of Conditional VaR. The Journal of Risk, 2000, vol. 2, 21-41.
 
 }
 \author{ Brian G. Peterson and Kris Boudt }
@@ -197,9 +205,9 @@ The prototype of the univariate Cornish Fisher VaR function was completed by Pro
 \seealso{
     \code{\link{SharpeRatio.modified}} \cr
     \code{\link{chart.VaRSensitivity}} \cr
-    \code{\link[VaR]{VaR.gpd}} \cr
-    \code{\link[VaR]{VaR.norm}} \cr
-    \code{\link[VaR]{VaR.backtest}} \cr
+%    \code{\link[VaR]{VaR.gpd}} \cr
+%    \code{\link[VaR]{VaR.norm}} \cr
+%    \code{\link[VaR]{VaR.backtest}} \cr
     \code{\link{Return.clean}} \cr
 }
 \examples{

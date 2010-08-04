@@ -1,5 +1,5 @@
 # # Original function from gplots package written by warnes
-# $Id: textplot.R 1408 2009-11-09 13:57:00Z braverock $
+# $Id: textplot.R 1730 2010-08-03 19:31:06Z braverock $
 
 # Example using format.df as a pre-processor
 # > textplot(format.df(t(y), na.blanks=F,cdec=c(3,3,1)), row.valign="center", wrap.rownames=20, wrap.colnames=10, cex=1)
@@ -380,3 +380,17 @@ textplot.character <- function (object,
     par(opar)
     invisible(cex)
 }
+
+###############################################################################
+# R (http://r-project.org/) Econometrics for Performance and Risk Analytics
+#
+# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# 
+# Original textplot function from gplots package written by warnes
+#
+# This R package is distributed under the terms of the GNU Public License (GPL)
+# for full details see the file COPYING
+#
+# $Id: textplot.R 1730 2010-08-03 19:31:06Z braverock $
+#
+###############################################################################

@@ -1,8 +1,8 @@
 Package: PerformanceAnalytics
 Type: Package
 Title: Econometric tools for performance and risk analysis.
-Version: 1.0.2.1
-Date: 2010-04-23
+Version: 1.0.3
+Date: 2010-08-04
 Author: Peter Carl, Brian G. Peterson
 Maintainer: Brian G. Peterson <brian@braverock.com>
 Description: Collection of econometric functions for performance and
@@ -21,6 +21,6 @@ URL: http://r-forge.r-project.org/projects/returnanalytics/
 Copyright: (c) 2004-2010
 Contributors: A special thanks for contributions from Kris Boudt,
         Stefan Albrecht, Khahn Nygyen, Sankalp Upadhyay
-Packaged: 2010-04-23 18:08:41 UTC; bpeterson
+Packaged: 2010-08-04 17:33:30 UTC; brian
 Repository: CRAN
-Date/Publication: 2010-04-25 07:26:02
+Date/Publication: 2010-08-04 21:57:02

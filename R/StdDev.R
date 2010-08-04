@@ -1,5 +1,5 @@
 ###############################################################################
-# $Id: StdDev.R 1653 2010-04-06 18:20:57Z braverock $
+# $Id: StdDev.R 1730 2010-08-03 19:31:06Z braverock $
 ###############################################################################
 
 StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL)
@@ -77,9 +77,9 @@ StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_metho
 #
 # Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
 #
-# This library is distributed under the terms of the GNU Public License (GPL)
+# This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.R 1653 2010-04-06 18:20:57Z braverock $
+# $Id: StdDev.R 1730 2010-08-03 19:31:06Z braverock $
 #
 ###############################################################################
