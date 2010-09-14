@@ -70,11 +70,11 @@ function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), o
             interp = {
 
                 # require("Hmisc")
-                stopifnot("package:Hmisc" %in% search() || require("Hmisc",quietly=TRUE))
+                # stopifnot("package:Hmisc" %in% search() || require("Hmisc",quietly=TRUE))
                 a = min(x)
                 b = max(x)
 
-                xcdf = Ecdf(x, pl=FALSE)
+                xcdf = Hmisc:::Ecdf.default(x, pl=FALSE)
                 f <- approxfun(xcdf$x,xcdf$y,method="linear",ties="ordered")
 
                 if(output == "full") {
@@ -117,6 +117,6 @@ function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), o
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Omega.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: Omega.R 1760 2010-09-14 17:38:42Z braverock $
 #
 ###############################################################################

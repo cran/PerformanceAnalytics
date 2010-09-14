@@ -1,3 +1,23 @@
+2010-09-14  braverock
+
+	* ChangeLog, DESCRIPTION, NEWS: - updates prior to 1.0.3.1 release
+	* R/checkData.R: - patch provided by Jeff Ryan to fix bug
+	  introduced by changes to as.xts functionality
+
+2010-08-27  braverock
+
+	* man/ES.Rd: - fix typos
+
+2010-08-04  peter_carl
+
+	* sandbox/Benford.R: - outlined plot function
+
+2010-08-04  braverock
+
+	* NEWS: -update NEWS prior to CRAN release
+	* DESCRIPTION: -update date prior to CRAN release
+	* man/ES.Rd: - eliminate Xreference to orphaned package VaR
+
 2010-08-04  peter_carl
 
 	* sandbox/Benford.R: - improvements to table.Benford

@@ -67,7 +67,7 @@ checkData <- function (x, method = c("xts", "zoo", "data.frame", "matrix", "vect
                 }
                 else
                     stop("The data cannot be converted into a time series.  If you are trying to pass in names from a data object with one column, you should use the form \'data[rows, columns, drop = FALSE]\'.  Rownames should have standard date formats, such as '1985-03-15'. ")
-            else x = as.xts(x)
+            else x = try.xts(x)
         }
     ) # end switch
 
@@ -108,5 +108,5 @@ function (x, na.rm = TRUE, quiet = TRUE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: checkData.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: checkData.R 1756 2010-09-14 00:32:51Z braverock $
 ###############################################################################
