@@ -37,7 +37,7 @@ function (R, ...) {
 
     rs <- function(R) {
         R = na.omit(R)
-        m = (max(R) - min(R))/sd(R)
+        m = (max(R) - min(R))/sd.xts(R)
         n = length(R)
         result = log(m)/log(n)
         return(result)
@@ -58,11 +58,11 @@ function (R, ...) {
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: HurstIndex.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: HurstIndex.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

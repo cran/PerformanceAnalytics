@@ -1,3 +1,31 @@
+#' Annualized Returns Summary: Statistics and Stylized Facts
+#' 
+#' Table of Annualized Return, Annualized Std Dev, and Annualized Sharpe
+#' 
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' default TRUE
+#' @param scale number of periods in a year (daily scale = 252, monthly scale =
+#' 12, quarterly scale = 4)
+#' @param Rf risk free rate, in same period as your returns
+#' @param digits number of digits to round results to
+#' @author Peter Carl
+#' @seealso \code{\link{Return.annualized}} \cr \code{\link{StdDev.annualized}}
+#' \cr \code{\link{SharpeRatio.annualized}}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' table.AnnualizedReturns(managers[,1:8])
+#' 
+#' require("Hmisc")
+#' result = t(table.AnnualizedReturns(managers[,1:8], Rf=.04/12))
+#' 
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
+#' title(main="Annualized Performance")
+#' 
 table.AnnualizedReturns <-
 function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 {# @author Peter Carl
@@ -56,11 +84,11 @@ function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.AnnualizedReturns.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: table.AnnualizedReturns.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

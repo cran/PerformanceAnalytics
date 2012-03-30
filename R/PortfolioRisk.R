@@ -5,7 +5,7 @@
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: PortfolioRisk.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: PortfolioRisk.R 1883 2012-03-25 00:59:31Z braverock $
 ###############################################################################
 
 
@@ -197,7 +197,7 @@ operES.CornishFisher =  function(R,p,c=2)
 
 portm2 = function(w,sigma)
 {
-   return(w%*%sigma%*%w) #t(w) for first item?
+   return(t(w)%*%sigma%*%w) #t(w) for first item?
 }
 derportm2 = function(w,sigma)
 {
@@ -205,7 +205,7 @@ derportm2 = function(w,sigma)
 }
 portm3 = function(w,M3)
 {
-   return(w%*%M3%*%(w%x%w))  #t(w) for first item?
+   return(t(w)%*%M3%*%(w%x%w))  #t(w) for first item?
 }
 derportm3 = function(w,M3)
 {
@@ -272,7 +272,7 @@ VaR.kernel.portfolio =  function( R, p, w )
    T = dim(R)[1]; N = dim(R)[2];
    portfolioreturn = c();
    for( t in 1:T ){ portfolioreturn = c( portfolioreturn , sum(w*R[t,]) ) }
-   bandwith = 2.575*sd(portfolioreturn)/(T^(1/5)) ;
+   bandwith = 2.575*sd.xts(portfolioreturn)/(T^(1/5)) ;
    CVaR = c();
    VaR = -quantile( portfolioreturn , probs = alpha );
    weights = kernel(x= (-VaR-portfolioreturn) , h=bandwith);
@@ -584,11 +584,11 @@ VaR.historical.portfolio = function(R,p,w)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson and Kris Boudt
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson and Kris Boudt
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: PortfolioRisk.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: PortfolioRisk.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

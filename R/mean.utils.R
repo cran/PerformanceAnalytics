@@ -4,6 +4,33 @@
 #       but the package check complains about mismatch of the
 #       first parameter with R command mean()
 
+
+
+#' calculate attributes relative to the mean of the observation series given,
+#' including geometric, stderr, LCL and UCL
+#' 
+#' \tabular{ll}{ \code{\link{mean.geometric}} \tab geometric mean \cr
+#' \code{\link{mean.stderr}} \tab standard error of the mean (S.E. mean) \cr
+#' \code{\link{mean.LCL}} \tab lower confidence level (LCL) of the mean \cr
+#' \code{\link{mean.UCL}} \tab upper confidence level (UCL) of the mean \cr }
+#' 
+#' 
+#' @aliases mean.utils mean.geometric mean.UCL mean.LCL mean.stderr
+#' @param x a vector, matrix, data frame, or time series to calculate the
+#' modified mean statistic over
+#' @param ci the confidence interval to use
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' @seealso \code{\link[stats]{sd}} \cr \code{\link[base]{mean}}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(edhec)
+#' mean.geometric(edhec[,"Funds of Funds"])
+#' mean.stderr(edhec[,"Funds of Funds"])
+#' mean.UCL(edhec[,"Funds of Funds"])
+#' mean.LCL(edhec[,"Funds of Funds"])
+#' 
 mean.geometric <-
 function (x, ...)
 {# @author Peter Carl
@@ -137,11 +164,11 @@ function (x, ci = 0.95, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: mean.utils.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: mean.utils.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

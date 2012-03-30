@@ -1,8 +1,70 @@
 ###############################################################################
-# $Id: StdDev.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: StdDev.R 1883 2012-03-25 00:59:31Z braverock $
 ###############################################################################
 
-StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL)
+
+
+#' calculates Standard Deviation for univariate and multivariate series, also
+#' calculates component contribution to standard deviation of a portfolio
+#' 
+#' calculates Standard Deviation for univariate and multivariate series, also
+#' calculates component contribution to standard deviation of a portfolio
+#' 
+#' TODO add more details
+#' 
+#' This wrapper function provides fast matrix calculations for univariate,
+#' multivariate, and component contributions to Standard Deviation.
+#' 
+#' It is likely that the only one that requires much description is the
+#' component decomposition.  This provides a weighted decomposition of the
+#' contribution each portfolio element makes to the univariate standard
+#' deviation of the whole portfolio.
+#' 
+#' Formally, this is the partial derivative of each univariate standard
+#' deviation with respect to the weights.
+#' 
+#' As with \code{\link{VaR}}, this contribution is presented in two forms, both
+#' a scalar form that adds up to the univariate standard deviation of the
+#' portfolio, and a percentage contribution, which adds up to 100%.  Note that
+#' as with any contribution calculation, contribution can be negative.  This
+#' indicates that the asset in question is a diversified to the overall
+#' standard deviation of the portfolio, and increasing its weight in relation
+#' to the rest of the portfolio would decrease the overall portfolio standard
+#' deviation.
+#' 
+#' @param R a vector, matrix, data frame, timeSeries or zoo object of asset
+#' returns
+#' @param \dots any other passthru parameters
+#' @param clean method for data cleaning through \code{\link{Return.clean}}.
+#' Current options are "none", "boudt", or "geltner".
+#' @param portfolio_method one of "single","component" defining whether to do
+#' univariate/multivariate or component calc, see Details.
+#' @param weights portfolio weighting vector, default NULL, see Details
+#' @param mu If univariate, mu is the mean of the series. Otherwise mu is the
+#' vector of means of the return series , default NULL, , see Details
+#' @param sigma If univariate, sigma is the variance of the series. Otherwise
+#' sigma is the covariance matrix of the return series , default NULL, see
+#' Details
+#' @author Brian G. Peterson and Kris Boudt
+#' @seealso \code{\link{Return.clean}} \code{sd}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#'     data(edhec)
+#' 
+#'     # first do normal StdDev calc
+#'     StdDev(edhec)
+#'     # or the equivalent
+#'     StdDev(edhec, portfolio_method="single")
+#' 
+#'     # now with outliers squished
+#'     StdDev(edhec, clean="boudt")
+#' 
+#'     # add Component StdDev for the equal weighted portfolio
+#'     StdDev(edhec, clean="boudt", portfolio_method="component")
+#' 
+#' 
+StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL, use="everything", method=c("pearson", "kendall", "spearman"))
 { # @author Brian G. Peterson
     
     # Descripion:
@@ -43,15 +105,11 @@ StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_metho
     switch(portfolio_method,
             single = {
                 if (is.null(weights)) {
-                    tsd<-matrix(nrow=1,ncol=ncol(R))
-                    for(column in 1:ncol(R)) {
-                        tsd[,column]=sd(R[,column], na.rm=TRUE)
-                    } # end column support
-                colnames(tsd)<-colnames(R)    
-                rownames(tsd)<-"StdDev"
+                    tsd=t(sd.xts(R, na.rm=TRUE))
+                    rownames(tsd)<-"StdDev"
                 } else {
                     #do the multivariate calc with weights
-                    if(!hasArg(sigma)|is.null(sigma)) sigma=cov(R)
+                    if(!hasArg(sigma)|is.null(sigma)) sigma=cov(R, use=use, method=method[1])
                     tsd<-StdDev.MM(w=weights,sigma=sigma)
                 }
                 return(tsd)
@@ -64,7 +122,7 @@ StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_metho
                 # for now, use as.vector
                 weights=as.vector(weights)
                 names(weights)<-colnames(R)
-                if (is.null(sigma)) { sigma = cov(R) }
+                if (is.null(sigma)) { sigma = cov(R, use=use, method=method[1]) }
                 
                 return(Portsd(w=weights,sigma))
             } # end component portfolio switch           
@@ -75,11 +133,11 @@ StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_metho
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: StdDev.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

@@ -1,3 +1,39 @@
+#' Find the drawdowns and drawdown levels in a timeseries.
+#' 
+#' \code{findDrawdowns} will find the starting period, the ending period, and
+#' the amount and length of the drawdown.
+#' 
+#' Often used with \code{\link{sortDrawdowns}} to get the largest drawdowns.
+#' 
+#' \code{Drawdowns} will calculate the drawdown levels as percentages, for use
+#' in \code{\link{chart.Drawdown}}.
+#' 
+#' Returns an unordered list: \cr \describe{ \item{return }{depth of drawdown}
+#' \item{from }{starting period} \item{to }{ending period} \item{length
+#' }{length in periods} }
+#' 
+#' @aliases findDrawdowns Drawdowns
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' default TRUE
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' 
+#' \code{findDrawdowns} modified with permission from function by Sankalp
+#' Upadhyay
+#' @seealso \code{\link{sortDrawdowns}} \cr \code{\link{maxDrawdown}} \cr
+#' \code{\link{sortDrawdowns}} \cr \code{\link{table.Drawdowns}} \cr
+#' \code{\link{table.DownsideRisk}} \cr \code{\link{chart.Drawdown}} \cr
+#' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
+#' Attribution}. Wiley. 2004. p. 88 \cr
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(edhec)
+#' findDrawdowns(edhec[,"Funds of Funds", drop=FALSE])
+#' sortDrawdowns(findDrawdowns(edhec[,"Funds of Funds", drop=FALSE]))
+#' 
 findDrawdowns <-
 function (R, geometric = TRUE, ...)
 { # @author Peter Carl
@@ -31,14 +67,14 @@ function (R, geometric = TRUE, ...)
     else
         priorSign = 0
     from = 1
-    sofar = drawdowns[1]
+    sofar = as.numeric(drawdowns[1])
     to = 1
     dmin = 1
 
     for (i in 1:length(drawdowns)) { #2:length()
         thisSign <- ifelse(drawdowns[i] < 0, 0, 1)
         if (thisSign == priorSign) { ###
-            if(drawdowns[i]< sofar) {
+            if(as.numeric(drawdowns[i])< as.numeric(sofar)) {
                 sofar = drawdowns[i]
                 dmin = i
             }
@@ -69,11 +105,11 @@ function (R, geometric = TRUE, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: findDrawdowns.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: findDrawdowns.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

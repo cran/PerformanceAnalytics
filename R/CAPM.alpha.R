@@ -1,3 +1,35 @@
+#' calculate CAPM alpha
+#' 
+#' This is a wrapper for calculating a CAPM alpha.
+#' 
+#' "Alpha" purports to be a measure of a manager's skill by measuring the
+#' portion of the managers returns that are not attributable to "Beta", or the
+#' portion of performance attributable to a benchmark.
+#' 
+#' 
+#' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param Rb return vector of the benchmark asset
+#' @param Rf risk free rate, in same period as your returns
+#' @author Peter Carl
+#' @seealso \code{\link{CAPM.beta}} \code{\link{CAPM.utils}}
+#' @references Sharpe, W.F. Capital Asset Prices: A theory of market
+#' equilibrium under conditions of risk. \emph{Journal of finance}, vol 19,
+#' 1964, 425-442. \cr Ruppert, David. \emph{Statistics and Finance, an
+#' Introduction}. Springer. 2004. \cr
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' # First we load the data
+#'     data(managers)
+#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12) 
+#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf=.035/12)
+#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf=.035/12) 
+#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#' 
+#' 
 CAPM.alpha <- function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
 
@@ -30,7 +62,7 @@ CAPM.alpha <- function (Ra, Rb, Rf = 0)
 
     alpha <-function (xRa, xRb)
     {
-        merged = as.data.frame(na.omit(merge(xRa, xRb)))
+        merged = as.data.frame(na.omit(cbind(xRa, xRb)))
         model.lm = lm(merged[,1] ~ merged[,2], merged)
         alpha = coef(model.lm)[[1]]
         alpha
@@ -51,11 +83,11 @@ CAPM.alpha <- function (Ra, Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.alpha.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: CAPM.alpha.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

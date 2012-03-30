@@ -44,11 +44,11 @@ function (Ra, Rb, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.UpDownRatios.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: table.UpDownRatios.R 1855 2012-01-15 12:57:58Z braverock $
 #
 ###############################################################################

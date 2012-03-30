@@ -1,3 +1,40 @@
+#' calculate an annualized return for comparing instruments with different
+#' length history
+#' 
+#' An average annualized return is convenient for comparing returns.
+#' 
+#' Annualized returns are useful for comparing two assets.  To do so, you must
+#' scale your observations to an annual scale by raising the compound return to
+#' the number of periods in a year, and taking the root to the number of total
+#' observations:
+#' \deqn{prod(1+R_{a})^{\frac{scale}{n}}-1=\sqrt[n]{prod(1+R_{a})^{scale}}-1}{prod(1
+#' + Ra)^(scale/n) - 1}
+#' 
+#' where scale is the number of periods in a year, and n is the total number of
+#' periods for which you have observations.
+#' 
+#' For simple returns (geometric=FALSE), the formula is:
+#' 
+#' \deqn{\overline{R_{a}} \cdot scale}{mean(R)*scale}
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param scale number of periods in a year (daily scale = 252, monthly scale =
+#' 12, quarterly scale = 4)
+#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' default TRUE
+#' @author Peter Carl
+#' @seealso \code{\link{Return.cumulative}},
+#' @references Bacon, Carl. \emph{Practical Portfolio Performance Measurement
+#' and Attribution}. Wiley. 2004. p. 6
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' Return.annualized(managers[,1,drop=FALSE])
+#' Return.annualized(managers[,1:8])
+#' Return.annualized(managers[,1:8],geometric=FALSE)
+#' 
 Return.annualized <-
 function (R, scale = NA, geometric = TRUE )
 { # @author Peter Carl
@@ -59,11 +96,11 @@ function (R, scale = NA, geometric = TRUE )
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.annualized.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: Return.annualized.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

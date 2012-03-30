@@ -1,3 +1,46 @@
+#' calculate metrics on up and down markets for the benchmark asset
+#' 
+#' Calculate metrics on how the asset in R performed in up and down markets,
+#' measured by periods when the benchmark asset was up or down.
+#' 
+#' This is a function designed to calculate several related metrics:
+#' 
+#' Up (Down) Capture Ratio: this is a measure of an investment's compound
+#' return when the benchmark was up (down) divided by the benchmark's compound
+#' return when the benchmark was up (down). The greater (lower) the value, the
+#' better.
+#' 
+#' Up (Down) Number Ratio: similarly, this is a measure of the number of
+#' periods that the investment was up (down) when the benchmark was up (down),
+#' divided by the number of periods that the Benchmark was up (down).
+#' 
+#' Up (Down) Percentage Ratio: this is a measure of the number of periods that
+#' the investment outperformed the benchmark when the benchmark was up (down),
+#' divided by the number of periods that the benchmark was up (down). Unlike
+#' the prior two metrics, in both cases a higher value is better.
+#' 
+#' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param Rb return vector of the benchmark asset
+#' @param method "Capture", "Number", or "Percent" to indicate which measure to
+#' return
+#' @param side "Up" or "Down" market statistics
+#' @author Peter Carl
+#' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
+#' Attribution}. Wiley. 2004. p. 47 \cr
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' UpDownRatios(managers[,1, drop=FALSE], managers[,8, drop=FALSE])
+#' UpDownRatios(managers[,1:6, drop=FALSE], managers[,8, drop=FALSE])
+#' UpDownRatios(managers[,1, drop=FALSE], managers[,8, drop=FALSE], method="Capture")
+#' # Up Capture:
+#' UpDownRatios(managers[,1, drop=FALSE], managers[,8, drop=FALSE], side="Up", method="Capture")
+#' # Down Capture:
+#' UpDownRatios(managers[,1, drop=FALSE], managers[,8, drop=FALSE], side="Down", method="Capture")
+#' 
+#' 
 UpDownRatios <-
 function(Ra, Rb, method = c("Capture","Number","Percent"), side = c("Up","Down"))
 {# @author Peter Carl
@@ -99,11 +142,11 @@ function(Ra, Rb, method = c("Capture","Number","Percent"), side = c("Up","Down")
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: UpDownRatios.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: UpDownRatios.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

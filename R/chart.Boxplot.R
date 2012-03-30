@@ -1,3 +1,52 @@
+#' box whiskers plot wrapper
+#' 
+#' A wrapper to create box and whiskers plot with some defaults useful for
+#' comparing distributions.
+#' 
+#' We have also provided controls for all the symbols and lines in the chart.
+#' One default, set by \code{as.Tufte=TRUE}, will strip chartjunk and draw a
+#' Boxplot per recommendations by Edward Tufte. It can also be useful when
+#' comparing several series to sort them in order of ascending or descending
+#' "mean", "median", "variance" by use of \code{sort.by} and
+#' \code{sort.ascending=TRUE}.
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param horizontal TRUE/FALSE plot horizontal (TRUE) or vertical (FALSE)
+#' @param names logical. if TRUE, show the names of each series
+#' @param as.Tufte logical. default FALSE. if TRUE use method derived for Tufte
+#' for limiting chartjunk
+#' @param sort.ascending logical.  If TRUE sort the distributions by ascending
+#' \code{sort.by}
+#' @param sort.by one of "NULL", "mean", "median", "variance"
+#' @param colorset color palette to use, set by default to rational choices
+#' @param symbol.color draws the symbols described in
+#' \code{mean.symbol},\code{median.symbol},\code{outlier.symbol} in the color
+#' specified
+#' @param mean.symbol symbol to use for the mean of the distribution
+#' @param median.symbol symbol to use for the median of the distribution
+#' @param outlier.symbol symbol to use for the outliers of the distribution
+#' @param show.data numerical vector of column numbers to display on top of
+#' boxplot, default NULL
+#' @param add.mean logical. if TRUE, show a line for the mean of all
+#' distributions plotted
+#' @param xlab set the x-axis label, same as in \code{\link{plot}}
+#' @param main set the chart title, same as in \code{\link{plot}}
+#' @param element.color specify the color of chart elements.  Default is
+#' "darkgray"
+#' @param \dots any other passthru parameters
+#' @return box plot of returns
+#' @author Peter Carl
+#' @seealso \code{\link[graphics]{boxplot}}
+#' @references Tufte, Edward R.  \emph{The Visual Display of Quantitative
+#' Information}. Graphics Press. 1983. p. 124-129
+#' @keywords ts multivariate distribution models hplot
+#' @examples
+#' 
+#' data(edhec)
+#' chart.Boxplot(edhec)
+#' chart.Boxplot(edhec,as.Tufte=TRUE)
+#' 
 chart.Boxplot <-
 function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
 { # @author Peter Carl
@@ -99,11 +148,11 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Boxplot.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: chart.Boxplot.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

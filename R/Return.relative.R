@@ -1,3 +1,22 @@
+#' calculate the relative return of one asset to another
+#' 
+#' Calculates the ratio of the cumulative performance for two assets through
+#' time.
+#' 
+#' 
+#' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param Rb return object for the benchmark asset
+#' @param \dots ignored
+#' @return xts or other time series of relative return
+#' @author Peter Carl
+#' @seealso \code{\link{chart.RelativePerformance}}
+#' @keywords ts
+#' @examples
+#' 
+#' data(managers)
+#' head(Return.relative(managers[,1:3], managers[,8,drop=FALSE]),n=20)
+#' 
 Return.relative <-
 function (Ra, Rb, ...)
 { # @author Peter Carl
@@ -45,11 +64,11 @@ function (Ra, Rb, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.relative.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: Return.relative.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

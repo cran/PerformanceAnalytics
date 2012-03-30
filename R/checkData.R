@@ -1,3 +1,44 @@
+#' check input data type and format and coerce to the desired output type
+#' 
+#' This function was created to make the different kinds of data classes at
+#' least \emph{seem} more fungible.  It allows the user to pass in a data
+#' object without being concerned that the function requires a matrix,
+#' data.frame, or timeSeries object.  By using this, the function "knows" what
+#' data format it has to work with.
+#' 
+#' 
+#' @param x a vector, matrix, data.frame, xts, timeSeries or zoo object to be
+#' checked and coerced
+#' @param na.rm TRUE/FALSE Remove NA's from the data? used only with 'vector'
+#' @param quiet TRUE/FALSE if false, it will throw warnings when errors are
+#' noticed, default TRUE
+#' @param method type of coerced data object to return, one of
+#' c("zoo","matrix","vector"), default "zoo"
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(edhec)
+#' x = checkData(edhec)
+#' class(x)
+#' head(x)
+#' tail(x)
+#' # Note that passing in a single column loses the row and column names
+#' x = checkData(edhec[,1])
+#' class(x)
+#' head(x)
+#' # Include the "drop" attribute to keep row and column names
+#' x = checkData(edhec[,1,drop=FALSE])
+#' class(x)
+#' head(x)
+#' x = checkData(edhec, method = "matrix")
+#' class(x)
+#' head(x)
+#' x = checkData(edhec[,1], method = "vector")
+#' class(x)
+#' head(x)
+#' 
 checkData <- function (x, method = c("xts", "zoo", "data.frame", "matrix", "vector"), na.rm = TRUE, quiet = TRUE, ...)
 { # @author Peter Carl
 
@@ -103,10 +144,10 @@ function (x, na.rm = TRUE, quiet = TRUE, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: checkData.R 1756 2010-09-14 00:32:51Z braverock $
+# $Id: checkData.R 1883 2012-03-25 00:59:31Z braverock $
 ###############################################################################

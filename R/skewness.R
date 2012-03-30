@@ -1,3 +1,41 @@
+#' Skewness
+#' 
+#' compute skewness of a univariate distribution.
+#' 
+
+#' 
+#' This function was ported from the RMetrics package fUtilities to eliminate a
+#' dependency on fUtiltiies being loaded every time.  The function is identical
+#' except for the addition of \code{\link{checkData} and column support.}
+#' 
+#' @param na.rm a logical. Should missing values be removed?
+#' @param method a character string which specifies the method of computation.
+#' These are either \code{"moment"} or \code{"fisher"} The \code{"moment"}
+#' method is based on the definitions of skewnessfor distributions; these forms
+#' should be used when resampling (bootstrap or jackknife). The \code{"fisher"}
+#' method correspond to the usual "unbiased" definition of sample variance,
+#' although in the case of skewness exact unbiasedness is not possible.
+#' @param x a numeric vector or object.
+#' @param \dots arguments to be passed.
+#' @author Diethelm Wuertz
+#' @seealso
+#' 
+#' \code{\link{kurtosis}}
+#' @keywords univar
+#' @examples
+#' 
+#' ## mean -
+#' ## var -
+#'    # Mean, Variance:
+#'    r = rnorm(100)
+#'    mean(r)
+#'    var(r)
+#' 
+#' ## skewness -
+#'    skewness(r)
+#' data(managers)
+#' skewness(managers)
+#' 
 skewness <-
     function (x, na.rm = FALSE, method = c("moment", "fisher"), ...)
 {
@@ -76,11 +114,11 @@ skewness <-
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: skewness.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: skewness.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

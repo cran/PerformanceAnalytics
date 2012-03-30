@@ -1,3 +1,29 @@
+#' chart rolling correlation fo multiple assets
+#' 
+#' A wrapper to create a chart of rolling correlation metrics in a line chart
+#' 
+#' 
+#' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param Rb return vector of the benchmark asset
+#' @param width number of periods to apply rolling function window over
+#' @param xaxis if true, draws the x axis
+#' @param legend.loc places a legend into one of nine locations on the chart:
+#' bottomright, bottom, bottomleft, left, topleft, top, topright, right, or
+#' center.
+#' @param colorset color palette to use, set by default to rational choices
+#' @param na.pad TRUE/FALSE If TRUE it adds any times that would not otherwise
+#' have been in the result with a value of NA. If FALSE those times are
+#' dropped.
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' @keywords ts multivariate distribution models hplot
+#' @examples
+#' 
+#' # First we get the data
+#' data(managers)
+#' chart.RollingCorrelation(managers[, 1:6, drop=FALSE], managers[, 8, drop=FALSE], colorset=rich8equal, legend.loc="bottomright", width=24, main = "Rolling 12-Month Correlation")
+#' 
 chart.RollingCorrelation <-
 function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), na.pad = FALSE, ...)
 { # @author Peter Carl
@@ -35,18 +61,18 @@ function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12)
         }
     }
 
-    chart.TimeSeries(Result.calc, xaxis = xaxis, col = colorset, legend.loc = legend.loc, ylim = c(-1,1), ...)
+    chart.TimeSeries(Result.calc, xaxis = xaxis, colorset = colorset, legend.loc = legend.loc, ylim = c(-1,1), ...)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingCorrelation.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: chart.RollingCorrelation.R 1888 2012-03-25 14:35:48Z braverock $
 #
 ###############################################################################

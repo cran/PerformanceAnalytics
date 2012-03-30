@@ -1,15 +1,28 @@
 ###############################################################################
 # R (http://r-project.org/) Numeric Methods for Optimization of Portfolios
 #
-# Copyright (c) 2004-2010 Kris Boudt, Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Kris Boudt, Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: zerofill.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: zerofill.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################
 
+
+
+#' zerofill
+#' 
+#' Fill NA's with zeros in a time series to allow analysis when the matrix must
+#' be complete.
+#' 
+#' Note that this function has risks, use carefully.  Complete data is
+#' preferred.  Barring that, filling a small percentage of results in a the
+#' middle of a large set are unlikely to cause problems. Barring that, realize
+#' that this will skew your results.
+#' 
+#' @param x time series to zero fill
 zerofill <- function (x) {
   mat<-checkData(x,"matrix")
   for(column in 1:ncol(mat)){

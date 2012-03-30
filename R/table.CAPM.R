@@ -1,3 +1,33 @@
+#' Asset-Pricing Model Summary: Statistics and Stylized Facts
+#' 
+#' Takes a set of returns and relates them to a market benchmark. Provides a
+#' set of measures related to the excess return single index model, or CAPM.
+#' 
+#' This table will show statistics pertaining to an asset against a set of
+#' benchmarks, or statistics for a set of assets against a benchmark.
+#' 
+#' @param Ra a vector of returns to test, e.g., the asset to be examined
+#' @param Rb a matrix, data.frame, or timeSeries of benchmark(s) to test the
+#' asset against.
+#' @param scale number of periods in a year (daily scale = 252, monthly scale =
+#' 12, quarterly scale = 4)
+#' @param Rf risk free rate, in same period as your returns
+#' @param digits number of digits to round results to
+#' @author Peter Carl
+#' @seealso \code{\link{CAPM.alpha}} \cr \code{\link{CAPM.beta}} \cr
+#' \code{\link{TrackingError}} \cr \code{\link{ActivePremium}} \cr
+#' \code{\link{InformationRatio}} \cr \code{\link{TreynorRatio}}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#' 
+#' result = table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#' textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' title(main="CAPM-Related Statistics")
+#' 
+#' 
 table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 {# @author Peter Carl
 
@@ -55,16 +85,20 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
         for(column.b in 1:columns.b) { # against each asset passed in as Rb
             merged.assets = merge(Ra.excess[,column.a,drop=FALSE], Rb.excess[,column.b,drop=FALSE])
             merged.assets = as.data.frame(na.omit(merged.assets)) # leaves the overlapping period
+            # these should probably call CAPM.alpha and CAPM.beta for consistency (not performance)
             model.lm = lm(merged.assets[,1] ~ merged.assets[,2])
             alpha = coef(model.lm)[[1]]
             beta = coef(model.lm)[[2]]
 			CAPMbull = CAPM.beta.bull(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept 
 			CAPMbear = CAPM.beta.bear(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept
             htest = cor.test(merged.assets[,1], merged.assets[,2])
-            active.premium = (Return.annualized(merged.assets[,1,drop=FALSE], scale = scale) - Return.annualized(merged.assets[,2,drop=FALSE], scale = scale))
-            tracking.error = sqrt(sum(merged.assets[,1] - merged.assets[,2])^2/(length(merged.assets[,1])-1)) * sqrt(scale)
-            treynor.ratio = Return.annualized(merged.assets[,1,drop=FALSE], scale = scale)/beta
-    
+            #active.premium = (Return.annualized(merged.assets[,1,drop=FALSE], scale = scale) - Return.annualized(merged.assets[,2,drop=FALSE], scale = scale))
+            active.premium = ActivePremium(Ra=Ra[,column.a],Rb=Rb[,column.b], scale = scale)
+            #tracking.error = sqrt(sum(merged.assets[,1] - merged.assets[,2])^2/(length(merged.assets[,1])-1)) * sqrt(scale)
+			tracking.error = TrackingError(Ra[,column.a], Rb[,column.b],scale=scale)
+            #treynor.ratio = Return.annualized(merged.assets[,1,drop=FALSE], scale = scale)/beta
+            treynor.ratio = TreynorRatio(Ra=Ra[,column.a], Rb=Rb[,column.b], Rf = Rf, scale = scale)
+            
             z = c(
                     alpha,
                     beta,
@@ -114,11 +148,11 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CAPM.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: table.CAPM.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

@@ -1,3 +1,27 @@
+#' calculate a function over an expanding window always starting from the
+#' beginning of the series
+#' 
+#' A function to calculate a function over an expanding window from the start
+#' of the timeseries.  This wrapper allows easy calculation of \dQuote{from
+#' inception} statistics.
+#' 
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param FUN any function that can be evaluated using a single set of returns
+#' (e.g., rolling beta won't work, but \code{\link{Return.annualized}} will)
+#' @param gap the number of data points from the beginning of the series
+#' required to \dQuote{train} the calculation
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' @seealso \code{\link[zoo]{rollapply}}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' apply.fromstart(managers[,1,drop=FALSE], FUN="mean", width=36)
+#' 
+#' 
 apply.fromstart <- function (R, FUN = "mean" , gap = 1, ...)
 { # @author Peter Carl
 
@@ -47,11 +71,11 @@ apply.fromstart <- function (R, FUN = "mean" , gap = 1, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.fromstart.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: apply.fromstart.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

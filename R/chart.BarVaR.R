@@ -1,4 +1,108 @@
-chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), p=0.95, clean = c("none", "boudt","geltner"), all = FALSE, ..., show.clean = FALSE, show.horizontal = FALSE, show.symmetric = FALSE, legend.loc="bottomleft", ylim = NA, lwd = 2, colorset = 1:12, lty = c(1,2,4,5,6), ypad=0, legend.cex = 0.8 )
+#' Periodic returns in a bar chart with risk metric overlay
+#' 
+#' Plots the periodic returns in a bar chart overlayed with a risk metric
+#' calculation.
+#' 
+#' Note that \code{StdDev} and \code{VaR} are symmetric calculations, so a high
+#' and low measure will be plotted.  \code{ModifiedVaR}, on the other hand, is
+#' assymetric and only a lower bound will be drawn.
+#' 
+#' Creates a plot of time on the x-axis and vertical lines for each period to
+#' indicate value on the y-axis.  Overlays a line to indicate the value of a
+#' risk metric calculated at that time period.
+#' 
+#' @aliases chart.BarVaR charts.BarVaR
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param width periods specified for rolling-period calculations.  Note that
+#' VaR, ES, and Std Dev with width=0 are calculated from the start of the
+#' timeseries
+#' @param gap numeric number of periods from start of series to use to train
+#' risk calculation
+#' @param methods Used to select the risk parameter of trailing \code{width}
+#' returns to use: May be any of: \itemize{ \item none - does not add a risk
+#' line, \item ModifiedVaR - uses Cornish-Fisher modified VaR, \item
+#' GaussianVaR - uses traditional Value at Risk, \item HistoricalVaR -
+#' calculates historical Value at Risk, \item ModifiedES - uses Cornish-Fisher
+#' modified Expected Shortfall, \item GaussianES - uses traditional Expected
+#' Shortfall, \item HistoricalES - calculates historical Expected Shortfall,
+#' \item StdDev - per-period standard deviation }
+#' @param p confidence level for \code{VaR} or \code{ModifiedVaR} calculation,
+#' default is .99
+#' @param all if TRUE, calculates risk lines for each column given in R.  If
+#' FALSE, only calculates the risk line for the first column
+#' @param clean the method to use to clean outliers from return data prior to
+#' risk metric estimation. See \code{\link{Return.clean}} and \code{\link{VaR}}
+#' for more detail
+#' @param show.clean if TRUE and a method for 'clean' is specified, overlays
+#' the actual data with the "cleaned" data.  See \code{\link{Return.clean}} for
+#' more detail
+#' @param \dots any other passthru parameters to \code{\link{chart.TimeSeries}}
+#' @param show.horizontal if TRUE, shows a line across the timeseries at the
+#' value of the most recent VaR estimate, to help the reader evaluate the
+#' number of exceptions thus far
+#' @param show.symmetric if TRUE and the metric is symmetric, this will show
+#' the metric's positive values as well as negative values, such as for method
+#' "StdDev".
+#' @param ylim set the y-axis limit, same as in \code{\link{plot}}
+#' @param lwd set the line width, same as in \code{\link{plot}}
+#' @param lty set the line type, same as in \code{\link{plot}}
+#' @param legend.loc legend location, such as in \code{\link{chart.TimeSeries}}
+#' @param ypad adds a numerical padding to the y-axis to keep the data away
+#' when legend.loc="bottom".  See examples below.
+#' @param legend.cex sets the legend text size, such as in
+#' \code{\link{chart.TimeSeries}}
+#' @param cex.legend sets the legend text size, such as in
+#' \code{\link{chart.TimeSeries}}
+#' @param main sets the title text, such as in \code{\link{chart.TimeSeries}}
+#' @param colorset color palette to use, such as in
+#' \code{\link{chart.TimeSeries}}
+#' @author Peter Carl
+#' @seealso \code{\link{chart.TimeSeries}} \cr \code{\link{plot}} \cr
+#' \code{\link{ES}} \cr \code{\link{VaR}} \cr \code{\link{Return.clean}}
+#' @keywords ts multivariate distribution models hplot
+#' @examples
+#' 
+#' data(managers)
+#' # plain
+#' chart.BarVaR(managers[,1,drop=FALSE], main="Monthly Returns")
+#' 
+#' # with risk line
+#' chart.BarVaR(managers[,1,drop=FALSE], methods="HistoricalVaR", main="... with Empirical VaR from Inception")
+#' 
+#' # with lines for all managers in the sample
+#' chart.BarVaR(managers[,1:6], methods="GaussianVaR", all=TRUE, lty=1, lwd=2, colorset= c("red", rep("gray", 5)), main="... with Gaussian VaR and Estimates for Peers")
+#' 
+#' # with multiple methods
+#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), main="... with Multiple Methods")
+#' 
+#' # cleaned up a bit
+#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), lwd=2, ypad=.01, main="... with Padding for Bottom Legend")
+#' 
+#' # with 'cleaned' data for VaR estimates
+#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR"), lwd=2, ypad=.01, clean="boudt", main="... with Robust ModVaR Estimate")
+#' 
+#' # Cornish Fisher VaR estimated with cleaned data, with horizontal line to show exceptions
+#' chart.BarVaR(managers[,1,drop=FALSE],methods="ModifiedVaR", lwd=2, ypad=.01, clean="boudt", show.horizontal=TRUE, lty=2, main="... with Robust ModVaR and Line for Identifying Exceptions")
+#' 
+chart.BarVaR <- function (R, width = 0, gap = 12, 
+                            methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), 
+                            p=0.95, 
+                            clean = c("none", "boudt","geltner"), 
+                            all = FALSE, 
+                            ..., 
+                            show.clean = FALSE, 
+                            show.horizontal = FALSE, 
+                            show.symmetric = FALSE, 
+                            show.endvalue = FALSE, 
+                            show.greenredbars = FALSE, 
+                            legend.loc="bottomleft", 
+                            ylim = NA, 
+                            lwd = 2, 
+                            colorset = 1:12, 
+                            lty = c(1,2,4,5,6), 
+                            ypad=0, 
+                            legend.cex = 0.8 )
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -49,7 +153,7 @@ chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedV
     colors = colorRamp(c(colorset[1],"white"))
     if(length(methods)>1){
         columns = 1 # if there's more than one method specified, then we'll ignore columns other than the first
-        colorset = c(colorset[1], rgb(colors(.25),max=255), rgb(colors(.5),max=255), rgb(colors(.75),max=255))
+        colorset = c(colorset[1], rgb(colors(.25),maxColorValue=255), rgb(colors(.5),maxColorValue=255), rgb(colors(.75),maxColorValue=255))
     }
     clean = clean[1]
 
@@ -61,7 +165,7 @@ chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedV
 
     bar.color = colorset[1]
     if (show.clean){
-        bar.color = rgb(colors(.75),max=255)
+        bar.color = rgb(colors(.75),maxColorValue=255)
     }
 
     x.orig = x
@@ -179,8 +283,21 @@ chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedV
         ylim = range(c(na.omit(as.vector(x.orig[,1])), na.omit(as.vector(risk)), -na.omit(as.vector(risk))))
         ylim = c(ylim[1]-ypad,ylim[2]) # pad the bottom of the chart for the legend
     }
-
-    chart.TimeSeries(x.orig[,1, drop=FALSE], type = "h", col = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
+    if(!show.greenredbars){
+    	chart.TimeSeries(x.orig[,1, drop=FALSE], type = "h", colorset = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
+    }
+    else {
+        positives = x.orig[,1,drop=FALSE]
+        for(row in 1:length(x.orig[,1,drop=FALSE])){ 
+            positives[row,]=max(0,x.orig[row,1])
+        }
+        negatives = x.orig[,1,drop=FALSE]
+        for(row in 1:length(x.orig[,1,drop=FALSE])){ 
+            negatives[row,]=min(0,x.orig[row,1])
+        }
+        chart.TimeSeries(positives, type = "h", legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", colorset="darkgreen", ...)
+        lines(1:length(x.orig[,1]), negatives, type="h", lend="butt", colorset="darkred", lwd=lwd)
+    }
 
     if(show.clean) {
         lines(1:rows, x[,1, drop=FALSE], type="h", col=colorset[1], lwd = lwd, lend="butt")
@@ -203,10 +320,14 @@ chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedV
             lines(1:rows, risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
             if(show.horizontal)
                 lines(1:rows, rep(tail(risk[,2],1),rows), col = colorset[1], lwd=1, type="l", lty=1)
+	    if(show.endvalue){
+		points(rows, tail(risk[,2],1), col = colorset[1], pch=20, cex=.7)
+		mtext(paste(round(100*tail(risk[,2],1),2),"%", sep=""), line=.5, side = 4, at=tail(risk[,2],1), adj=0, las=2, cex = 0.7, col = colorset[1])
+	    }
         }
     }
 
-    if(legend.txt[1] != "")
+    if(legend.txt[1] != "" & !is.null(legend.loc))
         legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = legend.cex, border.col = "grey", lwd = 1, lty=lty, bty = "n", legend = legend.txt, horiz=TRUE)
 
 }
@@ -214,11 +335,11 @@ chart.BarVaR <- function (R, width = 0, gap = 12, methods = c("none", "ModifiedV
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: chart.BarVaR.R 1888 2012-03-25 14:35:48Z braverock $
 #
 ###############################################################################

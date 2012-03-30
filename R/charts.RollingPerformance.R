@@ -1,3 +1,29 @@
+#' rolling performance chart
+#' 
+#' A wrapper to create a rolling annualized returns chart, rolling annualized
+#' standard deviation chart, and a rolling annualized sharpe ratio chart.
+#' 
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param width number of periods to apply rolling function over
+#' @param Rf risk free rate, in same period as your returns
+#' @param main set the chart title, same as in \code{plot}
+#' @param trim TRUE/FALSE, whether to keep alignment caused by NA's
+#' @param event.labels TRUE/FALSE whether or not to display lines and labels
+#' for historical market shock events
+#' @param legend.loc places a legend into one of nine locations on the chart:
+#' bottomright, bottom, bottomleft, left, topleft, top, topright, right, or
+#' center.
+#' @param \dots any other passthru parameters
+#' @author Peter Carl
+#' @seealso \code{\link{chart.RollingPerformance}}
+#' @keywords ts multivariate distribution models hplot
+#' @examples
+#' 
+#' data(managers)
+#' charts.RollingPerformance(managers[,1:8], Rf=managers[,10,drop=FALSE], colorset=tim8equal, main="Rolling 12-Month Performance", legend.loc="topleft")
+#' 
 charts.RollingPerformance <-
 function (R, width = 12, Rf = 0, main = NULL, trim = TRUE, event.labels = NULL, legend.loc=NULL, ...)
 { # @author Peter Carl
@@ -42,7 +68,7 @@ function (R, width = 12, Rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
 
     # First, we lay out the graphic as a three row, one column format
 #    plot.new()
-    layout(matrix(c(1,2,3)),height=c(1,0.75,1),width=1)
+    layout(matrix(c(1,2,3)),heights=c(1,0.75,1),widths=1)
     # to see the resulting layout, use layout.show(3)
 
     # mar: a numerical vector of the form c(bottom, left, top, right) which
@@ -68,11 +94,11 @@ function (R, width = 12, Rf = 0, main = NULL, trim = TRUE, event.labels = NULL, 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingPerformance.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: charts.RollingPerformance.R 1888 2012-03-25 14:35:48Z braverock $
 #
 ###############################################################################

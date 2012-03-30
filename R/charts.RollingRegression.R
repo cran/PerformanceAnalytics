@@ -37,7 +37,7 @@ charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, le
 
     op <- par(no.readonly=TRUE)
 
-    layout(matrix(c(1,2,3)),height=c(1.3,1,1.3),width=1)
+    layout(matrix(c(1,2,3)),heights=c(1.3,1,1.3),widths=1)
 
     par(mar=c(1,4,4,2))
     if(is.null(main)){
@@ -72,11 +72,11 @@ charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, le
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingRegression.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: charts.RollingRegression.R 1888 2012-03-25 14:35:48Z braverock $
 #
 ###############################################################################

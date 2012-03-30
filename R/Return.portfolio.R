@@ -27,11 +27,11 @@ Return.rebalancing <- function (R, weights, ...)
         tmpR<-R[paste(from,to,sep="/"),]
         if (nrow(tmpR)>=1){
             resultreturns=Return.portfolio(tmpR,weights=weights[row,], ...=...)
-        }
-        if(row==1){
-            result = resultreturns
-        } else {
-            result = rbind(result,resultreturns)
+            if(row==1){
+                result = resultreturns
+            } else {
+                result = rbind(result,resultreturns)
+            }
         }
         startingwealth=last(cumprod(1+result)*startingwealth)
     }
@@ -41,6 +41,64 @@ Return.rebalancing <- function (R, weights, ...)
 
 # ------------------------------------------------------------------------------
 # Return.portfolio
+
+
+#' Calculates weighted returns for a portfolio of assets
+#' 
+#' Calculates weighted returns for a portfolio of assets.  If you have a single
+#' weighting vector, or want the equal weighted portfolio, use
+#' \code{Return.portfolio}.  If you have a portfolio that is periodically
+#' rebalanced, and multiple time periods with different weights, use
+#' \code{Return.rebalancing}.  Both functions will subset the return series to
+#' only include returns for assets for which \code{weight} is provided.
+#' 
+#' \code{Return.rebalancing} uses the date in the weights time series or matrix
+#' for xts-style subsetting of rebalancing periods.  Rebalancing periods can be
+#' thought of as taking effect immediately after the close of the bar.  So, a
+#' March 31 rebalancing date will actually be in effect for April 1.  A
+#' December 31 rebalancing date will be in effect on Jan 1, and so forth.  This
+#' convention was chosen because it fits with common usage, and because it
+#' simplifies xts Date subsetting via \code{endpoints}.
+#' 
+#' \code{Return.rebalancing} will rebalance only on daily or lower frequencies.
+#' If you are rebalancing intraday, you should be using a trading/prices
+#' framework, not a weights-based return framework.
+#' 
+#' @aliases Return.portfolio Return.rebalancing
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param weights a time series or single-row matrix/vector containing asset
+#' weights, as percentages
+#' @param wealth.index TRUE/FALSE whether to return a wealth index, default
+#' FALSE
+#' @param contribution if contribution is TRUE, add the weighted return
+#' contributed by the asset in this period
+#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' default TRUE
+#' @param \dots any other passthru parameters
+#' @return returns a time series of returns weighted by the \code{weights}
+#' parameter, possibly including contribution for each period
+#' @author Brian G. Peterson
+#' @seealso \code{\link{Return.calculate}} \cr
+#' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
+#' Attribution}. Wiley. 2004. Chapter 2\cr
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' 
+#' data(edhec)
+#' data(weights)
+#' 
+#' # calculate an equal weighted portfolio return
+#' round(Return.portfolio(edhec),4)
+#' 
+#' # now return the contribution too
+#' round(Return.portfolio(edhec,contribution=TRUE),4)
+#' 
+#' # calculate a portfolio return with rebalancing
+#' round(Return.rebalancing(edhec,weights),4)
+#' 
+#' 
 Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contribution=FALSE,geometric=TRUE, ...)
 {   # @author Brian G. Peterson
 
@@ -159,11 +217,11 @@ pfolioReturn <- function (x, weights=NULL, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.portfolio.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: Return.portfolio.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

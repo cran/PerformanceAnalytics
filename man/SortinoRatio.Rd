@@ -6,12 +6,14 @@
 Sortino proposed an improvement on the Sharpe Ratio to better account for skill and excess performance by using only downside semivariance as the measure of risk.
 }
 \usage{
-SortinoRatio(R, MAR = 0)
+SortinoRatio(R, MAR = 0, ..., weights=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{R}{ an xts, vector, matrix, data frame, timeSeries or zoo object of asset returns }
   \item{MAR}{ Minimum Acceptable Return, in the same periodicity as your returns }
+  \item{\dots}{ any other passthru parameters }
+  \item{weights}{ portfolio weighting vector, default NULL}
 }
 \details{
 Sortino contends that risk should be measured in terms of not meeting the investment goal.  This gives rise to the notion of \dQuote{Minimum Acceptable Return} or MAR.  All of Sortino's proposed measures include the MAR, and are more sensitive to downside or extreme risks than measures that use volatility(standard deviation of returns) as the measure of risk.

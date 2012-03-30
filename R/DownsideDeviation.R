@@ -1,5 +1,85 @@
+#' downside risk (deviation, variance) of the return distribution
+#' 
+#' Downside deviation, semideviation, and semivariance are measures of downside
+#' risk.
+#' 
+#' Downside deviation, similar to semi deviation, eliminates positive returns
+#' when calculating risk.  Instead of using the mean return or zero, it uses
+#' the Minimum Acceptable Return as proposed by Sharpe (which may be the mean
+#' historical return or zero).
+#' 
+#' To calculate it, we take the subset of returns that are less than the target
+#' (or Minimum Acceptable Returns (MAR)) returns and take the differences of
+#' those to the target.  We sum the squares and divide by the total number of
+#' returns to get a below-target semi-variance.
+#' 
+#' \deqn{ DownsideDeviation(R , MAR)= \delta_{MAR} = \sqrt{
+#' \frac{\sum^{n}_{t=1}(R_{t} - MAR)^{2}}{n} } }
+#' 
+#' where \eqn{n} is either the number of observations of the entire series or
+#' the number of observations in the subset of the series falling below the
+#' MAR.
+#' 
+#' SemiDeviation or SemiVariance is a popular alternative downside risk measure
+#' that may be used in place of standard deviation or variance. SemiDeviation
+#' and SemiVariance are implemented as a wrapper of DownsideDeviation with
+#' MAR=mean(R).
+#' 
+#' In many functions like Markowitz optimization, semideviation may be
+#' substituted directly, and the covariance matrix may be constructed from
+#' semideviation or the vector of returns below the mean rather than from
+#' variance or the full vector of returns.
+#' 
+#' In semideviation, by convention, the value of \eqn{n} is set to the full
+#' number of observations. In semivariance the the value of \eqn{n} is set to
+#' the subset of returns below the mean.  It should be noted that while this is
+#' the correct mathematical definition of semivariance, this result doesn't
+#' make any sense if you are also going to be using the time series of returns
+#' below the mean or below a MAR to construct a semi-covariance matrix for
+#' portfolio optimization.
+#' 
+#' Sortino recommends calculating downside deviation utilizing a continuous
+#' fitted distribution rather than the discrete distribution of observations.
+#' This would have significant utility, especially in cases of a small number
+#' of observations. He recommends using a lognormal distribution, or a fitted
+#' distribution based on a relevant style index, to construct the returns below
+#' the MAR to increase the confidence in the final result.  Hopefully, in the
+#' future, we'll add a fitted option to this function, and would be happy to
+#' accept a contribution of this nature.
+#' 
+#' @aliases DownsideDeviation SemiDeviation SemiVariance
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param MAR Minimum Acceptable Return, in the same periodicity as your
+#' returns
+#' @param method one of "full" or "subset", indicating whether to use the
+#' length of the full series or the length of the subset of the series below
+#' the MAR as the denominator, defaults to "subset"
+#' @author Peter Carl, Brian G. Peterson
+#' @references Sortino, F. and Price, L. Performance Measurement in a Downside
+#' Risk Framework. \emph{Journal of Investing}. Fall 1994, 59-65. \cr
+#' 
+#' Plantinga, A., van der Meer, R. and Sortino, F. The Impact of Downside Risk
+#' on Risk-Adjusted Performance of Mutual Funds in the Euronext Markets. July
+#' 19, 2001. Available at SSRN: \url{http://ssrn.com/abstract=277352} \cr
+#' 
+#' \url{http://www.sortino.com/htm/performance.htm} see especially end note 10
+#' 
+#' \url{http://en.wikipedia.org/wiki/Semivariance}
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' sd.xts(managers[,1:6], na.rm=TRUE)
+#' DownsideDeviation(managers[,1:6])  # MAR 0%
+#' DownsideDeviation(managers[,1:6], MAR = .04/12) #MAR 4%
+#' SemiDeviation(managers[,1,drop=FALSE])
+#' SemiDeviation(managers[,1:6])
+#' SemiVariance (managers[,1,drop=FALSE])
+#' SemiVariance (managers[,1:6]) #calculated using method="subset"
+#' 
 DownsideDeviation <-
-function (R, MAR = 0, method=c("subset","full"))
+function (R, MAR = 0, method=c("subset","full"), ..., potential=FALSE)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -17,37 +97,73 @@ function (R, MAR = 0, method=c("subset","full"))
     if (is.vector(R)) {
         R = na.omit(R)
 
-        if(!is.null(dim(MAR)))
-            MAR = mean(checkData(MAR, method = "vector"))
-        # we have to assume that Ra and a vector of Rf passed in for MAR both cover the same time period
-
         r = subset(R, R < MAR)
 
+        if(!is.null(dim(MAR))){
+            if(is.timeBased(index(MAR))){
+                MAR <-MAR[index(r)] #subset to the same dates as the R data
+            } else{
+                MAR = mean(checkData(MAR, method = "vector"))
+                # we have to assume that Ra and a vector of Rf passed in for MAR both cover the same time period
+            }   
+        }
+        
         switch(method,
             full   = {len = length(R)},
             subset = {len = length(r)} #previously length(R)
         ) # end switch
-        result = sqrt(sum((r - MAR)^2)/len)
+        p=2
+        if(potential) p=1 # calculates downside potential instead
+        result = sqrt(sum((r - MAR)^p)/len)
         return(result)
     }
     else {
-        R = checkData(R, method = "matrix")
+        R = checkData(R)
         result = apply(R, MARGIN = 2, DownsideDeviation, MAR = MAR, method = method)
-        dim(result) = c(1,NCOL(R))
+        result<-t(result)
         colnames(result) = colnames(R)
-        rownames(result) = paste("Downside Deviation (MAR = ", round(MAR*100,1),"%)", sep="")
+        if(potential)
+            rownames(result) = paste("Downside Potential (MAR = ", round(mean(MAR)*100,1),"%)", sep="")
+        else
+            rownames(result) = paste("Downside Deviation (MAR = ", round(mean(MAR)*100,1),"%)", sep="")
         return(result)
     }
 }
 
+DownsidePotential <-
+function (R)
+{ # @author Peter Carl
+
+    # DESCRIPTION:
+    # This function is just a wrapper of DownsideDeviation with
+    # MAR = mean(x) and potential = TRUE
+    # see below
+
+    # FUNCTION:
+    
+    
+    if (is.vector(R)) {
+        R = na.omit(R)
+        return(DownsideDeviation(R, MAR=mean(R), method="full", potential=TRUE))
+    }
+    else {
+        R = checkData(R, method = "matrix")
+        MAR=mean(R) #dummy for R CMD check
+        result = apply(R, 2, DownsidePotential)
+        result = matrix(result, nrow=1)
+        colnames(result) = colnames(R)
+        rownames(result) = paste("Downside Potential (MAR = ", round(mean(MAR)*100,1),"%)", sep="")
+        return(result)
+    }
+}
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: DownsideDeviation.R 1889 2012-03-29 22:36:47Z braverock $
 #
 ###############################################################################

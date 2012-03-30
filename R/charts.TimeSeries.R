@@ -30,7 +30,7 @@ function (R,  space = 0, main = "Returns", ...)
     # gives the number of lines of margin to be specified on the four sides
     # of the plot. The default is c(5, 4, 4, 2) + 0.1
     op <- par(oma = c(2,0,4,0), mar=c(0,4,0,4))
-    layout(matrix(c(1:columns), nc = 1, byrow = TRUE), width=1)
+    layout(matrix(c(1:columns), ncol = 1, byrow = TRUE), widths=1)
     xaxis=FALSE
     yaxis=TRUE
     for(i in 1:columns){
@@ -56,11 +56,11 @@ function (R,  space = 0, main = "Returns", ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2007 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.TimeSeries.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: charts.TimeSeries.R 1888 2012-03-25 14:35:48Z braverock $
 #
 ###############################################################################

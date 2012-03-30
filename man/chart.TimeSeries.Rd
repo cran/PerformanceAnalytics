@@ -28,7 +28,7 @@ chart.TimeSeries(R, auto.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = 
   \item{ylim}{ set the y-axis limit, same as in \code{\link{plot}} }
   \item{event.lines}{ If not null, vertical lines will be drawn to indicate that an event happened during that time period.  \code{event.lines} should be a list of dates (e.g., \code{c("09/03","05/06"))} formatted the same as date.format.  This function matches the re-formatted row names (dates) with the events.list, so to get a match the formatting needs to be correct. }
   \item{event.labels}{ if not null and event.lines is not null, this will apply a list of text labels (e.g., \code{c("This Event", "That Event")} to the vertical lines drawn.  See the example below. }
-  \item{period.areas}{ these are shaded areas described by start and end dates in the same format as the date.format.  This is provided as a list of pairs, e.g., \code{list(c("10/26","11/27"), c("08/29","03/33"))} See the examples below. }
+  \item{period.areas}{ these are shaded areas described by start and end dates in a vector of xts date rangees, e.g., \code{c("1926-10::1927-11","1929-08::1933-03")} See the examples below. }
   \item{event.color}{ draws the event described in \code{event.labels} in the color specified }
   \item{period.color}{ draws the shaded region described by \code{period.areas} in the color specified }
   \item{colorset}{ color palette to use, set by default to rational choices }
@@ -52,22 +52,42 @@ chart.TimeSeries(R, auto.grid = TRUE, xaxis = TRUE, yaxis = TRUE, yaxis.right = 
 \seealso{ \code{\link{plot}}, \code{\link{par}}, \code{\link[xts]{axTicksByTime}} }
 \examples{
 
-# These are start and end dates, formatted the same way as the default axis labels
-cycles.dates = list(
-    c("Oct 26","Nov 27"),
-    c("Aug 29","Mar 33"),
-    c("May 37","Jun 38"),
-    c("Feb 45","Oct 45"),
-    c("Nov 48","Oct 49"),
-    c("Jul 53","May 54"),
-    c("Aug 57","Apr 58"),
-    c("Apr 60","Feb 61"),
-    c("Dec 69","Nov 70"),
-    c("Nov 73","Mar 75"),
-    c("Jan 80","Jul 80"),
-    c("Jul 81","Nov 82"),
-    c("Jul 90","Mar 91"),
-    c("Mar 01","Nov 01"))
+# These are start and end dates, formatted as xts ranges.
+## http://www.nber.org-cycles.html
+cycles.dates<-c("1857-06/1858-12",
+                "1860-10/1861-06",
+                "1865-04/1867-12",
+                "1869-06/1870-12",
+                "1873-10/1879-03",
+                "1882-03/1885-05",
+                "1887-03/1888-04",
+                "1890-07/1891-05",
+                "1893-01/1894-06",
+                "1895-12/1897-06",
+                "1899-06/1900-12",
+                "1902-09/1904-08",
+                "1907-05/1908-06",
+                "1910-01/1912-01",
+                "1913-01/1914-12",
+                "1918-08/1919-03",
+                "1920-01/1921-07",
+                "1923-05/1924-07",
+                "1926-10/1927-11",
+                "1929-08/1933-03",
+                "1937-05/1938-06",
+                "1945-02/1945-10",
+                "1948-11/1949-10",
+                "1953-07/1954-05",
+                "1957-08/1958-04",
+                "1960-04/1961-02",
+                "1969-12/1970-11",
+                "1973-11/1975-03",
+                "1980-01/1980-07",
+                "1981-07/1982-11",
+                "1990-07/1991-03",
+                "2001-03/2001-11",
+                "2007-12/2009-06"
+                )
 # Event lists - FOR BEST RESULTS, KEEP THESE DATES IN ORDER
 risk.dates = c(
     "Oct 87",

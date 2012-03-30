@@ -1,3 +1,32 @@
+#' Returns Summary: Statistics and Stylized Facts
+#' 
+#' Returns a basic set of statistics that match the period of the data passed
+#' in (e.g., monthly returns will get monthly statistics, daily will be daily
+#' stats, and so on)
+#' 
+#' This was created as a way to display a set of related statistics together
+#' for comparison across a set of instruments or funds.  Careful consideration
+#' to missing data or unequal time series should be given when intepreting the
+#' results.
+#' 
+#' @aliases table.MonthlyReturns table.Stats
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param ci confidence interval, defaults to 95%
+#' @param digits number of digits to round results to
+#' @author Peter Carl
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(edhec)
+#' table.Stats(edhec[,1:3])
+#' t(table.Stats(edhec))
+#' 
+#' result=t(table.Stats(edhec))
+#' require("Hmisc")
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' title(main="Statistics for EDHEC Indexes")
+#' 
 table.Stats <-
 function (R, ci = 0.95, digits = 4)
 {# @author Peter Carl
@@ -92,11 +121,11 @@ function (R, ci = 0.95, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.MonthlyReturns.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: table.MonthlyReturns.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################

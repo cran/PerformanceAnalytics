@@ -1,3 +1,32 @@
+#' table for calculating the first six autocorrelation coefficients and
+#' significance
+#' 
+#' Produces data table of autocorrelation coefficients \eqn{\rho}{rho} and
+#' corresponding Q(6)-statistic for each column in R.
+#' 
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param digits number of digits to round results to for display
+#' @note To test returns for autocorrelation, Lo (2001) suggests the use of the
+#' Ljung-Box test, a significance test for the auto-correlation coefficients.
+#' Ljung and Box (1978) provide a refinement of the Q-statistic proposed by Box
+#' and Pierce (1970) that offers a better fit for the \eqn{\chi^2}{chi^2} test
+#' for small sample sizes. \code{\link{Box.test}} provides both.
+#' @author Peter Carl
+#' @seealso \code{\link{Box.test}}, \code{\link{acf}}
+#' @references Lo, Andrew W. 2001. Risk Management for Hedge Funds:
+#' Introduction and Overview. SSRN eLibrary.
+#' @keywords ts multivariate distribution models
+#' @examples
+#' 
+#' data(managers)
+#' t(table.Autocorrelation(managers))
+#' 
+#' result = t(table.Autocorrelation(managers[,1:8]))
+#' textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' title(main="Autocorrelation")
+#' 
 table.Autocorrelation <-
 function (R, digits = 4)
 {# @author Peter Carl
@@ -65,11 +94,11 @@ function (R, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2010 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Autocorrelation.R 1730 2010-08-03 19:31:06Z braverock $
+# $Id: table.Autocorrelation.R 1883 2012-03-25 00:59:31Z braverock $
 #
 ###############################################################################
