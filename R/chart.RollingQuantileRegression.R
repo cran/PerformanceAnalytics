@@ -1,3 +1,5 @@
+#' @rdname chart.RollingRegression
+#' @export 
 chart.RollingQuantileRegression <-
 function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"), main=NULL, na.pad = TRUE, ...)
 { # @author Peter Carl, Brian Peterson
@@ -34,11 +36,11 @@ function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
         for(column.b in 1:columns.b) { # against each asset passed in as Rb
             merged.assets = merge(Ra.excess[,column.a,drop=FALSE], Rb.excess[,column.b,drop=FALSE])
             if(attribute == "Alpha")
-                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) rq(x[,1,drop=FALSE]~x[,2,drop=FALSE])$coefficients[1], by = 1, by.column = FALSE, na.pad = na.pad, align = "right")
+                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) rq(x[,1,drop=FALSE]~x[,2,drop=FALSE])$coefficients[1], by = 1, by.column = FALSE, fill = if(na.pad) NA, align = "right")
             if(attribute == "Beta")
-                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) rq(x[,1,drop=FALSE]~x[,2,drop=FALSE])$coefficients[2], by = 1, by.column = FALSE, na.pad = na.pad, align = "right")
+                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) rq(x[,1,drop=FALSE]~x[,2,drop=FALSE])$coefficients[2], by = 1, by.column = FALSE, fill = if(na.pad) NA, align = "right")
             if(attribute == "R-Squared")
-                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) summary(rq(x[,1,drop=FALSE]~x[,2,drop=FALSE]))$r.squared, by = 1, by.column = FALSE, na.pad = na.pad, align = "right")
+                column.result = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) summary(rq(x[,1,drop=FALSE]~x[,2,drop=FALSE]))$r.squared, by = 1, by.column = FALSE, fill = if(na.pad) NA, align = "right")
 
             # some backflips to name the single column zoo object
             column.result.tmp = xts(column.result)
@@ -79,6 +81,6 @@ function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingQuantileRegression.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: chart.RollingQuantileRegression.R 2316 2013-01-28 21:38:59Z braverock $
 #
 ###############################################################################

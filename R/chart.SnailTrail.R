@@ -50,9 +50,15 @@
 #' @examples
 #' 
 #' data(managers)
-#' chart.SnailTrail(managers[,c("HAM2","SP500 TR"),drop=FALSE], width=36, stepsize=12, colorset=c('red','orange'),add.names="firstandlast", rf=.04/12, main="Trailing 36-month Performance Calc'd Every 12 Months")
+#' chart.SnailTrail(managers[,c("HAM2","SP500 TR"),drop=FALSE], 
+#' 		width=36, stepsize=12, 
+#' 		colorset=c('red','orange'),
+#' 		add.names="firstandlast", 
+#' 		rf=.04/12, 
+#' 		main="Trailing 36-month Performance Calc'd Every 12 Months")
 #' 
 #' 
+#' @export 
 chart.SnailTrail <-
 function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "lastonly", "firstandlast", "none"), xlab = "Annualized Risk", ylab = "Annualized Return", add.sharpe = c(1,2,3), colorset = 1:12, symbolset = 16, legend.loc = NULL, xlim = NULL, ylim = NULL, width = 12, stepsize = 12, lty=1, lwd=2, cex.axis=0.8, cex.main = 1, cex.lab = 1, cex.text = 0.8, cex.legend = 0.8, element.color="darkgray", ...)
 { # @author Peter Carl
@@ -120,9 +126,9 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "
         y = x[,column,drop=FALSE]
         y = na.omit(y)
         y= as.zoo(y)
-        returns.column = na.omit(apply.rolling(y[(nrow(y)%%stepsize+1):nrow(y),1,drop=FALSE], width = width, FUN = Return.annualized, by=stepsize))#, na.pad = FALSE, align = "right")
+        returns.column = na.omit(apply.rolling(y[(nrow(y)%%stepsize+1):nrow(y),1,drop=FALSE], width = width, FUN = Return.annualized, by=stepsize))#, align = "right")
     
-        risk.column = na.omit(apply.rolling(y[(nrow(y)%%stepsize+1):nrow(y),1,drop=FALSE], width = width, FUN = StdDev.annualized, by=stepsize))#, na.pad = FALSE, align = "right")
+        risk.column = na.omit(apply.rolling(y[(nrow(y)%%stepsize+1):nrow(y),1,drop=FALSE], width = width, FUN = StdDev.annualized, by=stepsize))#, align = "right")
 
         maxrows = max(maxrows, length(returns.column))
 
@@ -215,6 +221,6 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.SnailTrail.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.SnailTrail.R 2316 2013-01-28 21:38:59Z braverock $
 #
 ###############################################################################

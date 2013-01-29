@@ -30,6 +30,7 @@
 #' data(edhec)
 #' chart.ACFplus(edhec[,1,drop=FALSE])
 #' 
+#' @export 
 chart.ACF <- function(R, maxlag = NULL, elementcolor = "gray", main = NULL, ...)
 { # @author David Stoffer and Robert Shumway
     # @modifiedby Peter Carl
@@ -84,6 +85,6 @@ chart.ACF <- function(R, maxlag = NULL, elementcolor = "gray", main = NULL, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.ACF.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.ACF.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

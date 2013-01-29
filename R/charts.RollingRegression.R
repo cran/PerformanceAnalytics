@@ -1,3 +1,5 @@
+#' @rdname chart.RollingRegression
+#' @export 
 charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, legend.loc = NULL, event.labels=NULL, ...)
 { # @author Peter Carl
 
@@ -77,6 +79,6 @@ charts.RollingRegression = function (Ra, Rb, width = 12, Rf = 0, main = NULL, le
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingRegression.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: charts.RollingRegression.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

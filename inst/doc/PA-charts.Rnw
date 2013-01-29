@@ -1,3 +1,5 @@
+% $Id: PA-charts.Rnw 1950 2012-05-20 10:19:00Z braverock $
+
 %% no need for  \DeclareGraphicsExtensions{.pdf,.eps}
 
 \documentclass[12pt,letterpaper,english]{article}
@@ -266,13 +268,13 @@ For more information, see:
 %
 \begin{figure}
 
-\caption{Examples of Color Palates}
+\caption{Examples of Color Palettes}
 
 \label{fig:Examples-of-Color}
 
 \begin{center}
 
-<<ShowPalates,echo=F,fig=T>>=
+<<ShowPalettes,echo=F,fig=T>>=
 layout(rbind(c(1,2),c(3,4)))
 chart.CumReturns(managers[,c(manager.col,peers.cols)],
 lwd=2,legend.loc="topleft", main="default")

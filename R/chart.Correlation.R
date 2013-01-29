@@ -1,26 +1,31 @@
+
+
 #' correlation matrix chart
 #' 
 #' Visualization of a Correlation Matrix. On top the (absolute) value of the
-#' correlation plus the result of the cor.test as stars. On botttom, the
+#' correlation plus the result of the cor.test as stars. On bottom, the
 #' bivariate scatterplots, with a fitted line
 #' 
 #' 
 #' @param R data for the x axis, can take matrix,vector, or timeseries
 #' @param histogram TRUE/FALSE whether or not to display a histogram
+#' @param method a character string indicating which correlation coefficient
+#'           (or covariance) is to be computed.  One of "pearson"
+#'           (default), "kendall", or "spearman", can be abbreviated.
 #' @param \dots any other passthru parameters into \code{\link{pairs}}
 #' @note based on plot at
 #' \url{http://addictedtor.free.fr/graphiques/sources/source_137.R}
 #' @author Peter Carl
-#' @seealso \code{\link{table.Correlation}} \cr %
-#' \code{\link{chart.Correlation.color}}
+#' @seealso \code{\link{table.Correlation}}
 #' @keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(managers)
 #' chart.Correlation(managers[,1:8], histogram=TRUE, pch="+")
 #' 
+#' @export 
 chart.Correlation <-
-function (R, histogram = TRUE, ...)
+function (R, histogram = TRUE, method=c("pearson", "kendall", "spearman"), ...)
 { # @author R Development Core Team
   # @author modified by Peter Carl
     # Visualization of a Correlation Matrix. On top the (absolute) value of the
@@ -28,13 +33,15 @@ function (R, histogram = TRUE, ...)
     # bivariate scatterplots, with a fitted line
 
     x = checkData(R, method="matrix")
+    
+    if(missing(method)) method=method[1] #only use one
 
     # Published at http://addictedtor.free.fr/graphiques/sources/source_137.R
-    panel.cor <- function(x, y, digits=2, prefix="", use="pairwise.complete.obs", cex.cor, ...)
+    panel.cor <- function(x, y, digits=2, prefix="", use="pairwise.complete.obs", method, cex.cor, ...)
     {
         usr <- par("usr"); on.exit(par(usr))
         par(usr = c(0, 1, 0, 1))
-        r <- abs(cor(x, y, use = use))
+        r <- abs(cor(x, y, use = use,method=method))
         txt <- format(c(r, 0.123456789), digits=digits)[1]
         txt <- paste(prefix, txt, sep="")
         if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
@@ -67,9 +74,9 @@ function (R, histogram = TRUE, ...)
       }
     # Draw the chart
     if(histogram)
-        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel, ...)
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel, method=method, ...)
     else
-        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, ...)
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, method=method, ...)
 }
 
 ###############################################################################
@@ -80,6 +87,6 @@ function (R, histogram = TRUE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Correlation.R 2316 2013-01-28 21:38:59Z braverock $
 #
 ###############################################################################

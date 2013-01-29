@@ -80,6 +80,7 @@
 #' region when legend is placed by keyword.
 #' @seealso \code{\link[graphics]{legend}}
 #' @keywords internal
+#' @export 
 legend <-
 function (x, y = NULL, legend, fill = NULL, col = par("col"),
     lty, lwd, pch, angle = 45, density = NULL, bty = "o", bg = par("bg"),
@@ -507,6 +508,6 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: legend.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: legend.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

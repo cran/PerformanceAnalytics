@@ -9,7 +9,7 @@
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param colorset color palette to use, set by default to rational choices
 #' @param legend.loc places a legend into one of nine locations on the chart:
@@ -18,17 +18,22 @@
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso
-#' 
-#' \code{\link{plot}} \cr \code{\link{chart.TimeSeries}} \cr
-#' \code{\link{findDrawdowns}} \cr \code{\link{sortDrawdowns}} \cr
-#' \code{\link{maxDrawdown}} \cr \code{\link{table.Drawdowns}} \cr
+#' \code{\link{plot}} \cr 
+#' \code{\link{chart.TimeSeries}} \cr
+#' \code{\link{findDrawdowns}} \cr 
+#' \code{\link{sortDrawdowns}} \cr
+#' \code{\link{maxDrawdown}} \cr 
+#' \code{\link{table.Drawdowns}} \cr
 #' \code{\link{table.DownsideRisk}}
 #' @keywords ts
 #' @examples
 #' 
 #' data(edhec)
-#' chart.Drawdown(edhec[,c(1,2)], main="Drawdown from Peak Equity Attained", legend.loc="bottomleft")
+#' chart.Drawdown(edhec[,c(1,2)], 
+#' 		main="Drawdown from Peak Equity Attained", 
+#' 		legend.loc="bottomleft")
 #' 
+#' @export 
 chart.Drawdown <-
 function (R, geometric = TRUE, legend.loc = NULL, colorset = (1:12), ...)
 { # @author Peter Carl
@@ -78,6 +83,6 @@ function (R, geometric = TRUE, legend.loc = NULL, colorset = (1:12), ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Drawdown.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.Drawdown.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

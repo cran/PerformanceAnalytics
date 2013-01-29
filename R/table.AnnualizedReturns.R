@@ -5,7 +5,7 @@
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
 #' 12, quarterly scale = 4)
@@ -26,6 +26,7 @@
 #' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
 #' title(main="Annualized Performance")
 #' 
+#' @export
 table.AnnualizedReturns <-
 function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 {# @author Peter Carl
@@ -89,6 +90,6 @@ function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.AnnualizedReturns.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.AnnualizedReturns.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

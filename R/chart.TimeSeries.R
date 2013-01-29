@@ -23,7 +23,7 @@
 #' @param main set the chart title, same as in \code{\link{plot}}
 #' @param ylab set the y-axis label, same as in \code{\link{plot}}
 #' @param xlab set the x-axis label, same as in \code{\link{plot}}
-#' @param date.format re-format the dates for the xaxis; the default is "%m/%y"
+#' @param date.format re-format the dates for the xaxis; the default is "\%m/\%y"
 #' @param xlim set the x-axis limit, same as in \code{\link{plot}}
 #' @param ylim set the y-axis limit, same as in \code{\link{plot}}
 #' @param event.lines If not null, vertical lines will be drawn to indicate
@@ -51,7 +51,7 @@
 #' @param ylog TRUE/FALSE set the y-axis to logarithmic scale, similar to
 #' \code{\link{plot}}, default FALSE
 #' @param date.format.in allows specification of other date formats in the data
-#' object, defaults to "%Y-%m-%d"
+#' object, defaults to "\%Y-\%m-\%d"
 #' @param cex.axis The magnification to be used for axis annotation relative to
 #' the current setting of 'cex', same as in \code{\link{plot}}.
 #' @param cex.legend The magnification to be used for sizing the legend
@@ -67,6 +67,7 @@
 #' @param minor.ticks Should minor tickmarks be drawn, default TRUE
 #' @param xaxis.labels Allows for non-date labeling of date axes, default is
 #' NULL
+#' @param space default 0
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso \code{\link{plot}}, \code{\link{par}},
@@ -135,6 +136,7 @@
 #' chart.TimeSeries(Return.cumulative)
 #' chart.TimeSeries(Return.cumulative, colorset = "darkblue", legend.loc = "bottomright", period.areas = cycles.dates, period.color = "lightblue", event.lines = risk.dates, event.labels = risk.labels, event.color = "red", lwd = 2)
 #' 
+#' @export 
 chart.TimeSeries <-
 function (R, 
           auto.grid=TRUE, 
@@ -224,7 +226,7 @@ function (R,
 	)
     }
     # Needed for finding aligned dates for event lines and period areas
-    rownames = as.Date(time(y))
+    rownames = as.Date(xts:::time.xts(y))
     rownames = format(strptime(rownames,format = date.format.in), date.format)
 
     time.scale = periodicity(y)$scale
@@ -341,7 +343,7 @@ function (R,
     if(!is.null(legend.loc)){
         # There's no good place to put this automatically, except under the graph.
         # That requires a different solution, but here's the quick fix
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = cex.legend, border.col = element.color, lty = lty, lwd = 2, bg = "white", legend = columnnames)
+        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = cex.legend, border.col = element.color, lty = lty, lwd = 2, bg = "white", legend = columnnames, pch=pch)
     }
 
     # Add the other titles
@@ -360,6 +362,6 @@ function (R,
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.TimeSeries.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.TimeSeries.R 2292 2012-11-05 21:21:01Z braverock $
 #
 ###############################################################################

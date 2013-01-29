@@ -11,11 +11,16 @@ importFrom("zoo", "rollapply")
 
 export(
     ActivePremium,
+    AdjustedSharpeRatio,
     apply.fromstart,
     apply.rolling,
+    AppraisalRatio,
+    AverageDrawdown,
+    BernardoLedoitRatio,
     BetaCoKurtosis,
     BetaCoSkewness,
     BetaCoVariance,
+    BurkeRatio,
     CalculateReturns,
     CalmarRatio,
     CAPM.alpha,
@@ -24,6 +29,8 @@ export(
     CAPM.beta.bull,
     CAPM.CML,
     CAPM.CML.slope,
+    CAPM.epsilon,
+    CAPM.jensenAlpha,
     CAPM.RiskPremium,
     CAPM.SML.slope,
     CDD,
@@ -35,22 +42,40 @@ export(
 #    CoSkewnessMatrix, #export after co-moments paper is done
     CoVariance,
     DownsideDeviation,
+    DownsideFrequency,
     DownsidePotential,
+    DRatio,
     Drawdowns,
+    DrawdownDeviation,
     ES,
     ETL,
     CVaR,
+    DrawdownPeak,
     findDrawdowns,
+    FamaBeta,
+    Frequency,
     InformationRatio,
+    Kappa,
     KellyRatio,
     kurtosis,
+    M2Sortino,
     maxDrawdown,
+    MartinRatio,
+    MeanAbsoluteDeviation,
     mean.geometric,
     mean.LCL,
     mean.stderr,
     mean.UCL,
+    MSquared,
+    MSquaredExcess,
+    NetSelectivity,
     Omega,
+    OmegaExcessReturn,
+    OmegaSharpeRatio,
 #    pfolioReturn,
+    PainIndex,
+    PainRatio,
+    ProspectRatio,
     Return.annualized,
     Return.calculate,
     Return.centered,
@@ -64,27 +89,35 @@ export(
     Return.relative,
     sd.annualized,
     sd.multiperiod,
+    Selectivity,
     SemiDeviation,
     SemiVariance,
     SharpeRatio,
     SharpeRatio.annualized,
     SharpeRatio.modified,
     skewness,
+    SkewnessKurtosisRatio,
     SmoothingIndex,
     sortDrawdowns,
     SortinoRatio,
+    SpecificRisk,
     StdDev,
     StdDev.annualized,
     SterlingRatio,
+    SystematicRisk,
 #    style.fit,
 #    style.QPfit,
     TimingRatio,
+    TotalRisk,
     TrackingError,
     TreynorRatio,
     UpDownRatios,
     UPR,
+    UpsideFrequency,
     UpsidePotentialRatio,
-    VaR
+    UpsideRisk,
+    VaR,
+    VolatilitySkewness
 )
 
 ## Tables
@@ -96,14 +129,20 @@ export(
     table.CAPM,
     table.CaptureRatios,
     table.Correlation,
+    table.Distributions,
     table.DownsideRisk,
+    table.DownsideRiskRatio,
     table.Drawdowns,
+    table.DrawdownsRatio,
     table.HigherMoments,
+    table.InformationRatio,
     table.Returns,
+    table.SpecificRisk,
     table.Stats,
     table.TrailingPeriods,
     table.TrailingPeriodsRel,
-    table.UpDownRatios
+    table.UpDownRatios,
+    table.Variability
 )
 
 ## Charts
@@ -191,13 +230,6 @@ S3method(textplot, default)
 S3method(textplot, character)
 S3method(textplot, data.frame)
 S3method(textplot, matrix)
-
-S3method(mean,xts)
-S3method(sd,xts)
-S3method(mean,matrix)
-S3method(sd,matrix)
-
-S3method(rollapply,xts)
 
 # # Export These
 # ActivePremium

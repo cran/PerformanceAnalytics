@@ -1,0 +1,78 @@
+\name{UpsideRisk}
+\alias{UpsideRisk}
+\title{upside risk, variance and potential of the return distribution}
+\usage{
+  UpsideRisk(R, MAR = 0, method = c("full", "subset"),
+    stat = c("risk", "variance", "potential"), ...)
+}
+\arguments{
+  \item{R}{an xts, vector, matrix, data frame, timeSeries
+  or zoo object of asset returns}
+
+  \item{MAR}{Minimum Acceptable Return, in the same
+  periodicity as your returns}
+
+  \item{method}{one of "full" or "subset", indicating
+  whether to use the length of the full series or the
+  length of the subset of the series below the MAR as the
+  denominator, defaults to "full"}
+
+  \item{stat}{one of "risk", "variance" or "potential"
+  indicating whether to return the Upside risk, variance or
+  potential}
+
+  \item{\dots}{any other passthru parameters}
+}
+\description{
+  Upside Risk is the similar of semideviation taking the
+  return above the Minimum Acceptable Return instead of
+  using the mean return or zero. To calculate it, we take
+  the subset of returns that are more than the target (or
+  Minimum Acceptable Returns (MAR)) returns and take the
+  differences of those to the target.  We sum the squares
+  and divide by the total number of returns and return the
+  square root.
+}
+\details{
+  \deqn{ UpsideRisk(R , MAR) = \sqrt{\sum^{n}_{t=1}\frac{
+  max[(R_{t} - MAR), 0]^2}{n}}}{UpsideRisk(R, MAR) =
+  sqrt(1/n * sum(t=1..n) ((max(R(t)-MAR, 0))^2))}
+
+  \deqn{ UpsideVariance(R, MAR) =
+  \sum^{n}_{t=1}\frac{max[(R_{t} - MAR), 0]^2}
+  {n}}{UpsideVariance(R, MAR) = 1/n *
+  sum(t=1..n)((max(R(t)-MAR, 0))^2)}
+
+  \deqn{UpsidePotential(R, MAR) =
+  \sum^{n}_{t=1}\frac{max[(R_{t} - MAR), 0]}
+  {n}}{DownsidePotential(R, MAR) = 1/n *
+  sum(t=1..n)(max(R(t)-MAR, 0))}
+
+  where \eqn{n} is either the number of observations of the
+  entire series or the number of observations in the subset
+  of the series falling below the MAR.
+}
+\examples{
+data(portfolio_bacon)
+MAR = 0.005
+print(UpsideRisk(portfolio_bacon[,1], MAR, stat="risk")) #expected 0.02937
+print(UpsideRisk(portfolio_bacon[,1], MAR, stat="variance")) #expected 0.08628
+print(UpsideRisk(portfolio_bacon[,1], MAR, stat="potential")) #expected 0.01771
+
+MAR = 0
+data(managers)
+print(UpsideRisk(managers['1996'], MAR, stat="risk"))
+print(UpsideRisk(managers['1996',1], MAR, stat="risk")) #expected 1.820
+}
+\author{
+  Matthieu Lestel
+}
+\references{
+  Carl Bacon, \emph{Practical portfolio performance
+  measurement and attribution}, second edition 2008
+}
+\keyword{distribution}
+\keyword{models}
+\keyword{multivariate}
+\keyword{ts}
+

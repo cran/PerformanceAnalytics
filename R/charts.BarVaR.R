@@ -1,3 +1,5 @@
+#' @rdname chart.BarVaR
+#' @export 
 charts.BarVaR <-
 function (R, main = "Returns", cex.legend = 0.8, colorset=1:12, ylim=NA, ..., perpanel = NULL, show.yaxis = c("all", "firstonly", "alternating", "none"))
 { # @author Peter Carl
@@ -85,6 +87,6 @@ function (R, main = "Returns", cex.legend = 0.8, colorset=1:12, ylim=NA, ..., pe
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.BarVaR.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: charts.BarVaR.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

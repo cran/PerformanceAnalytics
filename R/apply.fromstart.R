@@ -21,6 +21,7 @@
 #' data(managers)
 #' apply.fromstart(managers[,1,drop=FALSE], FUN="mean", width=36)
 #' 
+#' @export
 #' 
 apply.fromstart <- function (R, FUN = "mean" , gap = 1, ...)
 { # @author Peter Carl
@@ -76,6 +77,6 @@ apply.fromstart <- function (R, FUN = "mean" , gap = 1, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.fromstart.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: apply.fromstart.R 1955 2012-05-23 16:38:16Z braverock $
 #
 ###############################################################################

@@ -19,19 +19,22 @@
 #' ideas.
 #' @param xlab set the x-axis label, as in \code{\link{plot}}
 #' @param ylab set the y-axis label, as in \code{\link{plot}}
+#' @param xaxis if true, draws the x axis
+#' @param yaxis if true, draws the y axis
+#' @param ylim set the y-axis limits, same as in \code{\link{plot}}
 #' @param main set the chart title, same as in \code{plot}
 #' @param las set the direction of axis labels, same as in \code{plot}
 #' @param envelope confidence level for point-wise confidence envelope, or
-#' 'FALSE' for no envelope.
+#' FALSE for no envelope.
 #' @param labels vector of point labels for interactive point identification,
-#' or 'FALSE' for no labels.
+#' or FALSE for no labels.
 #' @param col color for points and lines; the default is the \emph{second}
 #' entry in the current color palette (see 'palette' and 'par').
 #' @param lwd set the line width, as in \code{\link{plot}}
 #' @param pch symbols to use, see also \code{\link{plot}}
 #' @param cex symbols to use, see also \code{\link{plot}}
-#' @param line '"quartiles"' to pass a line through the quartile-pairs, or
-#' '"robust"' for a robust-regression line; the latter uses the 'rlm' function
+#' @param line 'quartiles' to pass a line through the quartile-pairs, or
+#' 'robust' for a robust-regression line; the latter uses the 'rlm' function
 #' in the 'MASS' package. Specifying 'line = "none"' suppresses the line.
 #' @param element.color provides the color for drawing chart elements, such as
 #' the box lines, axis lines, etc. Default is "darkgray"
@@ -44,8 +47,11 @@
 #' @param cex.main The magnification to be used for the main title relative to
 #' the current setting of 'cex'.
 #' @param \dots any other passthru parameters to the distribution function
+#' 
 #' @author John Fox, ported by Peter Carl
-#' @seealso \code{\link[stats]{qqplot}} \cr \code{\link[car]{qq.plot}} \cr
+#' @seealso 
+#' \code{\link[stats]{qqplot}} \cr 
+#' \code{\link[car]{qq.plot}} \cr
 #' \code{\link{plot}}
 #' @references main code forked/borrowed/ported from the excellent: \cr Fox,
 #' John (2007) \emph{car: Companion to Applied Regression} \cr
@@ -56,29 +62,44 @@
 #' 
 #' library(MASS)
 #' data(managers)
+#' 
 #' x = checkData(managers[,2, drop = FALSE], na.rm = TRUE, method = "vector")
+#' 
 #' #layout(rbind(c(1,2),c(3,4)))
+#' 
 #' # Panel 1, Normal distribution
 #' chart.QQPlot(x, main = "Normal Distribution", distribution = 'norm', envelope=0.95)
 #' # Panel 2, Log-Normal distribution
 #' fit = fitdistr(1+x, 'lognormal')
-#' chart.QQPlot(1+x, main = "Log-Normal Distribution", envelope=0.95, distribution='lnorm')#, meanlog = fit$estimate[[1]], sdlog = fit$estimate[[2]])
+#' chart.QQPlot(1+x, main = "Log-Normal Distribution", envelope=0.95, distribution='lnorm')
+#' #other options could include
+#' #, meanlog = fit$estimate[[1]], sdlog = fit$estimate[[2]])
+#' 
 #' \dontrun{
 #' # Panel 3, Skew-T distribution
 #' library(sn)
 #' fit = st.mle(y=x)
-#' chart.QQPlot(x, main = "Skew T Distribution", envelope=0.95, distribution = 'st', location = fit$dp[[1]], scale = fit$dp[[2]], shape = fit$dp[[3]], df=fit$dp[[4]])
+#' chart.QQPlot(x, main = "Skew T Distribution", envelope=0.95, 
+#'              distribution = 'st', location = fit$dp[[1]], 
+#'              scale = fit$dp[[2]], shape = fit$dp[[3]], df=fit$dp[[4]])
+#' 
 #' #Panel 4: Stable Parietian
 #' library(fBasics)
 #' fit.stable = stableFit(x,doplot=FALSE)
-#' chart.QQPlot(x, main = "Stable Paretian Distribution", envelope=0.95, distribution = 'stable', alpha = fit.stable@fit$estimate[[1]], beta = fit.stable@fit$estimate[[2]], gamma = fit.stable@fit$estimate[[3]], delta = fit.stable@fit$estimate[[4]], pm = 0)
+#' chart.QQPlot(x, main = "Stable Paretian Distribution", envelope=0.95, 
+#'              distribution = 'stable', alpha = fit(stable.fit)$estimate[[1]], 
+#'              beta = fit(stable.fit)$estimate[[2]], gamma = fit(stable.fit)$estimate[[3]], 
+#'              delta = fit(stable.fit)$estimate[[4]], pm = 0)
 #' }
+#' #end examples
 #' 
+#' @export 
 chart.QQPlot <-
 function(R, distribution="norm", ylab=NULL,
         xlab=paste(distribution, "Quantiles"), main=NULL, las=par("las"),
         envelope=FALSE, labels=FALSE, col=c(1,4), lwd=2, pch=1, cex=1,
-        line=c("quartiles", "robust", "none"), element.color = "darkgray", cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, ...)
+        line=c("quartiles", "robust", "none"), element.color = "darkgray", 
+        cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, xaxis=TRUE, yaxis=TRUE, ylim=NULL, ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -114,7 +135,7 @@ function(R, distribution="norm", ylab=NULL,
     P <- ppoints(n)
     z <- q.function(P, ...)
     plot(z, ord.x, xlab=xlab, ylab=ylab, main=main, las=las, col=col[1], pch=pch,
-        cex=cex, cex.main = cex.main, cex.lab = cex.lab, axes=FALSE, ...)
+        cex=cex, cex.main = cex.main, cex.lab = cex.lab, axes=FALSE, ylim=ylim, ...)
     if (line=="quartiles"){
         Q.x<-quantile(ord.x, c(.25,.75))
         Q.z<-q.function(c(.25,.75), ...)
@@ -192,9 +213,10 @@ function(R, distribution="norm", ylab=NULL,
 #     int = q.data[1] - slope* q.theo[1]
 # 
 #     if(line) abline(int, slope, col = colorset[2], lwd = 2)
-
-    axis(1, cex.axis = cex.axis, col = element.color)
-    axis(2, cex.axis = cex.axis, col = element.color)
+    if(xaxis)
+      axis(1, cex.axis = cex.axis, col = element.color)
+    if(yaxis)
+      axis(2, cex.axis = cex.axis, col = element.color)
 
     box(col=element.color)
 
@@ -208,6 +230,6 @@ function(R, distribution="norm", ylab=NULL,
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.QQPlot.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.QQPlot.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

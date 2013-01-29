@@ -24,7 +24,7 @@
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param Rf risk free rate, in same period as your returns, or as a sinlge
+#' @param Rf risk free rate, in same period as your returns, or as a single
 #' digit average
 #' @author Peter Carl
 #' @references Bacon, Carl. \emph{Practical Portfolio Performance Measurement
@@ -38,6 +38,7 @@
 #' head(Return.excess(managers[,1:6], managers[,10,drop=FALSE]))
 #' head(Return.excess(managers[,1,drop=FALSE], managers[,8,drop=FALSE]))
 #' 
+#' @export
 Return.excess <-
 function (R, Rf = 0)
 { # @author Peter Carl
@@ -63,27 +64,24 @@ function (R, Rf = 0)
     # and convert it to an xts object.
     if(!is.null(dim(Rf))){
         Rf = checkData(Rf)
-        indexseries=index(cbind(R,Rf))
-        columnname.Rf=colnames(Rf)
+        coln.Rf=colnames(Rf)
+        Rft=cbind(R,Rf)
+        Rft=na.locf(Rft[,make.names(coln.Rf)])
+        Rf=Rft[which(index(R) %in% index(Rft))]
     }
     else {
-        indexseries=index(R)
-        columnname.Rf=Rf
-        Rf=xts(rep(Rf, length(indexseries)),order.by=indexseries)
+        coln.Rf='Rf'
+        Rf = reclass(rep(Rf,length(index(R))),R) #patch thanks to Josh to deal w/ TZ issue
     }
 
     ## prototype
     ## xts(apply(managers[,1:6],2,FUN=function(R,Rf,order.by) {xts(R,order.by=order.by)-Rf}, Rf=xts(managers[,10,drop=F]),order.by=index(managers)),order.by=index(managers))
+ 
+    result = do.call(merge, lapply(1:NCOL(R), function(nc) R[,nc] - coredata(Rf))) # thanks Jeff!
     
-    return.excess <- function (R,Rf)
-    { # a function to be called by apply on the inner loop
-        xR = coredata(as.xts(R)-as.xts(Rf))
-    }
-    
-    result = apply(R, MARGIN=2, FUN=return.excess, Rf=Rf)
-    if (!is.matrix(result)) result = matrix(result, ncol=ncol(R))
-    colnames(result) = paste(colnames(R), ">", columnname.Rf)
-    result = reclass(result, R)
+    #if (!is.matrix(result)) result = matrix(result, ncol=ncol(R))
+    if(!is.null(dim(result))) colnames(result) = paste(colnames(R), ">", coln.Rf)
+    #result = reclass(result, R)
 
     # RESULTS:
     return(result)
@@ -97,6 +95,6 @@ function (R, Rf = 0)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.excess.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.excess.R 2315 2013-01-23 21:09:48Z braverock $
 #
 ###############################################################################

@@ -12,20 +12,26 @@
 #' bottomright, bottom, bottomleft, left, topleft, top, topright, right, or
 #' center.
 #' @param colorset color palette to use, set by default to rational choices
-#' @param na.pad TRUE/FALSE If TRUE it adds any times that would not otherwise
-#' have been in the result with a value of NA. If FALSE those times are
-#' dropped.
 #' @param \dots any other passthru parameters
+#' @param fill a three-component vector or list (recycled otherwise) providing 
+#' filling values at the left/within/to the right of the data range. See the 
+#' fill argument of \code{\link{na.fill}} for details.
+#' @details The previous parameter \code{na.pad} has been replaced with \code{fill}; use \code{fill = NA} instead of 
+#' \code{na.pad = TRUE}, or \code{fill = NULL} instead of \code{na.pad = FALSE}.
 #' @author Peter Carl
 #' @keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' # First we get the data
 #' data(managers)
-#' chart.RollingCorrelation(managers[, 1:6, drop=FALSE], managers[, 8, drop=FALSE], colorset=rich8equal, legend.loc="bottomright", width=24, main = "Rolling 12-Month Correlation")
+#' chart.RollingCorrelation(managers[, 1:6, drop=FALSE], 
+#' 		managers[, 8, drop=FALSE], 
+#' 		colorset=rich8equal, legend.loc="bottomright", 
+#' 		width=24, main = "Rolling 12-Month Correlation")
 #' 
+#' @export 
 chart.RollingCorrelation <-
-function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), na.pad = FALSE, ...)
+function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), ..., fill=NA)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -47,7 +53,7 @@ function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12)
     for(column.a in 1:columns.a) { # for each asset passed in as R
         for(column.b in 1:columns.b) { # against each asset passed in as Rb
             merged.assets = merge(Ra[,column.a,drop=FALSE], Rb[,column.b,drop=FALSE])
-            column.calc = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) cor(x[,1,drop=FALSE], x[,2,drop=FALSE]), by = 1, by.column = FALSE, na.pad = na.pad, align = "right")
+            column.calc = rollapply(na.omit(merged.assets[,,drop=FALSE]), width = width, FUN= function(x) cor(x[,1,drop=FALSE], x[,2,drop=FALSE]), by = 1, by.column = FALSE, fill = fill, align = "right")
 
             # some backflips to name the single column zoo object
             column.calc.tmp = xts(column.calc)
@@ -73,6 +79,6 @@ function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingCorrelation.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.RollingCorrelation.R 2318 2013-01-28 22:56:57Z peter_carl $
 #
 ###############################################################################

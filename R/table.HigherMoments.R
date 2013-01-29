@@ -33,6 +33,7 @@
 #' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Higher Co-Moments with SP500 TR")
 #' 
+#' @export
 table.HigherMoments <-
 function (Ra, Rb, scale = NA, Rf = 0, digits = 4, method = "moment")
 {# @author Peter Carl
@@ -121,6 +122,6 @@ function (Ra, Rb, scale = NA, Rf = 0, digits = 4, method = "moment")
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.HigherMoments.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.HigherMoments.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -21,7 +21,7 @@
 #' asset returns
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
 #' 12, quarterly scale = 4)
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @author Peter Carl
 #' @seealso \code{\link{Return.cumulative}},
@@ -35,6 +35,7 @@
 #' Return.annualized(managers[,1:8])
 #' Return.annualized(managers[,1:8],geometric=FALSE)
 #' 
+#' @export
 Return.annualized <-
 function (R, scale = NA, geometric = TRUE )
 { # @author Peter Carl
@@ -101,6 +102,6 @@ function (R, scale = NA, geometric = TRUE )
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.annualized.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.annualized.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

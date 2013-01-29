@@ -41,6 +41,7 @@
 #' round(SortinoRatio(managers[, 1]),4)
 #' round(SortinoRatio(managers[, 1:8]),4)
 #' 
+#' @export
 SortinoRatio <-
 function (R, MAR = 0,...,weights=NULL)
 { # @author Brian G. Peterson
@@ -62,7 +63,7 @@ function (R, MAR = 0,...,weights=NULL)
     
     sr <-function (R, MAR)
     {
-        SR = mean(Return.excess(R, MAR), na.rm=TRUE)/DownsideDeviation(R, MAR)
+        SR = mean(Return.excess(R, MAR), na.rm=TRUE)/DownsideDeviation(R, MAR, ...)
         SR
     }
 
@@ -82,6 +83,6 @@ function (R, MAR = 0,...,weights=NULL)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SortinoRatio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: SortinoRatio.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

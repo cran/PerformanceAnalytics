@@ -35,6 +35,7 @@
 #'     KellyRatio(managers[,1,drop=FALSE], Rf=managers[,10,drop=FALSE])
 #'     KellyRatio(managers[,1:6], Rf=managers[,10,drop=FALSE])
 #' 
+#' @export
 KellyRatio <-
 function (R, Rf = 0, method = "half")
 { # @author Brian G. Peterson
@@ -56,14 +57,14 @@ function (R, Rf = 0, method = "half")
     kr <- function (R, Rf, method)
     {
         xR = Return.excess(R, Rf)
-        KR =  mean(xR, na.rm=TRUE)/sd.xts(R, na.rm=TRUE)^2
+        KR =  mean(xR, na.rm=TRUE)/StdDev(R, na.rm=TRUE)^2
         if (method == "half") {
             KR = KR/2
         }
         return(KR)
     }
 
-    result = apply(R, 2, kr, Rf = Rf, method = method)
+    result = sapply(R, kr, Rf = Rf, method = method)
     dim(result) = c(1,NCOL(R))
     colnames(result) = colnames(R)
     rownames(result) = "Kelly Ratio"
@@ -78,6 +79,6 @@ function (R, Rf = 0, method = "half")
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: KellyRatio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: KellyRatio.R 2313 2013-01-23 20:24:43Z peter_carl $
 #
 ###############################################################################

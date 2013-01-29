@@ -28,6 +28,7 @@
 #' InformationRatio(managers[,1:6], managers[,8,drop=FALSE])
 #' InformationRatio(managers[,1:6], managers[,8:7])
 #' 
+#' @export
 InformationRatio <-
 function (Ra, Rb, scale = NA)
 { # @author Peter Carl
@@ -85,6 +86,6 @@ function (Ra, Rb, scale = NA)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: InformationRatio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: InformationRatio.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

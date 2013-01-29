@@ -9,7 +9,7 @@
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @author Peter Carl
 #' @seealso \code{\link{Return.annualized}}
@@ -23,6 +23,7 @@
 #' Return.cumulative(managers[,1:8])
 #' Return.cumulative(managers[,1:8],geometric=FALSE)
 #' 
+#' @export
 Return.cumulative <-
 function (R, geometric = TRUE)
 { # @author Peter Carl
@@ -56,6 +57,6 @@ function (R, geometric = TRUE)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.cumulative.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.cumulative.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

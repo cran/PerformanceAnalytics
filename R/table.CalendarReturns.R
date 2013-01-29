@@ -9,8 +9,8 @@
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param digits number of digits to round results to for presentation
-#' @param as.perc TRUE/FALSE if TRUE, multiply simple returns by 100 to get %
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param as.perc TRUE/FALSE if TRUE, multiply simple returns by 100 to get \%
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @note This function assumes monthly returns and does not currently have
 #' handling for other scales.
@@ -30,6 +30,7 @@
 #' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c( rep("darkgray",12), "black", "blue"), mar = c(0,0,3,0)+0.1)
 #' title(main="Calendar Returns")
 #' 
+#' @export
 table.CalendarReturns <-
 function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 {# @author Peter Carl
@@ -160,6 +161,6 @@ function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CalendarReturns.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: table.CalendarReturns.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

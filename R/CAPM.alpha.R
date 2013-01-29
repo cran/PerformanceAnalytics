@@ -22,14 +22,26 @@
 #' 
 #' # First we load the data
 #'     data(managers)
-#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12) 
-#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf=.035/12)
-#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf=.035/12) 
-#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1,drop=FALSE], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf=.035/12) 
+#'     CAPM.alpha(managers[,1,drop=FALSE], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf=.035/12)
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8:7,drop=FALSE], 
+#' 			Rf=.035/12) 
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8:7,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
 #' 
-#' 
+#' @export
 CAPM.alpha <- function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
 
@@ -52,7 +64,7 @@ CAPM.alpha <- function (Ra, Rb, Rf = 0)
     if(!is.null(dim(Rf)))
         Rf = checkData(Rf)
 
-    Ra.ncols = NCOL(Ra) 
+    Ra.ncols = NCOL(Ra)	
     Rb.ncols = NCOL(Rb)
 
     xRa = Return.excess(Ra, Rf)
@@ -88,6 +100,6 @@ CAPM.alpha <- function (Ra, Rb, Rf = 0)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.alpha.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: CAPM.alpha.R 2071 2012-06-25 14:11:34Z matthieu_lestel $
 #
 ###############################################################################

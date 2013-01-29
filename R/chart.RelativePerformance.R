@@ -35,8 +35,12 @@
 #' @examples
 #' 
 #' data(managers)
-#' chart.RelativePerformance(managers[, 1:6, drop=FALSE], managers[, 8, drop=FALSE], colorset=rich8equal, legend.loc="bottomright", main="Relative Performance to S&P")
+#' chart.RelativePerformance(managers[, 1:6, drop=FALSE], 
+#' 		managers[, 8, drop=FALSE], 
+#' 		colorset=rich8equal, legend.loc="bottomright", 
+#' 		main="Relative Performance to S&P")
 #' 
+#' @export 
 chart.RelativePerformance <-
 function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12), legend.loc = NULL, ylog = FALSE, elementcolor = "darkgray", lty = 1, cex.legend=.7, ...)
 { # @author Peter Carl
@@ -94,6 +98,6 @@ columnnames = colnames(Result.calc)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RelativePerformance.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.RelativePerformance.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

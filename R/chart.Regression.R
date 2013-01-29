@@ -45,8 +45,13 @@
 #' @examples
 #' 
 #' data(managers)
-#' chart.Regression(managers[, 1:2, drop = FALSE], managers[, 8, drop = FALSE], Rf = managers[, 10, drop = FALSE], excess.returns = TRUE, fit = c("loess", "linear"), legend.loc = "topleft")
+#' chart.Regression(managers[, 1:2, drop = FALSE], 
+#' 		managers[, 8, drop = FALSE], 
+#' 		Rf = managers[, 10, drop = FALSE], 
+#' 		excess.returns = TRUE, fit = c("loess", "linear"), 
+#' 		legend.loc = "topleft")
 #' 
+#' @export 
 chart.Regression <-
 function (Ra, Rb, Rf = 0, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, element.color = "darkgray", legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "conditional", "quadratic"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"),  ylim = NA, evaluation = 50, legend.cex= 0.8, cex = 0.8, lwd = 2, ...)
 { # @author Peter Carl
@@ -204,6 +209,6 @@ function (Ra, Rb, Rf = 0, excess.returns = FALSE, reference.grid = TRUE, main = 
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Regression.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Regression.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

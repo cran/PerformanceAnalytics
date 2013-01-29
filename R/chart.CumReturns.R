@@ -10,7 +10,7 @@
 #' asset returns
 #' @param wealth.index if \code{wealth.index} is \code{TRUE}, shows the "value
 #' of $1", starting the cumulation of returns at 1 rather than zero
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param legend.loc places a legend into one of nine locations on the chart:
 #' bottomright, bottom, bottomleft, left, topleft, top, topright, right, or
@@ -34,6 +34,7 @@
 #' chart.CumReturns(managers,main="Cumulative Returns",begin="first")
 #' chart.CumReturns(managers,main="Cumulative Returns",begin="axis")
 #' 
+#' @export 
 chart.CumReturns <-
 function (R, wealth.index = FALSE, geometric = TRUE, legend.loc = NULL, colorset = (1:12), begin = c("first","axis"), ...)
 { # @author Peter Carl
@@ -128,6 +129,6 @@ function (R, wealth.index = FALSE, geometric = TRUE, legend.loc = NULL, colorset
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.CumReturns.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.CumReturns.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

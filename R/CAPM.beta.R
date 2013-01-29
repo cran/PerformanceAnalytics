@@ -44,19 +44,43 @@
 #' @examples
 #' 
 #' data(managers)
-#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12) 
-#'     CAPM.alpha(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf=.035/12)
-#'     CAPM.alpha(managers[,1:6], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf=.035/12) 
-#'     CAPM.alpha(managers[,1:6], managers[,8:7,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#'     CAPM.beta(managers[, "HAM2", drop=FALSE], managers[, "SP500 TR", drop=FALSE], Rf = managers[, "US 3m TR", drop=FALSE])
-#'     CAPM.beta.bull(managers[, "HAM2", drop=FALSE], managers[, "SP500 TR", drop=FALSE], Rf = managers[, "US 3m TR", drop=FALSE])
-#'     CAPM.beta.bear(managers[, "HAM2", drop=FALSE], managers[, "SP500 TR", drop=FALSE], Rf = managers[, "US 3m TR", drop=FALSE])
-#'     TimingRatio(managers[, "HAM2", drop=FALSE], managers[, "SP500 TR", drop=FALSE], Rf = managers[, "US 3m TR", drop=FALSE])
-#'     chart.Regression(managers[, "HAM2", drop=FALSE], managers[, "SP500 TR", drop=FALSE], Rf = managers[, "US 3m TR", drop=FALSE], fit="conditional", main="Conditional Beta")
+#'     CAPM.alpha(managers[,1,drop=FALSE], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf=.035/12) 
+#'     CAPM.alpha(managers[,1,drop=FALSE], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf=.035/12)
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8:7,drop=FALSE], 
+#' 			Rf=.035/12) 
+#'     CAPM.alpha(managers[,1:6], 
+#' 			managers[,8:7,drop=FALSE], 
+#' 			Rf = managers[,10,drop=FALSE])
+#'     CAPM.beta(managers[, "HAM2", drop=FALSE], 
+#' 			managers[, "SP500 TR", drop=FALSE], 
+#' 			Rf = managers[, "US 3m TR", drop=FALSE])
+#'     CAPM.beta.bull(managers[, "HAM2", drop=FALSE], 
+#' 			managers[, "SP500 TR", drop=FALSE], 
+#' 			Rf = managers[, "US 3m TR", drop=FALSE])
+#'     CAPM.beta.bear(managers[, "HAM2", drop=FALSE], 
+#' 			managers[, "SP500 TR", drop=FALSE], 
+#' 			Rf = managers[, "US 3m TR", drop=FALSE])
+#'     TimingRatio(managers[, "HAM2", drop=FALSE], 
+#' 			managers[, "SP500 TR", drop=FALSE], 
+#' 			Rf = managers[, "US 3m TR", drop=FALSE])
+#'     chart.Regression(managers[, "HAM2", drop=FALSE], 
+#' 			managers[, "SP500 TR", drop=FALSE], 
+#' 			Rf = managers[, "US 3m TR", drop=FALSE], 
+#' 			fit="conditional", 
+#' 			main="Conditional Beta")
 #' 
-#' 
+#' @export
 CAPM.beta <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -87,15 +111,8 @@ function (Ra, Rb, Rf = 0)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
-    beta <-function (xRa, xRb)
-    {
-        merged = as.data.frame(na.omit(cbind(xRa, xRb)))
-        model.lm = lm(merged[,1] ~ merged[,2], merged)
-        beta = coef(model.lm)[[2]]
-        beta
-    }
-
-    result = apply(pairs, 1, FUN = function(n, xRa, xRb) beta(xRa[,n[1]], xRb[,n[2]]), xRa = xRa, xRb = xRb)
+    result = apply(pairs, 1, FUN = function(n, xRa, xRb)
+        .beta(xRa[,n[1]], xRb[,n[2]]), xRa = xRa, xRb = xRb)
 
     if(length(result) ==1)
         return(result)
@@ -107,6 +124,8 @@ function (Ra, Rb, Rf = 0)
     }
 }
 
+#' @rdname CAPM.beta
+#' @export 
 CAPM.beta.bull <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -137,17 +156,8 @@ function (Ra, Rb, Rf = 0)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
-    beta <-function (xRa, xRb)
-    {
-        merged = na.omit(cbind(xRa, xRb))
-        merged = as.data.frame(merged)
-        colnames(merged) = c("xRa","xRb")
-        model.lm = lm(xRa ~ xRb, merged, subset= (xRb > 0))
-        beta = coef(model.lm)[[2]]
-        beta
-    }
-
-    result = apply(pairs, 1, FUN = function(n, xRa, xRb) beta(xRa[,n[1]], xRb[,n[2]]), xRa = xRa, xRb = xRb)
+    result = apply(pairs, 1, FUN = function(n, xRa, xRb)
+        .beta(xRa[,n[1]], xRb[,n[2]], xRb[,n[2]] > 0), xRa = xRa, xRb = xRb)
 
     if(length(result) ==1)
         return(result)
@@ -159,6 +169,8 @@ function (Ra, Rb, Rf = 0)
     }
 }
 
+#' @rdname CAPM.beta
+#' @export 
 CAPM.beta.bear <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -189,17 +201,8 @@ function (Ra, Rb, Rf = 0)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
 
-    beta <-function (xRa, xRb)
-    {
-        merged = na.omit(cbind(xRa, xRb))
-        merged = as.data.frame(merged)
-        colnames(merged) = c("xRa","xRb")
-        model.lm = lm(xRa ~ xRb, merged, subset= (xRb < 0))
-        beta = coef(model.lm)[[2]]
-        beta
-    }
-
-    result = apply(pairs, 1, FUN = function(n, xRa, xRb) beta(xRa[,n[1]], xRb[,n[2]]), xRa = xRa, xRb = xRb)
+    result = apply(pairs, 1, FUN = function(n, xRa, xRb)
+        .beta(xRa[,n[1]], xRb[,n[2]], xRb[,n[2]] < 0), xRa = xRa, xRb = xRb)
 
     if(length(result) ==1)
         return(result)
@@ -212,6 +215,8 @@ function (Ra, Rb, Rf = 0)
 }
 
 
+#' @rdname CAPM.beta
+#' @export 
 TimingRatio <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -231,6 +236,27 @@ function (Ra, Rb, Rf = 0)
         return(result)
     }
 }
+
+.beta <- function (xRa, xRb, subset) {
+    # subset is assumed to be a logical vector
+    if(missing(subset))
+        subset <- TRUE
+    # check columns
+    if(NCOL(xRa)!=1L || NCOL(xRb)!=1L || NCOL(subset)!=1L)
+        stop("all arguments must have only one column")
+    # merge, drop NA
+    merged <- as.data.frame(na.omit(cbind(xRa, xRb, subset)))
+    # return NA if no non-NA values
+    if(NROW(merged)==0)
+        return(NA)
+    # add column names and convert subset back to logical
+    colnames(merged) <- c("xRa","xRb","subset")
+    merged$subset <- as.logical(merged$subset)
+    # calculate beta
+    model.lm = lm(xRa ~ xRb, data=merged, subset=merged$subset)
+    beta = coef(model.lm)[[2]]
+    beta
+}
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
@@ -239,6 +265,6 @@ function (Ra, Rb, Rf = 0)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.beta.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: CAPM.beta.R 2304 2012-12-15 20:19:56Z bodanker $
 #
 ###############################################################################

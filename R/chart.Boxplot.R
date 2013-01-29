@@ -47,6 +47,7 @@
 #' chart.Boxplot(edhec)
 #' chart.Boxplot(edhec,as.Tufte=TRUE)
 #' 
+#' @export 
 chart.Boxplot <-
 function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
 { # @author Peter Carl
@@ -153,6 +154,6 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Boxplot.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Boxplot.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

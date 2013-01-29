@@ -1,49 +1,85 @@
 \name{Return.calculate}
 \alias{CalculateReturns}
 \alias{Return.calculate}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{ calculate simple or compound returns from prices }
-\description{
-calculate simple or compound returns from prices
-}
+\title{calculate simple or compound returns from prices}
 \usage{
-Return.calculate(prices, method=c("compound","simple"))
-CalculateReturns(prices, method=c("compound","simple"))
+  Return.calculate(prices, method = c("discrete", "log"))
+
+  CalculateReturns(prices, method = c("discrete", "log"))
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{prices}{ data object containing ordered price observations }
-  \item{method}{ calculate "simple" or "compound" returns, default compound }
-}
+  \item{prices}{data object containing ordered price
+  observations}
 
+  \item{method}{calculate "discrete" or "log" returns,
+  default discrete(simple)}
+}
+\description{
+  calculate simple or compound returns from prices
+}
 \details{
-Two requirements should be made clear.  First, the function \code{Return.calculate} assumes regular price data.  In this case, we downloaded monthly close prices.  Prices can be for any time scale, such as daily, weekly, monthly or annual, as long as the data consists of regular observations.  Irregular observations require time period scaling to be comparable.  Fortunately, \code{\link[xts]{to.period}} in the \code{xts} package, or the \code{\link[zoo]{aggregate.zoo}} in the \code{zoo} package supports supports management and conversion of irregular time series.
+  Two requirements should be made clear.  First, the
+  function \code{Return.calculate} assumes regular price
+  data.  In this case, we downloaded monthly close prices.
+  Prices can be for any time scale, such as daily, weekly,
+  monthly or annual, as long as the data consists of
+  regular observations.  Irregular observations require
+  time period scaling to be comparable.  Fortunately,
+  \code{\link[xts]{to.period}} in the \code{xts} package,
+  or the \code{\link[zoo]{aggregate.zoo}} in the \code{zoo}
+  package supports supports management and conversion of
+  irregular time series.
 
-Second, if corporate actions, dividends, or other adjustments such as time- or money-weighting are to be taken into account, those calculations must be made separately. This is a simple function that assumes fully adjusted close prices as input.  For the IBM timeseries in the example below, dividends and corporate actions are not contained in the "close" price series, so we end up with "price returns" instead of "total returns".  This can lead to significant underestimation of the return series over longer time periods.  To use adjusted returns, specify \code{quote="AdjClose"} in \code{\link[tseries]{get.hist.quote}}, which is found in package \code{tseries}.
-}
-\references{ Bacon, C. \emph{Practical Portfolio Performance Measurement and Attribution}. Wiley. 2004. Chapter 2 \cr
-}
-\author{ Peter Carl }
-\seealso{
-    \code{\link{Return.cumulative}}
+  Second, if corporate actions, dividends, or other
+  adjustments such as time- or money-weighting are to be
+  taken into account, those calculations must be made
+  separately. This is a simple function that assumes fully
+  adjusted close prices as input.  For the IBM timeseries
+  in the example below, dividends and corporate actions are
+  not contained in the "close" price series, so we end up
+  with "price returns" instead of "total returns".  This
+  can lead to significant underestimation of the return
+  series over longer time periods. To use adjusted returns,
+  specify \code{quote="AdjClose"} in
+  \code{\link[tseries]{get.hist.quote}}, which is found in
+  package \code{tseries}.
+
+  We have changes the default arguments and settings for
+  \code{method} from \code{compound} and \code{simple} to
+  \code{discrete} and \code{log} and \code{discrete} to
+  avoid confusing between the return type and the chaining
+  method.  In most of the rest of
+  \code{PerformanceAnalytics}, compound and simple are used
+  to refer to the \emph{return chaining} method used for
+  the returns. The default for this function is to use
+  discrete returns, because most other package functions
+  use compound chaining by default.
 }
 \examples{
-  \dontrun{
+\dontrun{
     require(tseries)
     prices = get.hist.quote("IBM", start = "1999-01-01", end = "2007-01-01", quote = "AdjClose", compression = "d")
   }
   \dontshow{
     data(prices)
   }
-R.IBM = Return.calculate(prices, method="simple")
-R.IBM = as.xts(R.IBM)
+R.IBM = Return.calculate(xts(prices), method="discrete")
 colnames(R.IBM)="IBM"
 chart.CumReturns(R.IBM,legend.loc="topleft", main="Cumulative Daily Returns for IBM")
 round(R.IBM,2)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ts }
-\keyword{ multivariate }
-\keyword{ distribution }
-\keyword{ models }
+\author{
+  Peter Carl
+}
+\references{
+  Bacon, C. \emph{Practical Portfolio Performance
+  Measurement and Attribution}. Wiley. 2004. Chapter 2 \cr
+}
+\seealso{
+  \code{\link{Return.cumulative}}
+}
+\keyword{distribution}
+\keyword{models}
+\keyword{multivariate}
+\keyword{ts}
+

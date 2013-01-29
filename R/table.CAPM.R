@@ -28,6 +28,7 @@
 #' title(main="CAPM-Related Statistics")
 #' 
 #' 
+#' @export
 table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 {# @author Peter Carl
 
@@ -153,6 +154,6 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CAPM.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.CAPM.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -1,6 +1,8 @@
 ###############################################################################
-# $Id: VaR.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: VaR.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
 ###############################################################################
+
+
 
 
 
@@ -45,7 +47,6 @@
 #' The prototype of the univariate Cornish Fisher VaR function was completed by
 #' Prof. Diethelm Wuertz.  All corrections to the calculation and error
 #' handling are the fault of Brian Peterson.
-#' 
 #' @section Background: This function provides several estimation methods for
 #' the Value at Risk (typically written as VaR) of a return series and the
 #' Component VaR of a portfolio. Take care to capitalize VaR in the commonly
@@ -64,9 +65,8 @@
 #' decomposition is possible in a financially meaningful way.
 #' @author Brian G. Peterson and Kris Boudt
 #' @seealso \code{\link{SharpeRatio.modified}} \cr
-#' \code{\link{chart.VaRSensitivity}} \cr % \code{\link[VaR]{VaR.gpd}} \cr %
-#' \code{\link[VaR]{VaR.norm}} \cr % \code{\link[VaR]{VaR.backtest}} \cr
-#' \code{\link{Return.clean}} \cr
+#' \code{\link{chart.VaRSensitivity}} \cr
+#' \code{\link{Return.clean}} 
 #' @references Boudt, Kris, Peterson, Brian, and Christophe Croux. 2008.
 #' Estimation and decomposition of downside risk for portfolios with non-normal
 #' returns. 2008. The Journal of Risk, vol. 11, 79-103.
@@ -129,6 +129,7 @@
 #'     # add Component VaR for the equal weighted portfolio
 #'     VaR(edhec, clean="boudt", portfolio_method="component")
 #' 
+#' @export
 VaR <-
 function (R=NULL , p=0.95, ..., method=c("modified","gaussian","historical", "kernel"), clean=c("none","boudt","geltner"),  portfolio_method=c("single","component","marginal"), weights=NULL, mu=NULL, sigma=NULL, m3=NULL, m4=NULL, invert=TRUE)
 { # @author Brian G. Peterson
@@ -250,6 +251,6 @@ function (R=NULL , p=0.95, ..., method=c("modified","gaussian","historical", "ke
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: VaR.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: VaR.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
 #
 ###############################################################################

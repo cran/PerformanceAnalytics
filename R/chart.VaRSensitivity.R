@@ -41,8 +41,11 @@
 #' @examples
 #' 
 #' data(managers)
-#' chart.VaRSensitivity(managers[,1,drop=FALSE], methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), colorset=bluefocus, lwd=2)
+#' chart.VaRSensitivity(managers[,1,drop=FALSE], 
+#' 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), 
+#' 		colorset=bluefocus, lwd=2)
 #' 
+#' @export 
 chart.VaRSensitivity <-
 function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","GaussianES", "ModifiedES", "HistoricalES"), clean=c("none", "boudt", "geltner"), elementcolor="darkgray", reference.grid=TRUE, xlab = "Confidence Level", ylab="Value at Risk", type = "l", lty = c(1,2,4), lwd = 1, colorset = (1:12), pch = (1:12), legend.loc = "bottomleft", cex.legend = 0.8, main=NULL,...)
 { # @author Peter Carl
@@ -151,6 +154,6 @@ function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","Gaussian
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.VaRSensitivity.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.VaRSensitivity.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

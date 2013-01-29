@@ -17,6 +17,7 @@
 #' data(managers)
 #' head(Return.relative(managers[,1:3], managers[,8,drop=FALSE]),n=20)
 #' 
+#' @export
 Return.relative <-
 function (Ra, Rb, ...)
 { # @author Peter Carl
@@ -69,6 +70,6 @@ function (Ra, Rb, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.relative.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.relative.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

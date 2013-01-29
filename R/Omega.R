@@ -66,6 +66,7 @@
 #'     Omega(edhec[,13],method="interp",output="point")
 #'     Omega(edhec[,13],method="interp",output="full")
 #' 
+#' @export
 Omega <-
 function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), output = c("point", "full"), Rf = 0, ...)
 { # @author Peter Carl
@@ -188,6 +189,6 @@ function(R, L = 0, method = c("simple", "interp", "binomial", "blackscholes"), o
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Omega.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Omega.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

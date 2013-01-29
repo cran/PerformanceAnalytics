@@ -10,7 +10,7 @@
 #' @param Rf risk free rate, in same period as your returns
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
 #' 12, quarterly scale = 4)
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param main set the chart title, same as in \code{plot}
 #' @param add.names plots the row name with the data point.  default TRUE. Can
@@ -57,6 +57,7 @@
 #' chart.RiskReturnScatter(edhec, Rf = .04/12)
 #' chart.RiskReturnScatter(edhec, Rf = .04/12, add.boxplots = TRUE)
 #' 
+#' @export 
 chart.RiskReturnScatter <-
 function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab = "Annualized Risk", ylab = "Annualized Return", method = "calc", geometric = TRUE, scale = NA, add.sharpe = c(1,2,3), add.boxplots = FALSE, colorset = 1, symbolset = 1, element.color = "darkgray", legend.loc = NULL, xlim = NULL, ylim = NULL, cex.legend = 1, cex.axis = 0.8, cex.main = 1, cex.lab = 1, ...)
 { # @author Peter Carl
@@ -209,6 +210,6 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RiskReturnScatter.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.RiskReturnScatter.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

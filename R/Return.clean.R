@@ -37,6 +37,7 @@
 #' head(Return.clean(managers[,1:4]),n=20)
 #' chart.BarVaR(managers[,1,drop=FALSE], show.clean=TRUE, clean="boudt", lwd=2, methods="ModifiedVaR")
 #' 
+#' @export
 Return.clean <-
 function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 { # @author Peter Carl
@@ -93,6 +94,8 @@ function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 
 
 
+
+
 #' clean extreme observations in a time series to to provide more robust risk
 #' estimates
 #' 
@@ -119,12 +122,12 @@ function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 #' \eqn{n}-dimensional vector time series of length \eqn{T}: \eqn{r_1,...,r_T}.
 #' We clean this time series in three steps.
 #' 
-#' \describe{ \item{ Ranking the observations in function of their
-#' extremeness:}{Denote \eqn{\mu} and \eqn{\Sigma} the mean and covariance
+#' \enumerate{ \item \emph{ Ranking the observations in function of their
+#' extremeness. }Denote \eqn{\mu} and \eqn{\Sigma} the mean and covariance
 #' matrix of the bulk of the data and let \eqn{\lfloor \cdot \rfloor}{floor()}
 #' be the operator that takes the integer part of its argument. As a measure of
 #' the extremeness of the return observation \eqn{r_t}, we use its squared
-#' Mahalanobis distance \eqn{ d^2_t = (r_t-\mu)'\Sigma^{-1}(r_t-\mu).} We
+#' Mahalanobis distance \eqn{ d^2_t = (r_t-\mu)'\Sigma^{-1}(r_t-\mu)}.  We
 #' follow Rousseeuw(1985) by estimating \eqn{\mu} and \eqn{\Sigma} as the mean
 #' vector and covariance matrix (corrected to ensure consistency) of the subset
 #' of size \eqn{\lfloor (1-\alpha)T\rfloor}{floor((1-\alpha)T)} for which the
@@ -132,26 +135,28 @@ function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 #' smallest. These estimates will be robust against the \eqn{\alpha} most
 #' extreme returns. Let \eqn{d^2_{(1)},...,d^2_{(T)}} be the ordered sequence
 #' of the estimated squared Mahalanobis distances such that \eqn{d^2_{(i)}\leq
-#' d^2_{(i+1)}}.}
+#' d^2_{(i+1)}}.
 #' 
-#' \item{Outlier identification:}{Return observations are qualified as outliers
-#' if their estimated squared Mahalanobis distance \eqn{d^2_t} is greater than
-#' the empirical \eqn{1-\alpha} quantile \eqn{d^2_{(\lfloor (1-\alpha)T
-#' \rfloor)}}{floor((1-\alpha)T)} and exceeds a very extreme quantile of the
-#' Chi squared distribution function with \eqn{n} degrees of freedom, which is
-#' the distribution function of \eqn{d^2_t} when the returns are normally
-#' distributed. In this application we take the 99.9% quantile, denoted
-#' \eqn{\chi^2_{n,0.999}}.}
+#' \item \emph{Outlier identification.} Return observations are qualified as
+#' outliers if their estimated squared Mahalanobis distance \eqn{d^2_t} is
+#' greater than the empirical \eqn{1-\alpha} quantile \eqn{d^2_{(\lfloor
+#' (1-\alpha)T \rfloor)}}{floor((1-\alpha)T)} and exceeds a very extreme
+#' quantile of the Chi squared distribution function with \eqn{n} degrees of
+#' freedom, which is the distribution function of \eqn{d^2_t} when the returns
+#' are normally distributed. In this application we take the 99.9\% quantile,
+#' denoted \eqn{\chi ^2_{n,0.999}}.
 #' 
-#' \item{Data cleaning:}{Similarly to Khan(2007) we only clean the returns that
-#' are identified as outliers in step 2 by replacing these returns \eqn{r_t}
-#' with \deqn{r_t\sqrt{\frac{\max(d^2_{(\lfloor }{r_t *
-#' sqrt(max(d^2_floor((1-\alpha)T),\chi^2_{n,0.999})/d^2_t)}\deqn{(1-\alpha)T)\rfloor},\chi^2_{n,0.999})}{d^2_t}}}{r_t
-#' * sqrt(max(d^2_floor((1-\alpha)T),\chi^2_{n,0.999})/d^2_t)} The cleaned
+#' \item \emph{Data cleaning. } Similarly to Khan(2007) we only clean the
+#' returns that are identified as outliers in step 2 
+#' by replacing these returns \eqn{r_t} with 
+#' \deqn{r_t\sqrt{\frac{\max(d^2_{(\lfloor(1-\alpha)T)\rfloor},\chi^2_{n,0.999})}{d^2_t}}}{r_t * sqrt(max(d^2_floor((1-\alpha)T),\chi^2_{n,0.999})/d^2_t)}
+#' The cleaned
 #' return vector has the same orientation as the original return vector, but
 #' its magnitude is smaller. Khan(2007) calls this procedure of limiting the
 #' value of \eqn{d^2_t} to a quantile of the \eqn{\chi^2_n} distribution,
-#' ``multivariate Winsorization'.} }
+#' ``multivariate Winsorization'.
+#' 
+#' }
 #' 
 #' Note that the primary value of data cleaning lies in creating a more robust
 #' and stable estimation of the distribution generating the large majority of
@@ -169,7 +174,7 @@ function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param alpha probability to filter at 1-alpha, defaults to .01 (99%)
+#' @param alpha probability to filter at 1-alpha, defaults to .01 (99\%)
 #' @param trim where to set the "extremeness" of the Mahalanobis distance
 #' @return cleaned data matrix
 #' @note This function and much of this text was originally written for Boudt,
@@ -191,6 +196,7 @@ function(R, method = c("none","boudt","geltner"), alpha=.01, ...)
 #' In W. Grossmann, G. Pflug, I. Vincze, and W. Wertz (Eds.), Mathematical
 #' Statistics and Its Applications, Volume B, pp. 283?297. Dordrecht-Reidel.
 #' @keywords ts multivariate distribution models
+#' @export
 clean.boudt <-
 function(R, alpha=.01 , trim=1e-3)
 {# @author Kris Boudt, Brian Peterson
@@ -257,6 +263,6 @@ function(R, alpha=.01 , trim=1e-3)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.clean.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.clean.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

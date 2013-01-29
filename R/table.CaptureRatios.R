@@ -28,6 +28,7 @@
 #' textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Capture Ratios for EDHEC LS EQ")
 #' 
+#' @export
 table.CaptureRatios <-
 function (Ra, Rb, digits = 4)
 {# @author Peter Carl
@@ -74,6 +75,6 @@ function (Ra, Rb, digits = 4)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CaptureRatios.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.CaptureRatios.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

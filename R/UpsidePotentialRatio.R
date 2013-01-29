@@ -7,7 +7,15 @@
 #' measurement of only upside on the numerator, and only downside of the
 #' denominator of the ratio equation.
 #' 
-
+#' calculate Upside Potential Ratio of upside performance over downside risk
+#' 
+#' Sortino proposed an improvement on the Sharpe Ratio to better account for
+#' skill and excess performance by using only downside semivariance as the
+#' measure of risk.  That measure is the \code{\link{SortinoRatio}}. This
+#' function, Upside Potential Ratio, was a further improvement, extending the
+#' measurement of only upside on the numerator, and only downside of the
+#' denominator of the ratio equation.
+#' 
 #' 
 #' Sortino contends that risk should be measured in terms of not meeting the
 #' investment goal.  This gives rise to the notion of \dQuote{Minimum
@@ -60,7 +68,7 @@
 #' data(edhec)
 #' UpsidePotentialRatio(edhec[, 6], MAR=.05/12) #5 percent/yr MAR
 #' UpsidePotentialRatio(edhec[, 1:6], MAR=0)
-#' 
+#' @export
 UpsidePotentialRatio <-
 function (R, MAR = 0, method=c("subset","full"))
 { # @author Brian G. Peterson
@@ -119,6 +127,6 @@ function (R, MAR = 0, method=c("subset","full"))
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: UpsidePotentialRatio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: UpsidePotentialRatio.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

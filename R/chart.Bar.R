@@ -31,6 +31,7 @@
 #' data(edhec)
 #' chart.Bar(edhec[,"Funds of Funds"], main="Monthly Returns")
 #' 
+#' @export 
 chart.Bar <- function (R, legend.loc = NULL, colorset = (1:12), ...)
 { # @author Peter Carl
 
@@ -62,6 +63,6 @@ chart.Bar <- function (R, legend.loc = NULL, colorset = (1:12), ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Bar.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Bar.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

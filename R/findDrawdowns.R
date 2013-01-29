@@ -8,23 +8,30 @@
 #' \code{Drawdowns} will calculate the drawdown levels as percentages, for use
 #' in \code{\link{chart.Drawdown}}.
 #' 
-#' Returns an unordered list: \cr \describe{ \item{return }{depth of drawdown}
-#' \item{from }{starting period} \item{to }{ending period} \item{length
-#' }{length in periods} }
+#' Returns an unordered list: \cr 
+#' \itemize{ 
+#'   \item return depth of drawdown
+#'   \item from starting period 
+#'   \item to ending period \item length length in periods 
+#' }
 #' 
 #' @aliases findDrawdowns Drawdowns
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' 
 #' \code{findDrawdowns} modified with permission from function by Sankalp
 #' Upadhyay
-#' @seealso \code{\link{sortDrawdowns}} \cr \code{\link{maxDrawdown}} \cr
-#' \code{\link{sortDrawdowns}} \cr \code{\link{table.Drawdowns}} \cr
-#' \code{\link{table.DownsideRisk}} \cr \code{\link{chart.Drawdown}} \cr
+#' @seealso 
+#' \code{\link{sortDrawdowns}} \cr 
+#' \code{\link{maxDrawdown}} \cr
+#' \code{\link{sortDrawdowns}} \cr 
+#' \code{\link{table.Drawdowns}} \cr
+#' \code{\link{table.DownsideRisk}} \cr 
+#' \code{\link{chart.Drawdown}} \cr
 #' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
 #' Attribution}. Wiley. 2004. p. 88 \cr
 #' @keywords ts multivariate distribution models
@@ -34,6 +41,7 @@
 #' findDrawdowns(edhec[,"Funds of Funds", drop=FALSE])
 #' sortDrawdowns(findDrawdowns(edhec[,"Funds of Funds", drop=FALSE]))
 #' 
+#' @export
 findDrawdowns <-
 function (R, geometric = TRUE, ...)
 { # @author Peter Carl
@@ -110,6 +118,6 @@ function (R, geometric = TRUE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: findDrawdowns.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: findDrawdowns.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

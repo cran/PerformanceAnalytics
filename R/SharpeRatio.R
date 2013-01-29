@@ -37,7 +37,9 @@
 #' @param Rf risk free rate, in same period as your returns
 #' @param p confidence level for calculation, default p=.95
 #' @param FUN one of "StdDev" or "VaR" or "ES" to use as the denominator
-#' @param weights portfolio weighting vector, default NULL
+#' @param weights portfolio weighting vector, default NULL, see Details in
+#' \code{\link{VaR}}
+#' @param annualize if TRUE, annualize the measure, default FALSE
 #' @param \dots any other passthru parameters to the VaR or ES functions
 #' @author Brian G. Peterson
 #' @seealso \code{\link{SharpeRatio.annualized}} \cr
@@ -70,6 +72,9 @@
 #' # and all the methods
 #' SharpeRatio(managers[,1:9], Rf = managers[,10,drop=FALSE])
 #' SharpeRatio(edhec,Rf = .04/12)
+#' 
+#' @export 
+#' @rdname SharpeRatio
 #' 
 SharpeRatio <-
 function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annualize = FALSE , ...)
@@ -153,9 +158,9 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annual
     for (FUNCT in FUN){
         if (is.null(weights)){
             if(annualize)
-                result[i,] = apply(R, MARGIN=2, FUN=sra, Rf=Rf, p=p, FUNC=FUNCT, ...)
+                result[i,] = sapply(R, FUN=sra, Rf=Rf, p=p, FUNC=FUNCT, ...)
             else
-                result[i,] = apply(R, MARGIN=2, FUN=srm, Rf=Rf, p=p, FUNC=FUNCT, ...)
+                result[i,] = sapply(R, FUN=srm, Rf=Rf, p=p, FUNC=FUNCT, ...)
         }
         else { # TODO FIX this calculation, currently broken
             result[i,] = mean(R%*%weights,na.rm=TRUE)/match.fun(FUNCT)(R, Rf=Rf, p=p, weights=weights, portfolio_method="single", ...=...)
@@ -167,6 +172,8 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annual
     return (result)
 }
 
+#' @export 
+#' @rdname SharpeRatio
 SharpeRatio.modified <-
 function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, ...) {
     .Deprecated("SharpeRatio", package="PerformanceAnalytics", "The SharpeRatio.modified function has been deprecated in favor of a newer SharpeRatio wrapper that will cover both the classic case and a larger suite of modified Sharpe Ratios.  This deprecated function may be removed from future versions")
@@ -182,6 +189,6 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, ...) {
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: SharpeRatio.R 2312 2013-01-23 20:19:25Z peter_carl $
 #
 ###############################################################################

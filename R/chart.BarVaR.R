@@ -1,6 +1,6 @@
 #' Periodic returns in a bar chart with risk metric overlay
 #' 
-#' Plots the periodic returns in a bar chart overlayed with a risk metric
+#' Plots the periodic returns as a bar chart overlayed with a risk metric
 #' calculation.
 #' 
 #' Note that \code{StdDev} and \code{VaR} are symmetric calculations, so a high
@@ -11,6 +11,10 @@
 #' indicate value on the y-axis.  Overlays a line to indicate the value of a
 #' risk metric calculated at that time period.
 #' 
+#' \code{charts.BarVaR} places multile bar charts in a single 
+#' graphic, with associated risk measures 
+#' 
+#' @name chart.BarVaR
 #' @aliases chart.BarVaR charts.BarVaR
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
@@ -44,6 +48,12 @@
 #' @param show.symmetric if TRUE and the metric is symmetric, this will show
 #' the metric's positive values as well as negative values, such as for method
 #' "StdDev".
+#' @param show.endvalue if TRUE, show the final (out of sample) value
+#' @param show.greenredbars if TRUE, show the per-period returns using green
+#' and red bars for positive and negative returns
+#' @param show.yaxis one of "all", "firstonly", "alternating", or "none" to
+#' control where y axis is plotted in multipanel charts
+#' @param perpanel default NULL, controls column display
 #' @param ylim set the y-axis limit, same as in \code{\link{plot}}
 #' @param lwd set the line width, same as in \code{\link{plot}}
 #' @param lty set the line type, same as in \code{\link{plot}}
@@ -68,25 +78,48 @@
 #' chart.BarVaR(managers[,1,drop=FALSE], main="Monthly Returns")
 #' 
 #' # with risk line
-#' chart.BarVaR(managers[,1,drop=FALSE], methods="HistoricalVaR", main="... with Empirical VaR from Inception")
+#' chart.BarVaR(managers[,1,drop=FALSE], 
+#' 		methods="HistoricalVaR", 
+#' 		main="... with Empirical VaR from Inception")
 #' 
 #' # with lines for all managers in the sample
-#' chart.BarVaR(managers[,1:6], methods="GaussianVaR", all=TRUE, lty=1, lwd=2, colorset= c("red", rep("gray", 5)), main="... with Gaussian VaR and Estimates for Peers")
+#' chart.BarVaR(managers[,1:6], 
+#' 		methods="GaussianVaR", 
+#' 		all=TRUE, lty=1, lwd=2, 
+#' 		colorset= c("red", rep("gray", 5)), 
+#' 		main="... with Gaussian VaR and Estimates for Peers")
 #' 
 #' # with multiple methods
-#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), main="... with Multiple Methods")
+#' chart.BarVaR(managers[,1,drop=FALSE],
+#' 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), 
+#' 		main="... with Multiple Methods")
 #' 
 #' # cleaned up a bit
-#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), lwd=2, ypad=.01, main="... with Padding for Bottom Legend")
+#' chart.BarVaR(managers[,1,drop=FALSE],
+#' 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), 
+#' 		lwd=2, ypad=.01, 
+#' 		main="... with Padding for Bottom Legend")
 #' 
 #' # with 'cleaned' data for VaR estimates
-#' chart.BarVaR(managers[,1,drop=FALSE],methods=c("HistoricalVaR", "ModifiedVaR"), lwd=2, ypad=.01, clean="boudt", main="... with Robust ModVaR Estimate")
+#' chart.BarVaR(managers[,1,drop=FALSE],
+#' 		methods=c("HistoricalVaR", "ModifiedVaR"), 
+#' 		lwd=2, ypad=.01, clean="boudt", 
+#' 		main="... with Robust ModVaR Estimate")
 #' 
-#' # Cornish Fisher VaR estimated with cleaned data, with horizontal line to show exceptions
-#' chart.BarVaR(managers[,1,drop=FALSE],methods="ModifiedVaR", lwd=2, ypad=.01, clean="boudt", show.horizontal=TRUE, lty=2, main="... with Robust ModVaR and Line for Identifying Exceptions")
+#' # Cornish Fisher VaR estimated with cleaned data, 
+#' # with horizontal line to show exceptions
+#' chart.BarVaR(managers[,1,drop=FALSE],
+#' 		methods="ModifiedVaR", 
+#' 		lwd=2, ypad=.01, clean="boudt", 
+#' 		show.horizontal=TRUE, lty=2, 
+#' 		main="... with Robust ModVaR and Line for Identifying Exceptions")
 #' 
+#' @rdname chart.BarVaR
+#' @export
 chart.BarVaR <- function (R, width = 0, gap = 12, 
-                            methods = c("none", "ModifiedVaR", "GaussianVaR", "HistoricalVaR", "StdDev", "ModifiedES", "GaussianES", "HistoricalES"), 
+                            methods = c("none", "ModifiedVaR", "GaussianVaR", 
+										"HistoricalVaR", "StdDev", "ModifiedES", 
+										"GaussianES", "HistoricalES"), 
                             p=0.95, 
                             clean = c("none", "boudt","geltner"), 
                             all = FALSE, 
@@ -296,7 +329,7 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
             negatives[row,]=min(0,x.orig[row,1])
         }
         chart.TimeSeries(positives, type = "h", legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", colorset="darkgreen", ...)
-        lines(1:length(x.orig[,1]), negatives, type="h", lend="butt", colorset="darkred", lwd=lwd)
+        lines(1:length(x.orig[,1]), negatives, type="h", lend="butt", col="darkred", lwd=lwd)
     }
 
     if(show.clean) {
@@ -340,6 +373,6 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: chart.BarVaR.R 1955 2012-05-23 16:38:16Z braverock $
 #
 ###############################################################################

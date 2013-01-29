@@ -24,7 +24,7 @@
 #' @param Rf risk free rate, in same period as your returns
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
 #' 12, quarterly scale = 4)
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @author Peter Carl
 #' @seealso \code{\link{SharpeRatio}} \cr \code{\link{InformationRatio}} \cr
@@ -42,6 +42,7 @@
 #' SharpeRatio.annualized(managers[,1:6], Rf = managers[,10,drop=FALSE])
 #' SharpeRatio.annualized(managers[,1:6], Rf = managers[,10,drop=FALSE],geometric=FALSE)
 #' 
+#' @export
 SharpeRatio.annualized <-
 function (R, Rf = 0, scale = NA, geometric=TRUE)
 { # @author Peter Carl
@@ -84,7 +85,7 @@ function (R, Rf = 0, scale = NA, geometric=TRUE)
         SR
     }
 
-    result = apply(R, 2, sr, Rf=Rf, scale=scale)
+    result = sapply(R, sr, Rf=Rf, scale=scale)
     dim(result) = c(1,NCOL(R))
     colnames(result) = colnames(R)
     rownames(result) = paste("Annualized Sharpe Ratio (Rf=", round(mean(Rf)*scale*100,1), "%)", sep="")
@@ -100,6 +101,6 @@ function (R, Rf = 0, scale = NA, geometric=TRUE)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.annualized.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: SharpeRatio.annualized.R 2314 2013-01-23 20:27:39Z peter_carl $
 #
 ###############################################################################

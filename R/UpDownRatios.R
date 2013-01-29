@@ -40,7 +40,7 @@
 #' # Down Capture:
 #' UpDownRatios(managers[,1, drop=FALSE], managers[,8, drop=FALSE], side="Down", method="Capture")
 #' 
-#' 
+#' @export
 UpDownRatios <-
 function(Ra, Rb, method = c("Capture","Number","Percent"), side = c("Up","Down"))
 {# @author Peter Carl
@@ -147,6 +147,6 @@ function(Ra, Rb, method = c("Capture","Number","Percent"), side = c("Up","Down")
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: UpDownRatios.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: UpDownRatios.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

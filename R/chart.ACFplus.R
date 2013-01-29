@@ -1,3 +1,5 @@
+#' @rdname chart.ACF
+#' @export 
 chart.ACFplus <- function(R, maxlag = NULL, elementcolor = "gray", main = NULL, ...)
 { # @author David Stoffer and Robert Shumway
     # @modifiedby Peter Carl
@@ -70,6 +72,6 @@ chart.ACFplus <- function(R, maxlag = NULL, elementcolor = "gray", main = NULL, 
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.ACFplus.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: chart.ACFplus.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

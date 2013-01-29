@@ -25,6 +25,7 @@
 #' data(managers)
 #' apply.rolling(managers[,1,drop=FALSE], FUN="mean", width=36)
 #' 
+#' @export
 #' 
 apply.rolling <- function (R, width, trim = TRUE, gap = 12, by = 1, FUN = "mean", ...)
 { # @author Peter Carl
@@ -70,6 +71,6 @@ apply.rolling <- function (R, width, trim = TRUE, gap = 12, by = 1, FUN = "mean"
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.rolling.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: apply.rolling.R 1955 2012-05-23 16:38:16Z braverock $
 #
 ###############################################################################

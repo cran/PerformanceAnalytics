@@ -26,6 +26,7 @@
 #' ctable = table.Correlation(managers[,1:6],managers[,8,drop=FALSE], conf.level=.99)
 #' dotchart(ctable[,1],labels=rownames(ctable),xlim=c(-1,1))
 #' 
+#' @export
 table.Correlation <-
 function (Ra, Rb, ...)
 {# @author Peter Carl
@@ -87,6 +88,6 @@ function (Ra, Rb, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Correlation.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.Correlation.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

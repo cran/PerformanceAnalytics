@@ -25,6 +25,10 @@
 #'     ActivePremium(managers[,1:6], managers[,8,drop=FALSE]) 
 #'     ActivePremium(managers[,1:6], managers[,8:7,drop=FALSE])
 #' 
+#' @export
+#' 
+#' 
+
 ActivePremium <- function (Ra, Rb, scale = NA)
 { # @author Peter Carl
 
@@ -77,6 +81,6 @@ ActivePremium <- function (Ra, Rb, scale = NA)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ActivePremium.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: ActivePremium.R 1955 2012-05-23 16:38:16Z braverock $
 #
 ###############################################################################

@@ -1,5 +1,5 @@
 ###############################################################################
-# Functions to peRform multivariate matrix
+# Functions to perform multivariate matrix
 # calculations on portfolios of assets.
 #
 # I've modified these to minimize the number of
@@ -12,25 +12,25 @@
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: MultivariateMoments.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: MultivariateMoments.R 2214 2012-07-27 17:10:06Z braverock $
 ###############################################################################
 
 
 M3.MM = function(R,...){
    cAssets = ncol(R); T = nrow(R);
-   if(!hasArg(mu)) mu = apply(R,2,'mean') else mu=match.call(expand.dots=TRUE)$mu
+   if(!hasArg(mu)) mu = apply(R,2,'mean') else mu=mu=list(...)$mu
    M3 = matrix(rep(0,cAssets^3),nrow=cAssets,ncol=cAssets^2)
    for(t in c(1:T))
    {
        centret = as.numeric(matrix(R[t,]-mu,nrow=cAssets,ncol=1))
-        M3 = M3 + ( centret%*%t(centret) )%x%t(centret)
+       M3 = M3 + ( centret%*%t(centret) )%x%t(centret)
    }
    return( 1/T*M3 );
 }
 
 M4.MM = function(R,...){
    cAssets = ncol(R); T = nrow(R);
-   if(!hasArg(mu))   mu = apply(R,2,'mean') else mu=match.call(expand.dots=TRUE)$mu
+   if(!hasArg(mu))   mu = apply(R,2,'mean')  else mu=list(...)$mu
    M4 = matrix(rep(0,cAssets^4),nrow=cAssets,ncol=cAssets^3);
    for(t in c(1:T))
    {
@@ -147,6 +147,6 @@ SR.mES.MM = function(w, mu, sigma, M3 , M4 , p){
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: MultivariateMoments.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: MultivariateMoments.R 2214 2012-07-27 17:10:06Z braverock $
 #
 ###############################################################################

@@ -44,6 +44,6 @@ function (R, geometric = TRUE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Drawdowns.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: Drawdowns.R 1966 2012-05-25 14:07:21Z braverock $
 #
 ###############################################################################

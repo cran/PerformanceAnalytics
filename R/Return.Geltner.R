@@ -39,6 +39,7 @@
 #' data(managers)
 #' head(Return.Geltner(managers[,1:3]),n=20)
 #' 
+#' @export
 Return.Geltner <-
 function (Ra, ...)
 { # @author Brian G. Peterson, Peter Carl
@@ -88,6 +89,6 @@ function (Ra, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.Geltner.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.Geltner.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -1,3 +1,5 @@
+#' @rdname chart.Bar
+#' @export
 charts.Bar <-
 function (R, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
 { # @author Peter Carl
@@ -64,6 +66,6 @@ function (R, main = "Returns", cex.legend = 0.8, cex.main=1, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.Bar.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: charts.Bar.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -25,10 +25,11 @@
 #' 
 #' 
 #' @aliases sd.multiperiod sd.annualized StdDev.annualized
-#' @param x,R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' @param x an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
 #' 12, quarterly scale = 4)
+#' @param \dots any other passthru parameters
 #' @author Brian G. Peterson
 #' @seealso \code{\link[stats]{sd}} \cr
 #' \url{http://wikipedia.org/wiki/inverse-square_law}
@@ -43,17 +44,17 @@
 #'     # now for three periods:
 #'     sd.multiperiod(edhec[,6,drop=FALSE],scale=3)
 #' 
-sd.multiperiod <-
+#' @export
+#' @rdname StdDev.annualized
+StdDev.annualized <- sd.annualized <- sd.multiperiod <-
 function (x, scale = NA, ...)
 {
-    if (is.vector(x)) {
-        #scale standard deviation by multiplying by the square root of the number of periods to scale by
-        if(!xtsible(x) & is.na(scale))
-            stop("'x' needs to be timeBased or xtsible, or scale must be specified." )
-        x = checkData (x)
-        if(is.na(scale)) {
-            freq = periodicity(x)
-            switch(freq$scale,
+    if(is.na(scale) && !xtsible(x))
+        stop("'x' needs to be timeBased or xtsible, or scale must be specified." )
+    
+    if(is.na(scale)) {
+        freq = periodicity(x)
+        switch(freq$scale,
                 minute = {stop("Data periodicity too high")},
                 hourly = {stop("Data periodicity too high")},
                 daily = {scale = 252},
@@ -61,28 +62,24 @@ function (x, scale = NA, ...)
                 monthly = {scale = 12},
                 quarterly = {scale = 4},
                 yearly = {scale = 1}
-            )
-        }
-        sqrt(scale)*sd.xts(x, na.rm=TRUE)
+        )
+    }
+    
+    if (is.vector(x)) {
+        #scale standard deviation by multiplying by the square root of the number of periods to scale by
+        sqrt(scale)*sd(x, na.rm=TRUE)
     } else { 
+        if(!xtsible(x) & is.na(scale))
+            stop("'x' needs to be timeBased or xtsible, or scale must be specified." )
+        x = checkData (x)
+                
         result = apply(x, 2, sd.multiperiod, scale=scale)
+        
         dim(result) = c(1,NCOL(x))
         colnames(result) = colnames(x)
         rownames(result) = "Annualized Standard Deviation"
         return(result)
     }
-}
-
-sd.annualized <-
-function (x, scale = NA, ...)
-{   # wrapper function for backwards compatibility
-    sd.multiperiod(x, scale = scale)
-}
-
-StdDev.annualized <-
-function (R, scale = NA, ...)
-{   # wrapper function for backwards compatibility
-    sd.multiperiod(R, scale = scale)
 }
 
 ###############################################################################
@@ -93,6 +90,6 @@ function (R, scale = NA, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.annualized.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: StdDev.annualized.R 2305 2012-12-20 20:09:18Z braverock $
 #
 ###############################################################################

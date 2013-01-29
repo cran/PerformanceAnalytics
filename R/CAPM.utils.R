@@ -1,6 +1,8 @@
 # This file exists to contain several related and small CAPM utility functions.
 # CAPM.alpha and CAPM.beta could probably have gone in here too, but they're already in separate files
 
+#' @rdname CAPM.RiskPremium
+#' @export
 CAPM.CML.slope <- function (Rb, Rf = 0 )
 { #author Brian G. Peterson
 
@@ -13,6 +15,8 @@ CAPM.CML.slope <- function (Rb, Rf = 0 )
     return(result) 
 }
 
+#' @rdname CAPM.RiskPremium
+#' @export
 CAPM.CML <- function (Ra, Rb, Rf = 0)
 { #@author Brian G. Peterson
 
@@ -122,8 +126,7 @@ CAPM.CML <- function (Ra, Rb, Rf = 0)
 #' CAPM.RiskPremium(managers[,"HAM1",drop=FALSE], Rf=0)
 #' CAPM.SML.slope(managers[,"SP500 TR",drop=FALSE], Rf=0)
 #' # should create plots like in Ruppert 7.1 7.2
-#' 
-#' 
+#' @export
 CAPM.RiskPremium <- function (Ra, Rf = 0)
 { #@author Brian G. Peterson
 
@@ -139,6 +142,8 @@ CAPM.RiskPremium <- function (Ra, Rf = 0)
     return (result)
 }
 
+#' @rdname CAPM.RiskPremium
+#' @export
 CAPM.SML.slope <- function (Rb, Rf = 0)
 { #@author Brian G. Peterson
 
@@ -156,6 +161,6 @@ CAPM.SML.slope <- function (Rb, Rf = 0)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.utils.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: CAPM.utils.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

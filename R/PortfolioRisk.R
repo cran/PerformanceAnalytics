@@ -5,7 +5,7 @@
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: PortfolioRisk.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: PortfolioRisk.R 2291 2012-10-26 15:56:41Z braverock $
 ###############################################################################
 
 
@@ -272,7 +272,7 @@ VaR.kernel.portfolio =  function( R, p, w )
    T = dim(R)[1]; N = dim(R)[2];
    portfolioreturn = c();
    for( t in 1:T ){ portfolioreturn = c( portfolioreturn , sum(w*R[t,]) ) }
-   bandwith = 2.575*sd.xts(portfolioreturn)/(T^(1/5)) ;
+   bandwith = 2.575*sd(portfolioreturn)/(T^(1/5)) ;
    CVaR = c();
    VaR = -quantile( portfolioreturn , probs = alpha );
    weights = kernel(x= (-VaR-portfolioreturn) , h=bandwith);
@@ -288,6 +288,20 @@ VaR.kernel.portfolio =  function( R, p, w )
    ret= list( VaR  ,  CVaR  , pct_contrib  )
    names(ret) = c("VaR","contribution","pct_contrib_VaR")
    return(ret)
+}
+
+ES.kernel.portfolio= function( R, p, w )
+{#WARNING incomplete
+    VAR<-VaR.kernel.portfolio( R, p, w )
+    
+    #I'm sure that using Return.portfolio probably makes more sense here...
+    T = dim(R)[1]; N = dim(R)[2];
+    portfolioreturn = c();
+    for( t in 1:T ){ portfolioreturn = c( portfolioreturn , sum(w*R[t,]) ) }
+    
+    PES<-mean(portfolioreturn>VAR$VaR)
+    
+    
 }
 
 ES.Gaussian.portfolio =  function(p,w,mu,sigma)
@@ -509,18 +523,23 @@ operES.CornishFisher.portfolio =  function(p,w,mu,sigma,M3,M4)
 ES.historical = function(R,p) {
     alpha = .setalphaprob(p)
     for(column in 1:ncol(R)) {
-	r = na.omit(as.vector(R[,column]))
-	q = quantile(r,probs=alpha)
-	exceedr = r[r<q]
-	hES = (-mean(exceedr))
-        hES=array(hES)
-        if (column==1) {
-            #create data.frame
-            result=data.frame(hES=hES)
-        } else {
-            hES=data.frame(hES=hES)
-            result=cbind(result,hES)
-        }
+      r = na.omit(as.vector(R[,column]))
+      q = quantile(r,probs=alpha)
+      exceedr = r[r<q]
+      hES = (-mean(exceedr))
+      if(is.nan(hES)){
+        warning(paste(colnames(R[,column]),"No values less than VaR observed.  Setting ES equal to VaR."))
+        hES=-q
+      }
+      
+      hES=array(hES)
+      if (column==1) {
+        #create data.frame
+        result=data.frame(hES=hES)
+      } else {
+        hES=data.frame(hES=hES)
+        result=cbind(result,hES)
+      }
     }	
     colnames(result)<-colnames(R)
     return(result)
@@ -589,6 +608,6 @@ VaR.historical.portfolio = function(R,p,w)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: PortfolioRisk.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: PortfolioRisk.R 2291 2012-10-26 15:56:41Z braverock $
 #
 ###############################################################################

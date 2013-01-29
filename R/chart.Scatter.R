@@ -37,6 +37,7 @@
 #' data(edhec)
 #' chart.Scatter(edhec[,1],edhec[,2])
 #' 
+#' @export 
 chart.Scatter <-
 function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, ylim = NA, colorset = 1, symbolset = 1, element.color = "darkgray", cex.axis = 0.8, cex.legend = 0.8, cex.lab = 1, cex.main = 1, ...)
 { # @author Peter Carl
@@ -89,6 +90,6 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Scatter.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Scatter.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

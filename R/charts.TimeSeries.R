@@ -1,3 +1,5 @@
+#' @rdname chart.TimeSeries
+#' @export 
 charts.TimeSeries <-
 function (R,  space = 0, main = "Returns", ...)
 { # @author Peter Carl
@@ -61,6 +63,6 @@ function (R,  space = 0, main = "Returns", ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.TimeSeries.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: charts.TimeSeries.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -1,3 +1,5 @@
+#' @rdname DownsideDeviation
+#' @export
 SemiDeviation <-
 function (R)
 { # @author Peter Carl
@@ -23,6 +25,8 @@ function (R)
     }
 }
 
+#' @rdname DownsideDeviation
+#' @export
 SemiVariance <-
 function (R)
 {
@@ -48,6 +52,6 @@ function (R)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SemiDeviation.R 1855 2012-01-15 12:57:58Z braverock $
+# $Id: SemiDeviation.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

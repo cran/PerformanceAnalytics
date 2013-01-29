@@ -37,8 +37,14 @@
 #' data(managers)
 #' R = Drawdowns(managers[,2,drop=FALSE])
 #' n = table.Drawdowns(managers[,2,drop=FALSE])                          
-#' chart.Events(Drawdowns(managers[,2,drop=FALSE]), dates = n$Trough, prior=max(na.omit(n$"To Trough")), post=max(na.omit(n$Recovery)), lwd=2, colorset=redfocus, legend.loc=NULL, main = "Worst Drawdowns")
+#' chart.Events(Drawdowns(managers[,2,drop=FALSE]), 
+#' 		dates = n$Trough, 
+#' 		prior=max(na.omit(n$"To Trough")), 
+#' 		post=max(na.omit(n$Recovery)), 
+#' 		lwd=2, colorset=redfocus, legend.loc=NULL, 
+#' 		main = "Worst Drawdowns")
 #' 
+#' @export
 chart.Events <-
 function (R, dates, prior=12, post=12, main = NULL, xlab=NULL, ...)
 { # @author Peter Carl
@@ -93,6 +99,6 @@ function (R, dates, prior=12, post=12, main = NULL, xlab=NULL, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Events.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.Events.R 1955 2012-05-23 16:38:16Z braverock $
 #
 ###############################################################################

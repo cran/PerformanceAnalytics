@@ -8,12 +8,14 @@
 #' @param width number of periods to apply rolling function window over
 #' @param xaxis if true, draws the x axis
 #' @param ylim set the y-axis limit, same as in \code{\link{plot}}
-#' @param na.pad TRUE/FALSE If TRUE it adds any times that would not otherwise
-#' have been in the result with a value of NA. If FALSE those times are
-#' dropped.
 #' @param lwd set the line width, same as in \code{\link{plot}}.  Specified in
 #' order of the main line and the two confidence bands.
 #' @param \dots any other passthru parameters
+#' @param fill a three-component vector or list (recycled otherwise) providing 
+#' filling values at the left/within/to the right of the data range. See the 
+#' fill argument of \code{\link{na.fill}} for details.
+#' @details The previous parameter \code{na.pad} has been replaced with \code{fill}; use \code{fill = NA} instead of 
+#' \code{na.pad = TRUE}, or \code{fill = NULL} instead of \code{na.pad = FALSE}.
 #' @author Peter Carl
 #' @keywords ts multivariate distribution models hplot
 #' @examples
@@ -21,8 +23,9 @@
 #' data(edhec)
 #' chart.RollingMean(edhec[, 9, drop = FALSE])
 #' 
+#' @export 
 chart.RollingMean <-
-function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1), ...)
+function (R, width = 12, xaxis = TRUE, ylim = NULL, lwd=c(2,1,1), ..., fill = NA)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -41,9 +44,8 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1)
     columnnames = colnames(x)
 
     # Calculate
-
-    x.mean = rollapply(na.omit(x[,1,drop=FALSE]), width = width, FUN = "mean", na.pad = na.pad, align = "right")
-    x.stdev = rollapply(na.omit(x[,1,drop=FALSE]), width = width, FUN = "sd.xts", na.pad = na.pad, align = "right")
+    x.mean = rollapply(x[,1,drop=FALSE], width = width, FUN = "mean", fill=fill, align = "right")
+    x.stdev = rollapply(x[,1,drop=FALSE], width = width, FUN = "sd.xts", fill=fill, align = "right")
 
     # @todo: allow user to set confidence interval
     # @todo: add chart for StdDev w confidence bands: x.stdev +- 2* x.stdev/sqrt(2*n)
@@ -54,8 +56,7 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1)
 
     # Set ylim correctly to allow for confidence bands
     if(is.null(ylim[1]))
-        ylim = range(result)
-
+        ylim = range(result, na.rm=TRUE)
 
     freq = periodicity(R)
 
@@ -72,7 +73,7 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1)
     main = paste(columnnames[1], " Rolling ",width,"-",freq.lab," Performance",sep="")
 
     # The first row is the annualized returns
-    chart.TimeSeries(result, ylim = ylim, xaxis = xaxis, ylab = "Return", lty = c(1,2,2), colorset = c("black","darkgray","darkgray"), main=main , ...)
+    chart.TimeSeries(result, ylim = ylim, xaxis = xaxis, ylab = "Return", lty = c(1,2,2), colorset = c("black","darkgray","darkgray"), main=main, ... = ...)
 
 }
 
@@ -84,6 +85,6 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, na.pad = FALSE, lwd=c(2,1,1)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingMean.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: chart.RollingMean.R 2318 2013-01-28 22:56:57Z peter_carl $
 #
 ###############################################################################

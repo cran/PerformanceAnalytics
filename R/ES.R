@@ -1,20 +1,22 @@
 ###############################################################################
-# $Id: ES.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: ES.R 2316 2013-01-28 21:38:59Z braverock $
 ###############################################################################
 
 #' calculates Expected Shortfall(ES) (or Conditional Value-at-Risk(CVaR) for
 #' univariate and component, using a variety of analytical methods.
 #' 
 #' Calculates Expected Shortfall(ES) (also known as) Conditional Value at
-#' Risk(CVaR) for univariate, component, and marginal cases using a variety of
-#' analytical methods.
+#' Risk(CVaR) or Expected Tail Loss (ETL) for univariate, component, 
+#' and marginal cases using a variety of analytical methods.
 #' 
 #' 
+#' @export
 #' @aliases ES CVaR ETL
+#' @rdname ES
 #' @param R a vector, matrix, data frame, timeSeries or zoo object of asset
 #' returns
 #' @param p confidence level for calculation, default p=.95
-#' @param method one of "modified","gaussian","historical", "kernel", see
+#' @param method one of "modified","gaussian","historical", see
 #' Details.
 #' @param clean method for data cleaning through \code{\link{Return.clean}}.
 #' Current options are "none", "boudt", or "geltner".
@@ -114,7 +116,7 @@
 #'     ES(edhec, clean="boudt", portfolio_method="component")
 #' 
 ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ..., 
-        method=c("modified","gaussian","historical", "kernel"), 
+        method=c("modified","gaussian","historical"), 
         clean=c("none","boudt", "geltner"),  
         portfolio_method=c("single","component"), 
         weights=NULL, mu=NULL, sigma=NULL, m3=NULL, m4=NULL, 
@@ -153,8 +155,8 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
             if (is.null(mu)) { mu =  apply(R,2,'mean' ) }
             if (is.null(sigma)) { sigma = cov(R) }
             if(method=="modified"){
-                if (is.null(m3)) {m3 = M3.MM(R)}
-                if (is.null(m4)) {m4 = M4.MM(R)}
+                if (is.null(m3)) {m3 = M3.MM(R,mu=mu)}
+                if (is.null(m4)) {m4 = M4.MM(R,mu=mu)}
             }
         } 
     } else { 
@@ -185,7 +187,7 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
                 switch(method,
                         modified = { rES=mES.MM(w=weights, mu=mu, sigma=sigma, M3=m3 , M4=m4 , p=p) }, 
                         gaussian = { rES=GES.MM(w=weights, mu=mu, sigma=sigma, p=p) },
-                        historical = { rES = (ES.historical(R=R,p=p) %*% weights) } # note that this is not tested for weighting the univariate calc by the weights
+                        historical = { rES = ES.historical(R=R,p=p) %*% weights }, # note that this is not tested for weighting the univariate calc by the weights,
                 ) # end multivariate method
             }
 	        # check for unreasonable results
@@ -222,7 +224,8 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
 			     else return(ES.CornishFisher.portfolio(p,weights,mu,sigma,m3,m4))
 			   },
                 gaussian = { return(ES.Gaussian.portfolio(p,weights,mu,sigma)) },
-                historical = { return(ES.historical.portfolio(R, p,weights)) }
+                historical = { return(ES.historical.portfolio(R, p,weights)) },
+                kernel = { return(ES.kernel.portfolio(R=R,p=p,w=weights)) }
             )
 
         } # end component portfolio switch
@@ -238,6 +241,6 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ES.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: ES.R 2316 2013-01-28 21:38:59Z braverock $
 #
 ###############################################################################

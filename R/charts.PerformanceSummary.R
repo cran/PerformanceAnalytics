@@ -9,7 +9,7 @@
 #' @param Rf risk free rate, in same period as your returns
 #' @param p confidence level for calculation, default p=.95
 #' @param main set the chart title, as in \code{plot}
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param methods Used to select the risk parameter of trailing \code{width}
 #' returns to use in the \code{\link{chart.BarVaR}} panel: May be any of:
@@ -48,6 +48,7 @@
 #' data(edhec)
 #' charts.PerformanceSummary(edhec[,c(1,13)])
 #' 
+#' @export 
 charts.PerformanceSummary <-
 function (R, Rf = 0, main = NULL, geometric=TRUE, methods = "none", width = 0, event.labels = NULL, ylog = FALSE, wealth.index = FALSE, gap = 12, begin=c("first","axis"), legend.loc="topleft", p=0.95,...)
 { # @author Peter Carl
@@ -154,6 +155,6 @@ function (R, Rf = 0, main = NULL, geometric=TRUE, methods = "none", width = 0, e
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.PerformanceSummary.R 1888 2012-03-25 14:35:48Z braverock $
+# $Id: charts.PerformanceSummary.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

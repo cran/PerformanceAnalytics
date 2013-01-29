@@ -1,3 +1,5 @@
+#' @rdname Return.portfolio
+#' @export
 Return.rebalancing <- function (R, weights, ...)
 {   # @author Brian G. Peterson
 
@@ -43,6 +45,8 @@ Return.rebalancing <- function (R, weights, ...)
 # Return.portfolio
 
 
+
+
 #' Calculates weighted returns for a portfolio of assets
 #' 
 #' Calculates weighted returns for a portfolio of assets.  If you have a single
@@ -73,7 +77,7 @@ Return.rebalancing <- function (R, weights, ...)
 #' FALSE
 #' @param contribution if contribution is TRUE, add the weighted return
 #' contributed by the asset in this period
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param \dots any other passthru parameters
 #' @return returns a time series of returns weighted by the \code{weights}
@@ -98,7 +102,7 @@ Return.rebalancing <- function (R, weights, ...)
 #' # calculate a portfolio return with rebalancing
 #' round(Return.rebalancing(edhec,weights),4)
 #' 
-#' 
+#' @export
 Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contribution=FALSE,geometric=TRUE, ...)
 {   # @author Brian G. Peterson
 
@@ -176,17 +180,15 @@ Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contributio
       for (col in colnames(weights)){
           wealthindex.weighted[,col]=weights[,col]*wealthindex.assets[,col]
       }
-      wealthindex=apply(wealthindex.weighted,1,sum)
-
-      # weighted cumulative returns
-      weightedcumcont=t(apply (wealthindex.assets,1, function(x,weights){ as.vector((x-1)* weights)},weights=weights))
-      weightedreturns=diff(rbind(0,weightedcumcont)) # compound returns
-      colnames(weightedreturns)=colnames(wealthindex.assets)
-      if (!wealth.index){
-        result=as.matrix(apply(weightedreturns,1,sum),ncol=1)
-      } else {
-        wealthindex=matrix(cumprod(1 + as.matrix(apply(weightedreturns,1, sum), ncol = 1)),ncol=1)
-      }
+      wealthindex=as.xts(apply(wealthindex.weighted,1,sum))
+      result = wealthindex
+      result[2:length(result)] = result[2:length(result)] /
+        lag(result)[2:length(result)] - 1
+      result[1] = result[1] - 1
+      w = matrix(rep(NA), ncol(wealthindex.assets) * nrow(wealthindex.assets), ncol = ncol(wealthindex.assets), nrow = nrow(wealthindex.assets))
+      w[1, ] = weights
+      w[2:length(wealthindex), ] = (wealthindex.weighted / rep(wealthindex, ncol(wealthindex.weighted)))[1:(length(wealthindex) - 1), ]
+      weightedreturns = R[, colnames(weights)] * w
     }
 
 
@@ -200,7 +202,7 @@ Return.portfolio <- function (R, weights=NULL, wealth.index = FALSE, contributio
 
     if (contribution==TRUE){
         # show the contribution to the returns in each period.
-        result=cbind(weightedreturns,result)
+        result=cbind(weightedreturns, coredata(result))
     }
     rownames(result)<-NULL # avoid a weird problem with rbind, per Jeff
     result<-reclass(result, R)
@@ -222,6 +224,6 @@ pfolioReturn <- function (x, weights=NULL, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.portfolio.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: Return.portfolio.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

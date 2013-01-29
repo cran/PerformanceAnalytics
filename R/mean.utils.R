@@ -5,7 +5,6 @@
 #       first parameter with R command mean()
 
 
-
 #' calculate attributes relative to the mean of the observation series given,
 #' including geometric, stderr, LCL and UCL
 #' 
@@ -30,7 +29,9 @@
 #' mean.stderr(edhec[,"Funds of Funds"])
 #' mean.UCL(edhec[,"Funds of Funds"])
 #' mean.LCL(edhec[,"Funds of Funds"])
-#' 
+#' @rdname mean.geometric
+#' @method mean geometric
+#' @export
 mean.geometric <-
 function (x, ...)
 {# @author Peter Carl
@@ -60,6 +61,9 @@ function (x, ...)
     }
 }
 
+#' @rdname mean.geometric
+#' @method mean stderr
+#' @export
 mean.stderr <-
 function (x, ...)
 {# @author Peter Carl
@@ -89,6 +93,9 @@ function (x, ...)
     }
 }
 
+#' @rdname mean.geometric
+#' @method mean LCL
+#' @export
 mean.LCL <-
 function (x, ci = 0.95, ...)
 {# @author Peter Carl
@@ -125,6 +132,9 @@ function (x, ci = 0.95, ...)
     }
 }
 
+#' @rdname mean.geometric
+#' @method mean UCL
+#' @export
 mean.UCL <-
 function (x, ci = 0.95, ...)
 {# @author Peter Carl
@@ -169,6 +179,6 @@ function (x, ci = 0.95, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: mean.utils.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: mean.utils.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
 #
 ###############################################################################

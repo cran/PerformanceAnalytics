@@ -28,6 +28,7 @@
 #' TrackingError(managers[,1:6], managers[,8,drop=FALSE]) 
 #' TrackingError(managers[,1:6], managers[,8:7,drop=FALSE])
 #' 
+#' @export
 TrackingError <-
 function (Ra, Rb, scale = NA)
 { # @author Peter Carl
@@ -87,6 +88,6 @@ function (Ra, Rb, scale = NA)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: TrackingError.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: TrackingError.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

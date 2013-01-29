@@ -1,9 +1,9 @@
 Package: PerformanceAnalytics
 Type: Package
 Title: Econometric tools for performance and risk analysis.
-Version: 1.0.4.4
-Date: 2012-03-30
-Author: Peter Carl, Brian G. Peterson, Kris Boudt, Eric Zivot
+Version: 1.1.0
+Date: $Date: 2013-01-29 07:04:00 -0600 (Tue, 29 Jan 2013) $
+Author: Peter Carl, Brian G. Peterson
 Maintainer: Brian G. Peterson <brian@braverock.com>
 Description: Collection of econometric functions for performance and
         risk analysis. This package aims to aid practitioners and
@@ -13,15 +13,16 @@ Description: Collection of econometric functions for performance and
         functions will work with irregular return data as well, and
         increasing numbers of functions will work with P&L or price
         data where possible.
-Depends: R (>= 2.14.0), zoo, xts (>= 0.8)
+Depends: R (>= 2.14.0), zoo, xts (>= 0.8-9)
 Suggests: Hmisc, MASS, tseries, quadprog, sn, robustbase, quantreg,
         gplots, ff
 License: GPL
 URL: http://r-forge.r-project.org/projects/returnanalytics/
 Copyright: (c) 2004-2012
-Contributors: A special thanks for contributions from Stefan Albrecht,
-        Khahn Nygyen, Jeff Ryan, Josh Ulrich, Sankalp Upadhyay, Tobias
-        Verbeke, H. Felix Wittmann
-Packaged: 2012-03-30 19:36:14 UTC; brian
+Contributors: Kris Boudt, Diethelm Wuertz, Eric Zivot, Matthieu Lestel
+Thanks: A special thanks for additional contributions from Stefan
+        Albrecht, Khahn Nygyen, Jeff Ryan, Josh Ulrich, Sankalp
+        Upadhyay, Tobias Verbeke, H. Felix Wittmann, Ram Ahluwalia
+Packaged: 2013-01-29 13:06:03 UTC; brian
 Repository: CRAN
-Date/Publication: 2012-03-31 05:19:46
+Date/Publication: 2013-01-29 16:32:18

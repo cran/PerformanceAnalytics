@@ -21,7 +21,7 @@
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param weights portfolio weighting vector, default NULL, see Details
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param invert TRUE/FALSE whether to invert the drawdown measure.  see
 #' Details.
@@ -40,6 +40,7 @@
 #' data(managers)
 #' t(round(maxDrawdown(managers),4))
 #' 
+#' @export 
 maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 { # @author Peter Carl
 	
@@ -79,6 +80,8 @@ maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 
 
 
+
+
 #' Calculate Uryasev's proposed Conditional Drawdown at Risk (CDD or CDaR)
 #' measure
 #' 
@@ -90,7 +93,7 @@ maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param weights portfolio weighting vector, default NULL, see Details
-#' @param geometric generate geometric (TRUE) or simple (FALSE) returns,
+#' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic chaining (FALSE) to aggregate returns,
 #' default TRUE
 #' @param invert TRUE/FALSE whether to invert the drawdown measure.  see
 #' Details.
@@ -108,6 +111,7 @@ maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 #' data(edhec)
 #' t(round(CDD(edhec),4))
 #' 
+#' @export 
 CDD <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, p=.95 ,  ...)
 {
     p=.setalphaprob(p)
@@ -138,6 +142,17 @@ CDD <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, p=.95 ,  ...)
     # TODO add modified Cornish Fisher and copula methods to this to account for small number of observations likely on real data
 }
 
+#' Calculates a standard deviation-type statistic using individual drawdowns.
+#' 
+#' DD = sqrt(sum[j=1,2,...,d](D_j^2/n)) where
+#' D_j = jth drawdown over the entire period
+#' d = total number of drawdowns in entire period
+#' n = number of observations
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param \dots any other passthru parameters
+#' @export
 DrawdownDeviation <-
 function (R, ...) {
 
@@ -165,6 +180,16 @@ function (R, ...) {
     return (result)
 }
 
+#' Calculates the average of the observed drawdowns.
+#' 
+#' ADD = abs(sum[j=1,2,...,d](D_j/d)) where
+#' D'_j = jth drawdown over entire period
+#' d = total number of drawdowns in the entire period
+#' 
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
+#' @param \dots any other passthru parameters
+#' @export 
 AverageDrawdown <-
 function (R, ...) {
 
@@ -191,6 +216,8 @@ function (R, ...) {
     return (result)
 }
 
+#' @rdname AverageDrawdown
+#' @export 
 AverageRecovery <-
 function (R, ...) {
 
@@ -227,6 +254,6 @@ function (R, ...) {
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: maxDrawdown.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: maxDrawdown.R 2287 2012-09-18 20:14:18Z braverock $
 #
 ###############################################################################

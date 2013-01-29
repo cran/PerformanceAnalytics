@@ -1,8 +1,10 @@
 # # Original function from gplots package written by warnes
-# $Id: textplot.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: textplot.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
 
 # Example using format.df as a pre-processor
 # > textplot(format.df(t(y), na.blanks=F,cdec=c(3,3,1)), row.valign="center", wrap.rownames=20, wrap.colnames=10, cex=1)
+
+
 
 
 
@@ -65,6 +67,10 @@
 #' tabs with
 #' @param \dots Optional arguments passed to the text plotting command or
 #' specialized object methods
+#' @param fixed.width default is TRUE
+#' @param cspace default is 1
+#' @param lspace default is 1
+#' @param tab.width default is 8
 #' @author Originally written by Gregory R. Warnes
 #' \email{warnes@@bst.rochester.edu} for the package 'gplots', modified by
 #' Peter Carl
@@ -85,8 +91,9 @@
 #' #  textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,4,0)+0.1)
 #' 
 #' # title(main="Calendar Returns")
-#' 
-#' 
+#'
+#'  
+#' @export
 textplot <- function(object, halign="center", valign="center", cex, 
                             max.cex = 1, cmar=2, rmar=0.5,
                             show.rownames=TRUE, show.colnames=TRUE,
@@ -103,6 +110,9 @@ textplot <- function(object, halign="center", valign="center", cex,
   UseMethod('textplot')
 
 
+#' @rdname textplot
+#' @method textplot default
+#' @export
 textplot.default <- function(object,
                              halign=c("center","left","right"),
                              valign=c("center","top","bottom"),
@@ -131,6 +141,9 @@ textplot.default <- function(object,
 }
 
 
+#' @rdname textplot
+#' @method textplot data.frame
+#' @export
 textplot.data.frame <- function(object,
                              halign=c("center","left","right"),
                              valign=c("center","top","bottom"),
@@ -162,6 +175,9 @@ textplot.data.frame <- function(object,
                             wrap.rownames, ... )
 }
 
+#' @rdname textplot
+#' @method textplot matrix
+#' @export
 textplot.matrix <- function(object,
                             halign=c("center","left","right"),
                             valign=c("center","top","bottom"),
@@ -366,6 +382,9 @@ textplot.matrix <- function(object,
   par(opar)
 }
 
+#' @rdname textplot
+#' @method textplot character
+#' @export
 textplot.character <- function (object,
                                 halign = c("center", "left", "right"),
                                 valign = c("center", "top", "bottom"),
@@ -472,6 +491,6 @@ textplot.character <- function (object,
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: textplot.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: textplot.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
 #
 ###############################################################################

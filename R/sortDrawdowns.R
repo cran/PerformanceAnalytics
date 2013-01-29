@@ -3,9 +3,12 @@
 #' sortDrawdowns(findDrawdowns(R)) Gives the drawdowns in order of worst to
 #' best
 #' 
-#' Returns a sorted list: \describe{ \item{return }{depth of drawdown}
-#' \item{from }{starting period} \item{to }{ending period} \item{length
-#' }{length in periods} }
+#' Returns a sorted list: \itemize{ 
+#'  \item return depth of drawdown 
+#'  \item from starting period 
+#'  \item to ending period 
+#'  \item length length in periods 
+#' }
 #' 
 #' @param runs pass in runs array from findDrawdowns to be sorted
 #' @author Peter Carl \cr modified with permission from prototype function by
@@ -23,6 +26,7 @@
 #' findDrawdowns(edhec[,"Funds of Funds", drop=FALSE])
 #' sortDrawdowns(findDrawdowns(edhec[,"Funds of Funds", drop=FALSE]))
 #' 
+#' @export
 sortDrawdowns <- function (runs) {
     # sortDrawdowns(findDrawdowns(returns))
     # gives the drawdowns in order of worst to best
@@ -46,6 +50,6 @@ sortDrawdowns <- function (runs) {
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: sortDrawdowns.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: sortDrawdowns.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

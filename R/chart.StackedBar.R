@@ -35,7 +35,7 @@
 #' the current setting of 'cex'.
 #' @param xaxis If true, draws the x axis
 #' @param ylab Set the y-axis label, same as in \code{\link{plot}}
-#' @param date.format Re-format the dates for the xaxis; the default is "%m/%y"
+#' @param date.format Re-format the dates for the xaxis; the default is "\%m/\%y"
 #' @param major.ticks Should major tickmarks be drawn and labeled, default
 #' 'auto'
 #' @param minor.ticks Should minor tickmarks be drawn, default TRUE
@@ -82,7 +82,7 @@
 #' head(weights)
 #' 
 #' # With the legend "under" the chart
-#' chart.StackedBar(weights, date.format="%Y", cex.legend = 0.7, colorset=rainbow12equal)
+#' chart.StackedBar(weights, date.format="\%Y", cex.legend = 0.7, colorset=rainbow12equal)
 #' 
 #' # Without the legend
 #' chart.StackedBar(weights, colorset=rainbow12equal, legend.loc=NULL)
@@ -90,6 +90,7 @@
 #' # for one row of data, use 'unstacked' for a better chart
 #' chart.StackedBar(weights[1,,drop=FALSE], unstacked=TRUE, las=3)
 #' 
+#' @export 
 chart.StackedBar <- 
 function (w, colorset = NULL, space = 0.2, cex.axis=0.8, cex.legend = 0.8, cex.lab = 1, cex.labels = 0.8, cex.main = 1, xaxis=TRUE, legend.loc="under",  element.color = "darkgray", unstacked = TRUE, xlab="Date", ylab="Value", ylim=NULL, date.format = "%b %y", major.ticks='auto', minor.ticks=TRUE, las = 0, xaxis.labels = NULL, ... ) 
 {
@@ -297,6 +298,6 @@ function (w, colorset = NULL, space = 0.2, cex.axis=0.8, cex.legend = 0.8, cex.l
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.StackedBar.R 1889 2012-03-29 22:36:47Z braverock $
+# $Id: chart.StackedBar.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

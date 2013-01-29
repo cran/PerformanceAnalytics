@@ -1,6 +1,8 @@
 ###############################################################################
-# $Id: StdDev.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: StdDev.R 2163 2012-07-16 00:30:19Z braverock $
 ###############################################################################
+
+
 
 
 
@@ -45,6 +47,14 @@
 #' @param sigma If univariate, sigma is the variance of the series. Otherwise
 #' sigma is the covariance matrix of the return series , default NULL, see
 #' Details
+#' @param use an optional character string giving a method for computing
+#' covariances in the presence of missing values.  This must be (an
+#' abbreviation of) one of the strings \code{"everything"}, \code{"all.obs"},
+#' \code{"complete.obs"}, \code{"na.or.complete"}, or
+#' \code{"pairwise.complete.obs"}.
+#' @param method a character string indicating which correlation coefficient
+#' (or covariance) is to be computed.  One of \code{"pearson"} (default),
+#' \code{"kendall"}, or \code{"spearman"}, can be abbreviated.
 #' @author Brian G. Peterson and Kris Boudt
 #' @seealso \code{\link{Return.clean}} \code{sd}
 #' @keywords ts multivariate distribution models
@@ -64,6 +74,7 @@
 #'     StdDev(edhec, clean="boudt", portfolio_method="component")
 #' 
 #' 
+#' @export
 StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_method=c("single","component"), weights=NULL, mu=NULL, sigma=NULL, use="everything", method=c("pearson", "kendall", "spearman"))
 { # @author Brian G. Peterson
     
@@ -138,6 +149,6 @@ StdDev <- function (R , ..., clean=c("none","boudt","geltner"),  portfolio_metho
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: StdDev.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: StdDev.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

@@ -92,6 +92,7 @@
 #' SmoothingIndex(managers[,1:8])
 #' SmoothingIndex(edhec)
 #' 
+#' @export
 SmoothingIndex <-
 function (R, neg.thetas = FALSE, MAorder=2, verbose = FALSE, ...)
 { # @author Peter Carl
@@ -193,6 +194,6 @@ function (R, neg.thetas = FALSE, MAorder=2, verbose = FALSE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SmoothingIndex.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: SmoothingIndex.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################

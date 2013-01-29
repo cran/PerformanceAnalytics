@@ -39,6 +39,7 @@
 #' class(x)
 #' head(x)
 #' 
+#' @export 
 checkData <- function (x, method = c("xts", "zoo", "data.frame", "matrix", "vector"), na.rm = TRUE, quiet = TRUE, ...)
 { # @author Peter Carl
 
@@ -149,5 +150,5 @@ function (x, na.rm = TRUE, quiet = TRUE, ...)
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: checkData.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: checkData.R 2163 2012-07-16 00:30:19Z braverock $
 ###############################################################################

@@ -9,8 +9,8 @@
 #' 
 #' The idea here is to be able to pass in sets of metrics and values, like:
 #' 
-#' metrics = c(DownsideDeviation(x,MAR=mean(x)), sd.xts(subset(x,x>0)),
-#' sd.xts(subset(x,x<0)), DownsideDeviation(x,MAR=MAR),
+#' metrics = c(DownsideDeviation(x,MAR=mean(x)), sd(subset(x,x>0)),
+#' sd(subset(x,x<0)), DownsideDeviation(x,MAR=MAR),
 #' DownsideDeviation(x,MAR=Rf=0), DownsideDeviation(x,MAR=0),maxDrawdown(x))
 #' 
 #' metricsNames = c("Semi Deviation", "Gain Deviation", "Loss Deviation",
@@ -65,6 +65,7 @@
 #' data(edhec)
 #' table.Arbitrary(edhec,metrics=c("VaR", "ES"),metricsNames=c("Modified VaR","Modified Expected Shortfall"))
 #' 
+#' @export
 table.Arbitrary <-
 function (R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard Deviation"), ...)
 { # @author Peter Carl
@@ -169,6 +170,6 @@ function(R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard De
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Arbitrary.R 1883 2012-03-25 00:59:31Z braverock $
+# $Id: table.Arbitrary.R 2163 2012-07-16 00:30:19Z braverock $
 #
 ###############################################################################
