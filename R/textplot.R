@@ -1,5 +1,5 @@
 # # Original function from gplots package written by warnes
-# $Id: textplot.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
+# $Id: textplot.R 3528 2014-09-11 12:43:17Z braverock $
 
 # Example using format.df as a pre-processor
 # > textplot(format.df(t(y), na.blanks=F,cdec=c(3,3,1)), row.valign="center", wrap.rownames=20, wrap.colnames=10, cex=1)
@@ -76,7 +76,7 @@
 #' Peter Carl
 #' @seealso \code{\link{plot}}, \cr \code{\link{text}}, \cr
 #' \code{\link[utils]{capture.output}}, \cr \code{\link[gplots]{textplot}}
-#' @keywords hplot
+###keywords hplot
 #' @examples
 #' 
 #' # Also see the examples in the original gplots textplot function
@@ -86,13 +86,21 @@
 #' # This was really nice before Hmisc messed up 'format' from R-base
 #' # prettify with format.df in hmisc package
 #' # require("Hmisc")
-#'   result = t(table.CalendarReturns(managers[,1:8]))[-1:-12,]
+#' # result = t(table.CalendarReturns(managers[,1:8]))[-1:-12,]
 #' 
-#' #  textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,4,0)+0.1)
-#' 
+#' #  textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#' #           cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, 
+#' #           halign = "center", valign = "top", row.valign="center", wrap.rownames=20, 
+#' #           wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), 
+#' #           rep("orange",2)), mar = c(0,0,4,0)+0.1)
+#' #
 #' # title(main="Calendar Returns")
 #'
-#'  
+#' @S3method textplot default 
+#' @S3method textplot character
+#' @S3method textplot data.frame
+#' @S3method textplot matrix
+#' 
 #' @export
 textplot <- function(object, halign="center", valign="center", cex, 
                             max.cex = 1, cmar=2, rmar=0.5,
@@ -486,11 +494,11 @@ textplot.character <- function (object,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: textplot.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
+# $Id: textplot.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

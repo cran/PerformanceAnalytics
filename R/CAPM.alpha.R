@@ -1,12 +1,16 @@
-#' calculate CAPM alpha
+#' calculate single factor model (CAPM) alpha
 #' 
-#' This is a wrapper for calculating a CAPM alpha.
+#' This is a wrapper for calculating a single factor model (CAPM) alpha.
 #' 
 #' "Alpha" purports to be a measure of a manager's skill by measuring the
 #' portion of the managers returns that are not attributable to "Beta", or the
 #' portion of performance attributable to a benchmark.
 #' 
-#' 
+#' While the classical CAPM has been almost completely discredited by the 
+#' literature, it is an example of a simple single factor model, 
+#' comparing an asset to any arbitrary benchmark.
+#'  
+#' @aliases SFM.alpha
 #' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param Rb return vector of the benchmark asset
@@ -17,7 +21,7 @@
 #' equilibrium under conditions of risk. \emph{Journal of finance}, vol 19,
 #' 1964, 425-442. \cr Ruppert, David. \emph{Statistics and Finance, an
 #' Introduction}. Springer. 2004. \cr
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' # First we load the data
@@ -40,9 +44,10 @@
 #'     CAPM.alpha(managers[,1:6], 
 #' 			managers[,8:7,drop=FALSE], 
 #' 			Rf = managers[,10,drop=FALSE])
-#' 
-#' @export
-CAPM.alpha <- function (Ra, Rb, Rf = 0)
+#'   		
+#' @rdname CAPM.alpha
+#' @export SFM.alpha CAPM.alpha
+CAPM.alpha <- SFM.alpha <- function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -95,11 +100,11 @@ CAPM.alpha <- function (Ra, Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.alpha.R 2071 2012-06-25 14:11:34Z matthieu_lestel $
+# $Id: CAPM.alpha.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

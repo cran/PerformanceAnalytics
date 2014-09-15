@@ -21,18 +21,18 @@
 #' @param \dots any other passthru parameters for functions specified in FUNCS
 #' @author Peter Carl
 #' @seealso \code{\link[zoo]{rollapply}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
-#' #table.TrailingPeriods(edhec[,10:13], FUNCS=c("SharpeRatio","VaR"), funcs.names = c("Sharpe Ratio", "Modified VaR"), periods=c(12,24,36))
-#' 
-#' #result=table.TrailingPeriods(edhec[,10:13], FUNCS=c("SharpeRatio","VaR"), funcs.names = c("Sharpe Ratio", "Modified VaR"), periods=c(12,24,36))
 #' table.TrailingPeriods(edhec[,10:13], periods=c(12,24,36))
 #' 
 #' result=table.TrailingPeriods(edhec[,10:13], periods=c(12,24,36))
 #' require("Hmisc")
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'                    cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  
+#'                    max.cex=.9, halign = "center", valign = "top", row.valign="center", 
+#'                    wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Trailing Period Statistics")
 #' 
 #' @export
@@ -166,11 +166,11 @@ Rb=checkData(Rb)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.RollingPeriods.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.RollingPeriods.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

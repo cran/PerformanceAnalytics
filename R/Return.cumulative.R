@@ -15,7 +15,7 @@
 #' @seealso \code{\link{Return.annualized}}
 #' @references Bacon, Carl. \emph{Practical Portfolio Performance Measurement
 #' and Attribution}. Wiley. 2004. p. 6
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -52,11 +52,11 @@ function (R, geometric = TRUE)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.cumulative.R 2287 2012-09-18 20:14:18Z braverock $
+# $Id: Return.cumulative.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

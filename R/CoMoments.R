@@ -1,7 +1,5 @@
 # Compute co-moment matrices
 
-
-
 #' calculate centered Returns
 #' 
 #' the \eqn{n}-th centered moment is calculated as \deqn{ }{moment^n(R) =
@@ -48,7 +46,7 @@
 #' Scott, Robert C., and Philip A. Horvath. 1980. On the Direction of
 #' Preference for Moments of Higher Order than the Variance. Journal of Finance
 #' 35(4):915-919.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' 
@@ -99,6 +97,12 @@ function (R,...)
 
 ###############################################################################
 
+#' @rdname CoMoments
+#' @name CoMoments
+NULL
+
+#' @rdname CoMoments
+#' @export
 CoSkewnessMatrix <-
 function (R, ...)
 { # @author Kris Boudt
@@ -107,6 +111,8 @@ function (R, ...)
 
 ###############################################################################
 
+#' @rdname CoMoments
+#' @export
 CoKurtosisMatrix <-
 function (R, ...)
 { # @author Kris Boudt
@@ -175,10 +181,13 @@ centeredcomoment = function(Ra,Rb,p1,p2,normalize=FALSE)
 #' @concept co-moments
 #' @concept moments
 #' @aliases CoMoments CoVariance CoSkewness CoKurtosis
+#' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
+#' asset returns
 #' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param Rb an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' index, benchmark, portfolio, or secondary asset returns to compare against
+#' @param \dots any other passthru parameters
 #' @author Kris Boudt, Peter Carl, Brian Peterson
 #' @seealso \code{\link{BetaCoSkewness}} \cr \code{\link{BetaCoKurtosis}} \cr
 #' \code{\link{BetaCoMoments}}
@@ -196,7 +205,7 @@ centeredcomoment = function(Ra,Rb,p1,p2,normalize=FALSE)
 #' Scott, Robert C., and Philip A. Horvath. 1980. On the Direction of
 #' Preference for Moments of Higher Order than the Variance. Journal of Finance
 #' 35(4):915-919.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -330,7 +339,7 @@ CoVariance<- function(Ra,Rb)
 #' Martellini, Lionel, and Volker Ziemann. 2007. Improved Forecasts of
 #' Higher-Order Comoments and Implications for Portfolio Selection. EDHEC Risk
 #' and Asset Management Research Centre working paper.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -509,11 +518,11 @@ BetaCoKurtosis <- function(Ra,Rb)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CoMoments.R 2187 2012-07-21 16:23:23Z matthieu_lestel $
+# $Id: CoMoments.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

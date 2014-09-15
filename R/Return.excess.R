@@ -29,7 +29,7 @@
 #' @author Peter Carl
 #' @references Bacon, Carl. \emph{Practical Portfolio Performance Measurement
 #' and Attribution}. Wiley. 2004. p. 47-52
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -65,6 +65,10 @@ function (R, Rf = 0)
     if(!is.null(dim(Rf))){
         Rf = checkData(Rf)
         coln.Rf=colnames(Rf)
+        if(is.null(coln.Rf)){
+          colnames(Rf) = "Rf"
+          coln.Rf = colnames(Rf)
+        }
         Rft=cbind(R,Rf)
         Rft=na.locf(Rft[,make.names(coln.Rf)])
         Rf=Rft[which(index(R) %in% index(Rft))]
@@ -90,11 +94,11 @@ function (R, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.excess.R 2315 2013-01-23 21:09:48Z braverock $
+# $Id: Return.excess.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

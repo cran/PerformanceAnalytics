@@ -59,11 +59,12 @@
 #' @param metricsNames column names for each function
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
-#' table.Arbitrary(edhec,metrics=c("VaR", "ES"),metricsNames=c("Modified VaR","Modified Expected Shortfall"))
+#' table.Arbitrary(edhec,metrics=c("VaR", "ES"),
+#'                 metricsNames=c("Modified VaR","Modified Expected Shortfall"))
 #' 
 #' @export
 table.Arbitrary <-
@@ -165,11 +166,11 @@ function(R, metrics=c("mean","sd"), metricsNames=c("Average Return","Standard De
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Arbitrary.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.Arbitrary.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

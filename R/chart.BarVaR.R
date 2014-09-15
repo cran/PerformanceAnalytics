@@ -70,7 +70,7 @@
 #' @author Peter Carl
 #' @seealso \code{\link{chart.TimeSeries}} \cr \code{\link{plot}} \cr
 #' \code{\link{ES}} \cr \code{\link{VaR}} \cr \code{\link{Return.clean}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(managers)
@@ -83,12 +83,16 @@
 #' 		main="... with Empirical VaR from Inception")
 #' 
 #' # with lines for all managers in the sample
+#' 
 #' chart.BarVaR(managers[,1:6], 
 #' 		methods="GaussianVaR", 
 #' 		all=TRUE, lty=1, lwd=2, 
 #' 		colorset= c("red", rep("gray", 5)), 
 #' 		main="... with Gaussian VaR and Estimates for Peers")
 #' 
+#' \dontrun{
+#' # not run on CRAN because of example time
+#'
 #' # with multiple methods
 #' chart.BarVaR(managers[,1,drop=FALSE],
 #' 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), 
@@ -113,6 +117,7 @@
 #' 		lwd=2, ypad=.01, clean="boudt", 
 #' 		show.horizontal=TRUE, lty=2, 
 #' 		main="... with Robust ModVaR and Line for Identifying Exceptions")
+#' }
 #' 
 #' @rdname chart.BarVaR
 #' @export
@@ -368,11 +373,11 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: chart.BarVaR.R 3541 2014-09-15 09:39:58Z braverock $
 #
 ###############################################################################

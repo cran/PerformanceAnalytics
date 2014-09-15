@@ -57,7 +57,7 @@
 #' John (2007) \emph{car: Companion to Applied Regression} \cr
 #' \url{http://www.r-project.org},
 #' \url{http://socserv.socsci.mcmaster.ca/jfox/}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' library(MASS)
@@ -145,7 +145,7 @@ function(R, distribution="norm", ylab=NULL,
         }
     if (line=="robust"){
         stopifnot("package:MASS" %in% search() || require("MASS",quietly=TRUE))
-        coef<-coefficients(rlm(ord.x~z))
+        coef<-coefficients(MASS::rlm(ord.x~z))
         a<-coef[1]
         b<-coef[2]
         abline(a,b, col=col[2])
@@ -225,11 +225,11 @@ function(R, distribution="norm", ylab=NULL,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.QQPlot.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.QQPlot.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

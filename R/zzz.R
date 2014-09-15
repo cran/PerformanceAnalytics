@@ -6,7 +6,9 @@
     if(interactive() || getOption("verbose")) { 
         # not in test scripts
         MSG(paste("\nPackage ", pkg, " (",dsc$Version,") loaded.\n",
-            dsc$Title, "\n", dsc$Copyright, " ", dsc$Author, ". License: ", dsc$License, "\n", dsc$URL,
+            # dsc$Title, "\n", 
+            "Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson, ", 
+            dsc$License, "\n", dsc$URL,
             "\n", sep=""))
     }
 }
@@ -16,14 +18,21 @@ even <- function (x) x%%2==0
 odd  <- function (x) x%%2==1
 
 sd.xts <- xts:::sd.xts
+
+#' @importFrom utils packageDescription
+#' @importFrom stats sd
+#' @import xts
+#' @import zoo
+NULL
+
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: zzz.R 2293 2012-11-08 14:52:28Z bodanker $
+# $Id: zzz.R 3541 2014-09-15 09:39:58Z braverock $
 #
 ###############################################################################

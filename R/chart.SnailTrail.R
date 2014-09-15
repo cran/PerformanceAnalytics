@@ -46,7 +46,7 @@
 #' @author Peter Carl
 #' @seealso \code{\link{chart.RiskReturnScatter}}
 #' @references ~put references to the literature/web site here ~
-#' @keywords ts
+###keywords ts
 #' @examples
 #' 
 #' data(managers)
@@ -216,11 +216,11 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.SnailTrail.R 2316 2013-01-28 21:38:59Z braverock $
+# $Id: chart.SnailTrail.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

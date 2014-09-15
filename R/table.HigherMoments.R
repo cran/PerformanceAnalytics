@@ -22,7 +22,7 @@
 #' @references Martellini L., Vaissie M., Ziemann V. Investing in Hedge Funds:
 #' Adding Value through Active Style Allocation Decisions. October 2005. Edhec
 #' Risk and Asset Management Research Centre.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -30,7 +30,10 @@
 #' result=t(table.HigherMoments(managers[,1:6],managers[,8,drop=FALSE]))
 #' rownames(result)=colnames(managers[,1:6])
 #' require("Hmisc")
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  
+#'          max.cex=.9, halign = "center", valign = "top", row.valign="center", 
+#'          wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Higher Co-Moments with SP500 TR")
 #' 
 #' @export
@@ -117,11 +120,11 @@ function (Ra, Rb, scale = NA, Rf = 0, digits = 4, method = "moment")
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.HigherMoments.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.HigherMoments.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

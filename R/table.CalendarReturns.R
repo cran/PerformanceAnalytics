@@ -18,7 +18,7 @@
 #' This function defaults to the first column as the monthly returns to be
 #' formatted.
 #' @author Peter Carl
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -27,7 +27,14 @@
 #' # prettify with format.df in hmisc package
 #' require("Hmisc")
 #' result = t(table.CalendarReturns(managers[,c(1,8)]))
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c( rep("darkgray",12), "black", "blue"), mar = c(0,0,3,0)+0.1)
+#' 
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'          cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  
+#'          max.cex=.9, halign = "center", valign = "top", 
+#'          row.valign="center", wrap.rownames=20, wrap.colnames=10, 
+#'          col.rownames=c( rep("darkgray",12), "black", "blue"), 
+#'          mar = c(0,0,3,0)+0.1)
+#'          
 #' title(main="Calendar Returns")
 #' 
 #' @export
@@ -156,11 +163,11 @@ function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CalendarReturns.R 2287 2012-09-18 20:14:18Z braverock $
+# $Id: table.CalendarReturns.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

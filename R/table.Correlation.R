@@ -10,7 +10,7 @@
 #' @param \dots any other passthru parameters to \code{\link{cor.test}}
 #' @author Peter Carl
 #' @seealso \code{\link{cor.test}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' # First we load the data
@@ -20,7 +20,10 @@
 #' result=table.Correlation(managers[,1:6],managers[,8])
 #' rownames(result)=colnames(managers[,1:6])
 #' require("Hmisc")
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  
+#'          max.cex=.9, halign = "center", valign = "top", row.valign="center"
+#'          , wrap.rownames=20, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Correlations to SP500 TR")
 #' 
 #' ctable = table.Correlation(managers[,1:6],managers[,8,drop=FALSE], conf.level=.99)
@@ -83,11 +86,11 @@ function (Ra, Rb, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Correlation.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.Correlation.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

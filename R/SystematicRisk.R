@@ -22,7 +22,7 @@
 #' @references Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.75
 #' 
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #'
 #' data(portfolio_bacon)
@@ -84,11 +84,11 @@ function (Ra, Rb, Rf = 0, scale = NA, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SystematicRisk.R 2298 2012-11-12 19:49:53Z peter_carl $
+# $Id: SystematicRisk.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

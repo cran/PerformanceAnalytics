@@ -31,7 +31,7 @@
 #' included so that some sensible defaults could be set.
 #' @author Peter Carl
 #' @seealso \code{\link{plot}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(edhec)
@@ -85,11 +85,11 @@ function (x, y, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xli
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Scatter.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.Scatter.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

@@ -17,11 +17,15 @@
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso \code{\link{chart.RollingPerformance}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(managers)
-#' charts.RollingPerformance(managers[,1:8], Rf=managers[,10,drop=FALSE], colorset=tim8equal, main="Rolling 12-Month Performance", legend.loc="topleft")
+#' charts.RollingPerformance(managers[,1:8], 
+#'                           Rf=managers[,10,drop=FALSE], 
+#'                           colorset=tim8equal, 
+#'                           main="Rolling 12-Month Performance", 
+#'                           legend.loc="topleft")
 #' 
 #' @export 
 charts.RollingPerformance <-
@@ -94,11 +98,11 @@ function (R, width = 12, Rf = 0, main = NULL, event.labels = NULL, legend.loc=NU
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingPerformance.R 2309 2013-01-23 16:17:52Z peter_carl $
+# $Id: charts.RollingPerformance.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

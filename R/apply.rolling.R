@@ -19,7 +19,7 @@
 #' @return A timeseries in a zoo object of the calculation results
 #' @author Peter Carl
 #' @seealso \code{\link{apply}} \cr \code{\link[zoo]{rollapply}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -66,11 +66,11 @@ apply.rolling <- function (R, width, trim = TRUE, gap = 12, by = 1, FUN = "mean"
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.rolling.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: apply.rolling.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

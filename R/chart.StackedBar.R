@@ -75,7 +75,7 @@
 #' Tufte, Edward R. (2001) The Visual Display of Quantitative Information, 2nd
 #' edition. The Graphics Press, Cheshire, Connecticut. See
 #' http://www.edwardtufte.com for this and other references.
-#' @keywords ts multivariate hplot
+###keywords ts multivariate hplot
 #' @examples
 #' 
 #' data(weights)
@@ -293,11 +293,11 @@ function (w, colorset = NULL, space = 0.2, cex.axis=0.8, cex.legend = 0.8, cex.l
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.StackedBar.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.StackedBar.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

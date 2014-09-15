@@ -1,5 +1,5 @@
 ###############################################################################
-# $Id: ES.R 2316 2013-01-28 21:38:59Z braverock $
+# $Id: ES.R 3528 2014-09-11 12:43:17Z braverock $
 ###############################################################################
 
 #' calculates Expected Shortfall(ES) (or Conditional Value-at-Risk(CVaR) for
@@ -46,7 +46,7 @@
 #' judgement on which approach is preferable.
 #' @section Background: This function provides several estimation methods for
 #' the Expected Shortfall (ES) (also called Expected Tail Loss (ETL)
-#' orConditional Value at Risk (CVaR)) of a return series and the Component ES
+#' or Conditional Value at Risk (CVaR)) of a return series and the Component ES
 #' (ETL/CVaR) of a portfolio.
 #' 
 #' At a preset probability level denoted \eqn{c}, which typically is between 1
@@ -90,7 +90,7 @@
 #' 
 #' Scaillet, Olivier. Nonparametric estimation and sensitivity analysis of
 #' expected shortfall. Mathematical Finance, 2002, vol. 14, 74-86.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #'     data(edhec)
@@ -114,7 +114,7 @@
 #' 
 #'     # add Component ES for the equal weighted portfolio
 #'     ES(edhec, clean="boudt", portfolio_method="component")
-#' 
+#' @export ETL CVaR ES
 ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ..., 
         method=c("modified","gaussian","historical"), 
         clean=c("none","boudt", "geltner"),  
@@ -236,11 +236,11 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ES.R 2316 2013-01-28 21:38:59Z braverock $
+# $Id: ES.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

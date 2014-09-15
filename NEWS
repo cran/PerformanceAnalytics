@@ -1,3 +1,44 @@
+PerformanceAnalytics 1.4 Release Notes
+
+We've completely re-written Return.portfolio to make more of the
+internals available for those who have the need to disassemble the 
+various components of the portfolio return.  Return.portfolio and
+Return.rebalancing are now the same function, with Return.portfolio
+being preferred for new code.
+
+This release also adds some functionality from Bacon, and 
+makes visible some functions that were previously internal to 
+the package.  
+
+We've moved to using roxygen2 to generate the NAMESPACE file,
+which required touching basically every single generated .Rd file.
+
+We're also altering our version numbering system. We'll be using a 
+"major.cran-release.r-forge-rev" form to make it easier for us to track 
+where reported issues may have been introduced.  Major releases will continue 
+to indicate that significant changes to the interfaces of the functions 
+were made.  This is our 4th CRAN release after 1.0, so the minor number 
+moves to 4.  The trailing number will reflect the revision number from
+R-Forge's svn associated with the tagged CRAN (or subsequent) release.
+
+Most of the commits leading up to release are the result of continued 
+tightening and drift in CRAN standards, most should not have user-visible
+results.
+
+... and the usual minor things that get changed and updated in the general 
+course of maintenance.
+
+PerformanceAnalytics 1.1 Release Notes
+
+Another release almost exclusively based on R core changes ahead of R 3.0.0.
+
+Most of the commits leading up to release are the result of continued 
+tightening and drift in CRAN standards, most should not have user-visible
+results.
+
+... and the usual minor things that get changed and updated in the general 
+course of maintenance.
+
 PerformanceAnalytics 1.0.4.3 Release Notes
 (sent to CRAN 2012-03-29)
 

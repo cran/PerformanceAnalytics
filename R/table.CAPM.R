@@ -1,11 +1,11 @@
-#' Asset-Pricing Model Summary: Statistics and Stylized Facts
-#' 
-#' Takes a set of returns and relates them to a market benchmark. Provides a
-#' set of measures related to the excess return single index model, or CAPM.
-#' 
+#' Single Factor Asset-Pricing Model Summary: Statistics and Stylized Facts
+#'
+#' Takes a set of returns and relates them to a benchmark return. Provides a
+#' set of measures related to an excess return single factor model, or CAPM.
+#'
 #' This table will show statistics pertaining to an asset against a set of
 #' benchmarks, or statistics for a set of assets against a benchmark.
-#' 
+#'
 #' @param Ra a vector of returns to test, e.g., the asset to be examined
 #' @param Rb a matrix, data.frame, or timeSeries of benchmark(s) to test the
 #' asset against.
@@ -17,27 +17,25 @@
 #' @seealso \code{\link{CAPM.alpha}} \cr \code{\link{CAPM.beta}} \cr
 #' \code{\link{TrackingError}} \cr \code{\link{ActivePremium}} \cr
 #' \code{\link{InformationRatio}} \cr \code{\link{TreynorRatio}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
-#' 
+#'
 #' data(managers)
-#' table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#' 
-#' result = table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-#' textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
-#' title(main="CAPM-Related Statistics")
-#' 
-#' 
-#' @export
-table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
+#' table.SFM(managers[,1:3], managers[,8], Rf = managers[,10])
+#'
+#' result = table.SFM(managers[,1:3], managers[,8], Rf = managers[,10])
+#' textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, 
+#'          halign = "center", valign = "top", row.valign="center", 
+#'          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' title(main="Single Factor Model Related Statistics")
+#'
+#' @rdname table.CAPM
+#' @aliases
+#' table.CAPM
+#' table.SFM
+#' @export table.SFM table.CAPM
+table.SFM <- table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 {# @author Peter Carl
-
-    # DESCRIPTION:
-    # Asset-Pricing Model Summary: Statistics and Stylized Facts
-    #
-    # Takes a set of returns and relates them to a market benchmark.
-    # Provides a set of measures related to the excess return single index
-    # model, or CAPM.
 
     # Inputs:
     # Ra: a vector of returns to test, e.g., the asset to be examined
@@ -90,20 +88,20 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
             model.lm = lm(merged.assets[,1] ~ merged.assets[,2])
             alpha = coef(model.lm)[[1]]
             beta = coef(model.lm)[[2]]
-			CAPMbull = CAPM.beta.bull(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept 
-			CAPMbear = CAPM.beta.bear(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept
+            CAPMbull = CAPM.beta.bull(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept
+            CAPMbear = CAPM.beta.bear(Ra[,column.a], Rb[,column.b],Rf) #inefficient, recalcs excess returns and intercept
             htest = cor.test(merged.assets[,1], merged.assets[,2])
             #active.premium = (Return.annualized(merged.assets[,1,drop=FALSE], scale = scale) - Return.annualized(merged.assets[,2,drop=FALSE], scale = scale))
             active.premium = ActivePremium(Ra=Ra[,column.a],Rb=Rb[,column.b], scale = scale)
             #tracking.error = sqrt(sum(merged.assets[,1] - merged.assets[,2])^2/(length(merged.assets[,1])-1)) * sqrt(scale)
-			tracking.error = TrackingError(Ra[,column.a], Rb[,column.b],scale=scale)
+            tracking.error = TrackingError(Ra[,column.a], Rb[,column.b],scale=scale)
             #treynor.ratio = Return.annualized(merged.assets[,1,drop=FALSE], scale = scale)/beta
             treynor.ratio = TreynorRatio(Ra=Ra[,column.a], Rb=Rb[,column.b], Rf = Rf, scale = scale)
-            
+
             z = c(
                     alpha,
                     beta,
-                    CAPMbull, 
+                    CAPMbull,
                     CAPMbear,
                     summary(model.lm)$r.squared,
                     ((1+alpha)^scale - 1),
@@ -114,7 +112,7 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
                     active.premium/tracking.error,
                     treynor.ratio
                     )
-        
+
             znames = c(
                     "Alpha",
                     "Beta",
@@ -129,7 +127,7 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
                     "Information Ratio",
                     "Treynor Ratio"
                     )
-    
+
             if(column.a == 1 & column.b == 1) {
                 result.df = data.frame(Value = z, row.names = znames)
                 colnames(result.df) = paste(columnnames.a[column.a], columnnames.b[column.b], sep = " to ")
@@ -149,11 +147,11 @@ table.CAPM <- function (Ra, Rb, scale = NA, Rf = 0, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.CAPM.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.CAPM.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

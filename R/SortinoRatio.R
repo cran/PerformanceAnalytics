@@ -34,7 +34,7 @@
 #' \code{\link{InformationRatio}}
 #' @references Sortino, F. and Price, L. Performance Measurement in a Downside
 #' Risk Framework. \emph{Journal of Investing}. Fall 1994, 59-65.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -78,11 +78,11 @@ function (R, MAR = 0,...,weights=NULL)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SortinoRatio.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: SortinoRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

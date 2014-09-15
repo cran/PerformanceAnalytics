@@ -37,12 +37,12 @@
 #' @seealso \code{\link{Return.cumulative}}
 #' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
 #' Attribution}. Wiley. 2004. Chapter 2 \cr
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #'   \dontrun{
-#'     require(tseries)
-#'     prices = get.hist.quote("IBM", start = "1999-01-01", end = "2007-01-01", quote = "AdjClose", compression = "d")
+#'     require(quantmod)
+#'     prices = getSymbols("IBM", from = "1999-01-01", to = "2007-01-01")
 #'   }
 #'   \dontshow{
 #'     data(prices)
@@ -70,7 +70,7 @@ function(prices, method = c("discrete","log"))
 
     if(method=="simple" || method=='discrete'){
         #Returns = pr/pr[-nrow(pr), ] - 1
-        Returns = pr/xts:::lagts.xts(pr) - 1
+        Returns = pr/lag(pr) - 1
         xtsAttributes(Returns) <- list(ret_type="discrete")
     }
     if(method=="compound" || method=='log') {
@@ -91,11 +91,11 @@ function(prices, method = c("discrete","log"))
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.calculate.R 2316 2013-01-28 21:38:59Z braverock $
+# $Id: Return.calculate.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

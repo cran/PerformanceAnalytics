@@ -5,7 +5,7 @@
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 ###############################################################################
-# $Id: PortfolioRisk.R 2291 2012-10-26 15:56:41Z braverock $
+# $Id: PortfolioRisk.R 3301 2014-01-18 15:26:12Z braverock $
 ###############################################################################
 
 
@@ -231,10 +231,13 @@ Portsd =  function(w,sigma)
    dpm2 = derportm2(w,sigma)
    dersd = (0.5*as.vector(dpm2))/sqrt(pm2);
    contrib = dersd*as.vector(w)
+   names(contrib) = names(w)
+   pct_contrib = contrib/sqrt(pm2)
+   names(pct_contrib) = names(w)
    # check
    if( abs( sum(contrib)-sqrt(pm2))>0.01*sqrt(pm2)) { print("error") 
    } else {
-       ret<-list(  sqrt(pm2) , contrib , contrib/sqrt(pm2) )
+       ret<-list(  sqrt(pm2) , contrib , pct_contrib )
        names(ret) <- c("StdDev","contribution","pct_contrib_StdDev")
    }
    return(ret)
@@ -603,11 +606,11 @@ VaR.historical.portfolio = function(R,p,w)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson and Kris Boudt
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson and Kris Boudt
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: PortfolioRisk.R 2291 2012-10-26 15:56:41Z braverock $
+# $Id: PortfolioRisk.R 3301 2014-01-18 15:26:12Z braverock $
 #
 ###############################################################################

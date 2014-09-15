@@ -20,6 +20,7 @@
 #' and y axes
 #' @param ylab set the y-axis label, same as in \code{\link{plot}}
 #' @param xlab set the x-axis label, same as in \code{\link{plot}}
+#' @param ylim set the y-axis dimensions, same as in \code{\link{plot}}
 #' @param type set the chart type, same as in \code{\link{plot}}
 #' @param lty set the line type, same as in \code{\link{plot}}
 #' @param lwd set the line width, same as in \code{\link{plot}}
@@ -37,7 +38,7 @@
 #' @references Boudt, K., Peterson, B. G., Croux, C., 2008. Estimation and
 #' Decomposition of Downside Risk for Portfolios with Non-Normal Returns.
 #' Journal of Risk, forthcoming.
-#' @keywords ts multivariate distribution
+###keywords ts multivariate distribution
 #' @examples
 #' 
 #' data(managers)
@@ -47,7 +48,7 @@
 #' 
 #' @export 
 chart.VaRSensitivity <-
-function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","GaussianES", "ModifiedES", "HistoricalES"), clean=c("none", "boudt", "geltner"), elementcolor="darkgray", reference.grid=TRUE, xlab = "Confidence Level", ylab="Value at Risk", type = "l", lty = c(1,2,4), lwd = 1, colorset = (1:12), pch = (1:12), legend.loc = "bottomleft", cex.legend = 0.8, main=NULL,...)
+function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","GaussianES", "ModifiedES", "HistoricalES"), clean=c("none", "boudt", "geltner"), elementcolor="darkgray", reference.grid=TRUE, xlab = "Confidence Level", ylab="Value at Risk", type = "l", lty = c(1,2,4), lwd = 1, colorset = (1:12), pch = (1:12), legend.loc = "bottomleft", cex.legend = 0.8, main=NULL, ylim=NULL, ...)
 { # @author Peter Carl
 
     R = checkData(R)
@@ -106,7 +107,8 @@ function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","Gaussian
 # print(risk)
 
     risk.columns = ncol(risk)
-    ylim=c(min(risk),max(risk))
+    if(is.null(ylim))
+        ylim=c(min(risk),max(risk))
     xlim=c(min(p), max(p))
     if(is.null(main))
         main=paste("Risk Confidence Sensitivity of ", columnnames[1], sep="")
@@ -149,11 +151,11 @@ function (R, methods = c("GaussianVaR", "ModifiedVaR", "HistoricalVaR","Gaussian
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.VaRSensitivity.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.VaRSensitivity.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

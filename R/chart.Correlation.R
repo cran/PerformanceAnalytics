@@ -17,7 +17,7 @@
 #' \url{http://addictedtor.free.fr/graphiques/sources/source_137.R}
 #' @author Peter Carl
 #' @seealso \code{\link{table.Correlation}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(managers)
@@ -41,18 +41,18 @@ function (R, histogram = TRUE, method=c("pearson", "kendall", "spearman"), ...)
     {
         usr <- par("usr"); on.exit(par(usr))
         par(usr = c(0, 1, 0, 1))
-        r <- abs(cor(x, y, use = use,method=method))
+        r <- cor(x, y, use=use, method=method) # MG: remove abs here
         txt <- format(c(r, 0.123456789), digits=digits)[1]
         txt <- paste(prefix, txt, sep="")
         if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
 
-        test <- cor.test(x,y)
+        test <- cor.test(x,y, method=method)
         # borrowed from printCoefmat
         Signif <- symnum(test$p.value, corr = FALSE, na = FALSE,
                     cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
                     symbols = c("***", "**", "*", ".", " "))
-
-        text(0.5, 0.5, txt, cex = cex * r)
+        # MG: add abs here and also include a 30% buffer for small numbers
+        text(0.5, 0.5, txt, cex = cex * (abs(r) + .3) / 1.3)
         text(.8, .8, Signif, cex=cex, col=2)
     }
     f <- function(t) {
@@ -76,17 +76,17 @@ function (R, histogram = TRUE, method=c("pearson", "kendall", "spearman"), ...)
     if(histogram)
         pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, diag.panel=hist.panel, method=method, ...)
     else
-        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, method=method, ...)
+        pairs(x, gap=0, lower.panel=panel.smooth, upper.panel=panel.cor, method=method, ...) 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Correlation.R 2316 2013-01-28 21:38:59Z braverock $
+# $Id: chart.Correlation.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

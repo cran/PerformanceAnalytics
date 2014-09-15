@@ -14,7 +14,7 @@
 #' @author Peter Carl
 #' @seealso \code{\link{Return.annualized}} \cr \code{\link{StdDev.annualized}}
 #' \cr \code{\link{SharpeRatio.annualized}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -23,7 +23,12 @@
 #' require("Hmisc")
 #' result = t(table.AnnualizedReturns(managers[,1:8], Rf=.04/12))
 #' 
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'          cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9, 
+#'          halign = "center", valign = "top", row.valign="center", 
+#'          wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", 
+#'          rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
+#'          
 #' title(main="Annualized Performance")
 #' 
 #' @export
@@ -85,11 +90,11 @@ function (R, scale = NA, Rf = 0, geometric = TRUE, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.AnnualizedReturns.R 2287 2012-09-18 20:14:18Z braverock $
+# $Id: table.AnnualizedReturns.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

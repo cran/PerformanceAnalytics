@@ -15,7 +15,7 @@
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso \code{\link[zoo]{rollapply}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -72,11 +72,11 @@ apply.fromstart <- function (R, FUN = "mean" , gap = 1, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: apply.fromstart.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: apply.fromstart.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

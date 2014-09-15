@@ -19,7 +19,7 @@
 #' \code{\link{table.DownsideRisk}}
 #' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
 #' Attribution}. Wiley. 2004. p. 88 \cr
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
@@ -45,11 +45,11 @@ sortDrawdowns <- function (runs) {
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: sortDrawdowns.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: sortDrawdowns.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

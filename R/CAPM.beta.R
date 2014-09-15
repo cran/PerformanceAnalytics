@@ -1,7 +1,7 @@
-#' calculate CAPM beta
+#' calculate single factor model (CAPM) beta
 #' 
-#' CAPM Beta is the beta of an asset to the variance and covariance of an
-#' initial portfolio.  Used to determine diversification potential.
+#' The single factor model or CAPM Beta is the beta of an asset to the variance 
+#' and covariance of an initial portfolio.  Used to determine diversification potential.
 #' 
 #' This function uses a linear intercept model to achieve the same results as
 #' the symbolic model used by \code{\link{BetaCoVariance}}
@@ -21,13 +21,17 @@
 #' Alternatively, \code{CAPM.beta.bear} provides the calculation on negative
 #' market returns.
 #' 
-#' The \code{TimingRatio} can help assess whether the manager is a good timer
+#' The \code{TimingRatio} may help assess whether the manager is a good timer
 #' of asset allocation decisions.  The ratio, which is calculated as
 #' \deqn{TimingRatio =\frac{\beta^{+}}{\beta^{-}}}{Timing Ratio = beta+/beta-}
 #' is best when greater than one in a rising market and less than one in a
 #' falling market.
 #' 
-#' @aliases CAPM.beta CAPM.beta.bull CAPM.beta.bear TimingRatio
+#' While the classical CAPM has been almost completely discredited by the 
+#' literature, it is an example of a simple single factor model, 
+#' comparing an asset to any arbitrary benchmark.
+#'  
+#' @aliases CAPM.beta CAPM.beta.bull CAPM.beta.bear TimingRatio SFM.beta
 #' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param Rb return vector of the benchmark asset
@@ -40,7 +44,7 @@
 #' 1964, 425-442. \cr Ruppert, David. \emph{Statistics and Finance, an
 #' Introduction}. Springer. 2004. \cr Bacon, Carl. \emph{Practical portfolio
 #' performance measurement and attribution}. Wiley. 2004. \cr
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -79,10 +83,10 @@
 #' 			Rf = managers[, "US 3m TR", drop=FALSE], 
 #' 			fit="conditional", 
 #' 			main="Conditional Beta")
-#' 
-#' @export
-CAPM.beta <-
-function (Ra, Rb, Rf = 0)
+#'   		
+#' @rdname CAPM.beta
+#' @export CAPM.beta SFM.beta
+CAPM.beta <- SFM.beta <- function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -260,11 +264,11 @@ function (Ra, Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.beta.R 2304 2012-12-15 20:19:56Z bodanker $
+# $Id: CAPM.beta.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

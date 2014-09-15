@@ -1,5 +1,5 @@
 ###############################################################################
-# $Id: VaR.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
+# $Id: VaR.R 3528 2014-09-11 12:43:17Z braverock $
 ###############################################################################
 
 
@@ -104,7 +104,20 @@
 #' 
 #' Rockafellar, Terry and Uryasev, Stanislav. Optimization of Conditional VaR.
 #' The Journal of Risk, 2000, vol. 2, 21-41.
-#' @keywords ts multivariate distribution models
+#' 
+#' Dowd, Kevin. Measuring Market Risk, John Wiley and Sons, 2010.
+#' 
+#' Jorian, Phillippe. Value at Risk, the new benchmark for managing financial risk.
+#' 3rd Edition, McGraw Hill, 2006.
+#' 
+#' Hallerback, John. "Decomposing Portfolio Value-at-Risk: A General Analysis",
+#' 2003. The Journal of Risk vol 5/2.
+#' 
+#' Yamai and Yoshiba (2002). "Comparative Analyses of Expected Shortfall and 
+#'    Value-at-Risk: Their Estimation Error, Decomposition, and Optimization",
+#'    Bank of Japan.
+#'      
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #'     data(edhec)
@@ -204,6 +217,8 @@ function (R=NULL , p=0.95, ..., method=c("modified","gaussian","historical", "ke
             columns<-ncol(rVaR)
             for(column in 1:columns) {
                 tmp=rVaR[,column]
+                if (!is.finite(tmp)) # skip reasonableness check if tmp is NA, NaN, +/-Inf, etc
+                    next()
                 if (eval(tmp < 0)) { #eval added previously to get around Sweave bitching
                     message(c("VaR calculation produces unreliable result (inverse risk) for column: ",column," : ",rVaR[,column]))
                     # set VaR to NA, since inverse risk is unreasonable
@@ -246,11 +261,11 @@ function (R=NULL , p=0.95, ..., method=c("modified","gaussian","historical", "ke
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: VaR.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
+# $Id: VaR.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

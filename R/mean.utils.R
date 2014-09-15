@@ -21,7 +21,7 @@
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso \code{\link[stats]{sd}} \cr \code{\link[base]{mean}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
@@ -31,7 +31,7 @@
 #' mean.LCL(edhec[,"Funds of Funds"])
 #' @rdname mean.geometric
 #' @method mean geometric
-#' @export
+#' @export mean.geometric
 mean.geometric <-
 function (x, ...)
 {# @author Peter Carl
@@ -63,7 +63,7 @@ function (x, ...)
 
 #' @rdname mean.geometric
 #' @method mean stderr
-#' @export
+#' @export mean.stderr
 mean.stderr <-
 function (x, ...)
 {# @author Peter Carl
@@ -95,7 +95,7 @@ function (x, ...)
 
 #' @rdname mean.geometric
 #' @method mean LCL
-#' @export
+#' @export mean.LCL
 mean.LCL <-
 function (x, ci = 0.95, ...)
 {# @author Peter Carl
@@ -134,7 +134,7 @@ function (x, ci = 0.95, ...)
 
 #' @rdname mean.geometric
 #' @method mean UCL
-#' @export
+#' @export mean.UCL
 mean.UCL <-
 function (x, ci = 0.95, ...)
 {# @author Peter Carl
@@ -174,11 +174,11 @@ function (x, ci = 0.95, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: mean.utils.R 2230 2012-08-10 09:10:36Z matthieu_lestel $
+# $Id: mean.utils.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

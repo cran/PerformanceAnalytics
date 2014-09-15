@@ -20,6 +20,7 @@
 #' @param type set the chart type, same as in \code{\link{plot}}
 #' @param lty set the line type, same as in \code{\link{plot}}
 #' @param lwd set the line width, same as in \code{\link{plot}}
+#' @param las set the axis label rotation, same as in \code{\link{plot}}
 #' @param main set the chart title, same as in \code{\link{plot}}
 #' @param ylab set the y-axis label, same as in \code{\link{plot}}
 #' @param xlab set the x-axis label, same as in \code{\link{plot}}
@@ -72,7 +73,7 @@
 #' @author Peter Carl
 #' @seealso \code{\link{plot}}, \code{\link{par}},
 #' \code{\link[xts]{axTicksByTime}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' 
@@ -134,7 +135,13 @@
 #' R=edhec[,"Funds of Funds",drop=FALSE]
 #' Return.cumulative = cumprod(1+R) - 1
 #' chart.TimeSeries(Return.cumulative)
-#' chart.TimeSeries(Return.cumulative, colorset = "darkblue", legend.loc = "bottomright", period.areas = cycles.dates, period.color = "lightblue", event.lines = risk.dates, event.labels = risk.labels, event.color = "red", lwd = 2)
+#' chart.TimeSeries(Return.cumulative, colorset = "darkblue", 
+#'                  legend.loc = "bottomright", 
+#'                  period.areas = cycles.dates, 
+#'                  period.color = "lightblue", 
+#'                  event.lines = risk.dates, 
+#'                  event.labels = risk.labels, 
+#'                  event.color = "red", lwd = 2)
 #' 
 #' @export 
 chart.TimeSeries <-
@@ -146,9 +153,10 @@ function (R,
           type = "l", 
           lty = 1, 
           lwd = 2, 
+          las = par("las"),
           main = NULL, 
           ylab=NULL, 
-          xlab="Date", 
+          xlab="", 
           date.format.in="%Y-%m-%d", 
           date.format = NULL, 
           xlim = NULL, 
@@ -226,7 +234,7 @@ function (R,
 	)
     }
     # Needed for finding aligned dates for event lines and period areas
-    rownames = as.Date(xts:::time.xts(y))
+    rownames = as.Date(time(y))
     rownames = format(strptime(rownames,format = date.format.in), date.format)
 
     time.scale = periodicity(y)$scale
@@ -319,13 +327,13 @@ function (R,
 
     if (xaxis) {
         if(minor.ticks)
-            axis(1, at=1:NROW(y), labels=FALSE, col='#BBBBBB')
+            axis(1, at=1:NROW(y), labels=FALSE, col='#BBBBBB', las=las)
         label.height = cex.axis *(.5 + apply(t(names(ep)),1, function(X) max(strheight(X, units="in")/par('cin')[2]) ))
         if(is.null(xaxis.labels))
             xaxis.labels = names(ep)
         else
             ep = 1:length(xaxis.labels)
-        axis(1, at=ep, labels=xaxis.labels, las=1, lwd=1, mgp=c(3,label.height,0), cex.axis = cex.axis) 
+        axis(1, at=ep, labels=xaxis.labels, las=1, lwd=1, mgp=c(3,label.height,0), cex.axis = cex.axis, las=las) 
 #         axis(1, at=ep, labels=xaxis.labels, las=1, lwd=1, mgp=c(3,2,0), cex.axis = cex.axis) 
         #axis(1, at = lab.ind, lab=rownames[lab.ind], cex.axis = cex.axis, col = elementcolor)
         title(xlab = xlab, cex = cex.lab)
@@ -335,9 +343,9 @@ function (R,
     # set up y-axis
     if (yaxis)
         if(yaxis.right)
-            axis(4, cex.axis = cex.axis, col=element.color, ylog=ylog)
+            axis(4, cex.axis = cex.axis, col=element.color, ylog=ylog, las=las)
         else
-            axis(2, cex.axis = cex.axis, col=element.color, ylog=ylog)
+            axis(2, cex.axis = cex.axis, col=element.color, ylog=ylog, las=las)
     box(col = element.color)
 
     if(!is.null(legend.loc)){
@@ -349,19 +357,19 @@ function (R,
     # Add the other titles
     if(is.null(main))
         main=columnnames[1]
-    title(ylab = ylab, cex = cex.lab)
-    title(main = main, cex = cex.main)
+    title(ylab = ylab, cex.lab = cex.lab)
+    title(main = main, cex.main = cex.main)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.TimeSeries.R 2292 2012-11-05 21:21:01Z braverock $
+# $Id: chart.TimeSeries.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

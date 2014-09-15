@@ -39,11 +39,11 @@ function (R, geometric = TRUE, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Drawdowns.R 1966 2012-05-25 14:07:21Z braverock $
+# $Id: Drawdowns.R 3301 2014-01-18 15:26:12Z braverock $
 #
 ###############################################################################

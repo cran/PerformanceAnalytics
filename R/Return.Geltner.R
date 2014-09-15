@@ -33,7 +33,7 @@
 #' Geltner, David, 1993, Estimating Market Values from Appraised Values without
 #' Assuming an Efficient Market, Journal of Real Estate Research, Vol.8,
 #' p.325-345.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -84,11 +84,11 @@ function (Ra, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.Geltner.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: Return.Geltner.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

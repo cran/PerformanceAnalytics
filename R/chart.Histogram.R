@@ -73,7 +73,7 @@
 #' \url{http://zoonek2.free.fr/UNIX/48_R/03.html}
 #' @author Peter Carl
 #' @seealso \code{\link[graphics]{hist}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #'     data(edhec)
@@ -200,7 +200,7 @@ function(R,
                 # Show density estimate
                 den = density(x, n=length(x))
                 yrange=c(yrange,max(den$y))
-                 probability = TRUE
+                probability = TRUE
             },
 #             add.stable = {
 #                 stopifnot("package:fBasics" %in% search() || require("fBasics",quietly=TRUE))
@@ -211,30 +211,27 @@ function(R,
 #                 probability = TRUE
 #             },
             add.cauchy = {
-                # requires library(MASS)
                 stopifnot("package:MASS" %in% search() || require("MASS",quietly=TRUE))
-
                 # This uses a Maximum Likelihood method as shown on:
                 # Wessa P., (2006), Maximum-likelihood Cauchy Distribution Fitting (v1.0.0) in
                 # Free Statistics Software (v1.1.21-r4), Office for Research Development and
                 # Education, URL http://www.wessa.net/rwasp_fitdistrcauchy.wasp/
-                fit = fitdistr(x, 'cauchy')
+                fit = MASS::fitdistr(x, 'cauchy')
                 xlab = paste("Cauchy (location = ",round(fit$estimate[[1]],2),", scale = ",round(fit$estimate[[2]],2),")", sep="")
                 fitted.cauchy = dcauchy(s,location = fit$estimate[[1]], scale = fit$estimate[[2]], log = FALSE)
                 yrange=c(yrange,max(fitted.cauchy))
                 probability = TRUE
             },
             add.sst = {
-#               requires library(sn)
-                stopifnot("package:sn" %in% search() || require("sn",quietly=TRUE))
-
-                fit = st.mle(y=x)
-                fitted.sst = dst(s, location = fit$dp[[1]], scale = fit$dp[[2]], shape = fit$dp[[3]], df=fit$dp[[4]], log = FALSE)
+                stopifnot("package:gamlss" %in% search() || require("gamlss",quietly=TRUE))              
+                #stopifnot("package:gamlss.dist" %in% search() || require("gamlss",quietly=TRUE))              
+                fitted.sst = gamlss.dist::dST1(s, mu = fitted(fit)[1], sigma = fitted(fit, "sigma")[1], nu = fitted(fit, "nu")[1], tau = fitted(fit, "tau")[1])
                 yrange=c(yrange,max(fitted.sst))
                 probability = TRUE
             },
             add.lnorm = {
-                fit = fitdistr(1+x,'log-normal')
+                stopifnot("package:MASS" %in% search() || require("MASS",quietly=TRUE))
+                fit = MASS::fitdistr(1+x,'log-normal')
                 fitted.lnorm = dlnorm(1+s, meanlog = fit$estimate[[1]], sdlog = fit$estimate[[2]], log = FALSE)
                 yrange=c(yrange,max(fitted.lnorm))
                 probability = TRUE
@@ -297,6 +294,7 @@ function(R,
 #             },
             add.sst = { #requires package sn
                 lines(s, fitted.sst, col = colorset[4], lwd=lwd)
+#               curve(fitted.sst, col=colorset[4], lwd=lwd, add=TRUE)
             },
             add.rug = {
                 rug(x, col = element.color)
@@ -338,11 +336,11 @@ function(R,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Histogram.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: chart.Histogram.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

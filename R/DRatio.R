@@ -24,7 +24,7 @@
 #' @references Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.95
 #' 
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' data(portfolio_bacon)
 #' print(DRatio(portfolio_bacon[,1])) #expected 0.401
@@ -60,11 +60,11 @@ DRatio <- function (R, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DRatio.R 2271 2012-09-02 01:56:23Z braverock $
+# $Id: DRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

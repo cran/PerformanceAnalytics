@@ -11,7 +11,7 @@
 #' @return xts or other time series of relative return
 #' @author Peter Carl
 #' @seealso \code{\link{chart.RelativePerformance}}
-#' @keywords ts
+###keywords ts
 #' @examples
 #' 
 #' data(managers)
@@ -65,11 +65,11 @@ function (Ra, Rb, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.relative.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: Return.relative.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

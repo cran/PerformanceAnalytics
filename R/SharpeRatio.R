@@ -52,7 +52,7 @@
 #' Laurent Favre and Jose-Antonio Galeano. Mean-Modified Value-at-Risk
 #' Optimization with Hedge Funds. Journal of Alternative Investment, Fall 2002,
 #' v 5.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -184,11 +184,11 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, ...) {
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.R 2312 2013-01-23 20:19:25Z peter_carl $
+# $Id: SharpeRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

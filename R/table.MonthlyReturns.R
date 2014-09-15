@@ -15,7 +15,7 @@
 #' @param ci confidence interval, defaults to 95\%
 #' @param digits number of digits to round results to
 #' @author Peter Carl
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
@@ -24,7 +24,9 @@
 #' 
 #' result=t(table.Stats(edhec))
 #' require("Hmisc")
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))), 
+#'          rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", 
+#'          row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Statistics for EDHEC Indexes")
 #' 
 #' @rdname table.MonthlyReturns
@@ -123,11 +125,11 @@ function (R, ci = 0.95, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.MonthlyReturns.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: table.MonthlyReturns.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

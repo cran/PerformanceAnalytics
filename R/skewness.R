@@ -30,7 +30,7 @@
 #' \code{\link{kurtosis}}
 #' @references Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.83-84
-#' @keywords univar
+###keywords univar
 #' @examples
 #' 
 #' ## mean -
@@ -127,11 +127,11 @@ skewness <-
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: skewness.R 2187 2012-07-21 16:23:23Z matthieu_lestel $
+# $Id: skewness.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

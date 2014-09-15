@@ -31,11 +31,10 @@
 #' @author Peter Carl
 #' @seealso \code{\link{chart.TimeSeries}}, \cr \code{\link{plot}}, \cr
 #' \code{\link{par}}
-#' @keywords ts hplot
+###keywords ts hplot
 #' @examples
-#' 
+#' \dontrun{
 #' data(managers)
-#' R = Drawdowns(managers[,2,drop=FALSE])
 #' n = table.Drawdowns(managers[,2,drop=FALSE])                          
 #' chart.Events(Drawdowns(managers[,2,drop=FALSE]), 
 #' 		dates = n$Trough, 
@@ -43,7 +42,7 @@
 #' 		post=max(na.omit(n$Recovery)), 
 #' 		lwd=2, colorset=redfocus, legend.loc=NULL, 
 #' 		main = "Worst Drawdowns")
-#' 
+#' }
 #' @export
 chart.Events <-
 function (R, dates, prior=12, post=12, main = NULL, xlab=NULL, ...)
@@ -94,11 +93,11 @@ function (R, dates, prior=12, post=12, main = NULL, xlab=NULL, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Events.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: chart.Events.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

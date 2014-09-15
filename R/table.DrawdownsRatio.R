@@ -15,7 +15,7 @@
 #' @seealso \code{\link{CalmarRatio}} \cr \code{\link{BurkeRatio}}
 #' \cr \code{\link{PainIndex}} \cr \code{\link{UlcerIndex}} \cr 
 #' \code{\link{PainRatio}} \cr \code{\link{MartinRatio}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -77,11 +77,11 @@ function (R, Rf = 0, scale = NA, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.DrawdownsRatio.R 2271 2012-09-02 01:56:23Z braverock $
+# $Id: table.DrawdownsRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

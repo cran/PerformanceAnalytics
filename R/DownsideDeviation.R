@@ -77,15 +77,15 @@
 #' \url{http://www.sortino.com/htm/performance.htm} see especially end note 10
 #' 
 #' \url{http://en.wikipedia.org/wiki/Semivariance}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #'
 #' #with data used in Bacon 2008
 #'
 #' data(portfolio_bacon)
-#' MAR = 0.5
-#' DownsideDeviation(portfolio_bacon[,1], MAR) #expected 0.493
-#' DownsidePotential(portfolio_bacon[,1], MAR) #expected 0.491
+#' MAR = 0.005
+#' DownsideDeviation(portfolio_bacon[,1], MAR) #expected 0.0255
+#' DownsidePotential(portfolio_bacon[,1], MAR) #expected 0.0137
 #' 
 #' #with data of managers
 #'
@@ -156,6 +156,8 @@ function (R, MAR = 0, method=c("full","subset"), ..., potential=FALSE)
     }
 }
 
+#' @rdname DownsideDeviation
+#' @export
 DownsidePotential <-
 function (R, MAR=0)
 { # @author Peter Carl, Matthieu Lestel
@@ -186,11 +188,11 @@ function (R, MAR=0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: DownsideDeviation.R 2271 2012-09-02 01:56:23Z braverock $
+# $Id: DownsideDeviation.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

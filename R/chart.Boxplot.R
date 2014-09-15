@@ -12,7 +12,6 @@
 #' 
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
-#' @param horizontal TRUE/FALSE plot horizontal (TRUE) or vertical (FALSE)
 #' @param names logical. if TRUE, show the names of each series
 #' @param as.Tufte logical. default FALSE. if TRUE use method derived for Tufte
 #' for limiting chartjunk
@@ -40,7 +39,7 @@
 #' @seealso \code{\link[graphics]{boxplot}}
 #' @references Tufte, Edward R.  \emph{The Visual Display of Quantitative
 #' Information}. Graphics Press. 1983. p. 124-129
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(edhec)
@@ -49,7 +48,7 @@
 #' 
 #' @export 
 chart.Boxplot <-
-function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
+function (R, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL, "mean", "median", "variance"), colorset = "black", symbol.color = "red", mean.symbol = 1, median.symbol = "|", outlier.symbol = 1, show.data = NULL, add.mean = TRUE, sort.ascending = FALSE, xlab="Return", main = "Return Distribution Comparison", element.color = "darkgray", ...)
 { # @author Peter Carl
 
     # DESCRIPTION:
@@ -149,11 +148,11 @@ function (R, horizontal = TRUE, names = TRUE, as.Tufte = FALSE, sort.by = c(NULL
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Boxplot.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.Boxplot.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

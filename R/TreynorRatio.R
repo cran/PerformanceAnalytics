@@ -25,17 +25,17 @@
 #' @references \url{http://en.wikipedia.org/wiki/Treynor_ratio}, 
 #' Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.77
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #'
 #' data(portfolio_bacon) 
 #' data(managers)
-#' round(TreynorRatio(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12),4) 
-#' round(TreynorRatio(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE]),4) 
-#' round(TreynorRatio(managers[,1:6], managers[,8,drop=FALSE], Rf=.035/12),4) 
-#' round(TreynorRatio(managers[,1:6], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE]),4)
-#' round(TreynorRatio(managers[,1:6], managers[,8:7,drop=FALSE], Rf=.035/12),4) 
-#' round(TreynorRatio(managers[,1:6], managers[,8:7,drop=FALSE], Rf = managers[,10,drop=FALSE]),4)
+#' round(TreynorRatio(managers[,1], managers[,8], Rf=.035/12),4) 
+#' round(TreynorRatio(managers[,1], managers[,8], Rf = managers[,10]),4) 
+#' round(TreynorRatio(managers[,1:6], managers[,8], Rf=.035/12),4) 
+#' round(TreynorRatio(managers[,1:6], managers[,8], Rf = managers[,10]),4)
+#' round(TreynorRatio(managers[,1:6], managers[,8:7], Rf=.035/12),4) 
+#' round(TreynorRatio(managers[,1:6], managers[,8:7], Rf = managers[,10]),4)
 #'
 #' print(TreynorRatio(portfolio_bacon[,1], portfolio_bacon[,2], modified = TRUE)) #expected 0.7975 
 #'
@@ -113,11 +113,11 @@ function (Ra, Rb, Rf = 0, scale = NA, modified = FALSE)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: TreynorRatio.R 2305 2012-12-20 20:09:18Z braverock $
+# $Id: TreynorRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

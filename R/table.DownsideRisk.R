@@ -20,7 +20,7 @@
 #' \code{\link{maxDrawdown}} \cr
 #' \code{\link{VaR}} \cr 
 #' \code{\link{ES}} \cr
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(edhec)
@@ -28,7 +28,10 @@
 #' 
 #' result=t(table.DownsideRisk(edhec, Rf=.04/12, MAR =.05/12, p=.95))
 #' require("Hmisc")
-#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
+#'          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  
+#'          max.cex=.9, halign = "center", valign = "top", row.valign="center", 
+#'          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Downside Risk Statistics")
 #'
 #' @export 
@@ -136,11 +139,11 @@ function (R, ci = 0.95, scale = NA, Rf = 0, MAR = .1/12, p= 0.95, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.DownsideRisk.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: table.DownsideRisk.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

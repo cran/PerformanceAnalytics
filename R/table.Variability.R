@@ -16,7 +16,7 @@
 #' and attribution}, second edition 2008 p.65
 #' @seealso \code{\link{StdDev.annualized}}
 #' \cr \code{\link{MeanAbsoluteDeviation}}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
@@ -80,11 +80,11 @@ function (R, scale = NA, geometric = TRUE, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Variability.R 2287 2012-09-18 20:14:18Z braverock $
+# $Id: table.Variability.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

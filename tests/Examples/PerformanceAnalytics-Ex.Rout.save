@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -22,34 +21,33 @@ Type 'q()' to quit R.
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
 > library('PerformanceAnalytics')
+Loading required package: xts
 Loading required package: zoo
 
 Attaching package: ‘zoo’
 
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     as.Date, as.Date.numeric
 
-Loading required package: xts
 
 Attaching package: ‘PerformanceAnalytics’
 
-The following object(s) are masked from ‘package:graphics’:
+The following object is masked from ‘package:graphics’:
 
     legend
 
 > 
-> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > cleanEx()
 > nameEx("ActivePremium")
 > ### * ActivePremium
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: ActivePremium
-> ### Title: Active Premium
-> ### Aliases: ActivePremium
-> ### Keywords: distribution models multivariate ts
+> ### Name: ActiveReturn
+> ### Title: Active Premium or Active Return
+> ### Aliases: ActivePremium ActiveReturn
 > 
 > ### ** Examples
 > 
@@ -82,7 +80,6 @@ Active Premium: EDHEC LS EQ -0.03237453 0.05463574
 > ### Name: AdjustedSharpeRatio
 > ### Title: Adjusted Sharpe ratio of the return distribution
 > ### Aliases: AdjustedSharpeRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -112,7 +109,6 @@ Adjusted Sharpe ratio (Risk free = 0) -606.3258
 > ### Name: AppraisalRatio
 > ### Title: Appraisal ratio of the return distribution
 > ### Aliases: AppraisalRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -142,7 +138,6 @@ Appraisal ratio (Risk free = 0) 1.623025   NA 3.527723 0.7070483   NA
 > ### Name: BernardoLedoitRatio
 > ### Title: Bernardo and Ledoit ratio of the return distribution
 > ### Aliases: BernardoLedoitRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -171,8 +166,6 @@ Bernardo and Ledoit ratio 4.340625  1.028277     -Inf
 > ### Title: Functions to calculate systematic or beta co-moments of return
 > ###   series
 > ### Aliases: BetaCoKurtosis BetaCoMoments BetaCoSkewness BetaCoVariance
-> ###   SystematicKurtosis SystematicSkewness
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -208,7 +201,6 @@ Beta Cokurtosis: EDHEC LS EQ 0.8618328
 > ### Name: BurkeRatio
 > ### Title: Burke ratio of the return distribution
 > ### Aliases: BurkeRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -243,10 +235,11 @@ Modified Burke ratio (Risk free = 0)          NA 16.41925 0.02125948      Inf
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: CAPM.CML.slope
-> ### Title: utility functions for CAPM CML, SML, and RiskPremium
+> ### Title: utility functions for single factor (CAPM) CML, SML, and
+> ###   RiskPremium
 > ### Aliases: CAPM.CML CAPM.CML.slope CAPM.RiskPremium CAPM.SML.slope
-> ###   CAPM.utils
-> ### Keywords: distribution models multivariate ts
+> ###   CAPM.utils SFM.CML SFM.CML.slope SFM.RiskPremium SFM.SML.slope
+> ###   SFM.utils
 > 
 > ### ** Examples
 > 
@@ -276,9 +269,8 @@ Security Market Line: SP500 TR 115.4023
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: CAPM.alpha
-> ### Title: calculate CAPM alpha
-> ### Aliases: CAPM.alpha
-> ### Keywords: distribution models multivariate ts
+> ### Title: calculate single factor model (CAPM) alpha
+> ### Aliases: CAPM.alpha SFM.alpha
 > 
 > ### ** Examples
 > 
@@ -334,9 +326,8 @@ Alpha: EDHEC LS EQ -0.002255793 0.004212371
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: CAPM.beta
-> ### Title: calculate CAPM beta
-> ### Aliases: CAPM.beta CAPM.beta.bear CAPM.beta.bull TimingRatio
-> ### Keywords: distribution models multivariate ts
+> ### Title: calculate single factor model (CAPM) beta
+> ### Aliases: CAPM.beta CAPM.beta.bear CAPM.beta.bull SFM.beta TimingRatio
 > 
 > ### ** Examples
 > 
@@ -406,6 +397,94 @@ Alpha: EDHEC LS EQ -0.002255793 0.004212371
 > 
 > 
 > cleanEx()
+> nameEx("CAPM.dynamic")
+> ### * CAPM.dynamic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CAPM.dynamic
+> ### Title: Time-varying conditional single factor model beta
+> ### Aliases: CAPM.dynamic SFM.dynamic
+> 
+> ### ** Examples
+> 
+> data(managers)
+> CAPM.dynamic(managers[,1,drop=FALSE], managers[,8,drop=FALSE],
++              Rf=.035/12, Z=managers[, 9:10])
+                 Average alpha US 10Y TR alpha at t - 1 US 3m TR alpha at t - 1
+HAM1 to SP500 TR     0.0070965                -0.196351               0.1665381
+                 Average beta US 10Y TR beta at t - 1 US 3m TR beta at t - 1
+HAM1 to SP500 TR    0.3248015                3.493336              -63.74814
+> 
+> CAPM.dynamic(managers[80:120,1:6], managers[80:120,7,drop=FALSE],
++              Rf=managers[80:120,10,drop=FALSE], Z=managers[80:120, 9:10])
+                    Average alpha US 10Y TR alpha at t - 1
+HAM1 to EDHEC LS EQ -0.0001741347              -0.23890464
+HAM2 to EDHEC LS EQ -0.0027673634              -0.06632217
+HAM3 to EDHEC LS EQ  0.0062624783              -0.21733015
+HAM4 to EDHEC LS EQ -0.0033262023               0.16135997
+HAM5 to EDHEC LS EQ  0.0043380559               0.26882960
+HAM6 to EDHEC LS EQ -0.0053865004               0.05000616
+                    US 3m TR alpha at t - 1 Average beta
+HAM1 to EDHEC LS EQ              -0.4385012    1.1793098
+HAM2 to EDHEC LS EQ              -4.0176982    0.7067390
+HAM3 to EDHEC LS EQ               7.6804829    0.4260623
+HAM4 to EDHEC LS EQ              -0.2091890    1.6367609
+HAM5 to EDHEC LS EQ               3.8497148    1.2224547
+HAM6 to EDHEC LS EQ              -3.0664314    1.6281908
+                    US 10Y TR beta at t - 1 US 3m TR beta at t - 1
+HAM1 to EDHEC LS EQ                3.861212              -51.01409
+HAM2 to EDHEC LS EQ                5.682080              171.16658
+HAM3 to EDHEC LS EQ                1.507916             -705.20354
+HAM4 to EDHEC LS EQ               -7.622136             -565.85196
+HAM5 to EDHEC LS EQ                7.083956               39.70358
+HAM6 to EDHEC LS EQ              -11.035136              343.52891
+> 
+> CAPM.dynamic(managers[80:120,1:6], managers[80:120,8:7],
++               managers[80:120,10,drop=FALSE], Z=managers[80:120, 9:10])
+                    Average alpha US 10Y TR alpha at t - 1
+HAM1 to SP500 TR     0.0036316941              -0.03538369
+HAM2 to SP500 TR     0.0016901086              -0.05484988
+HAM3 to SP500 TR     0.0072668556              -0.05978008
+HAM4 to SP500 TR    -0.0015875926               0.41314240
+HAM5 to SP500 TR     0.0083363515               0.35300102
+HAM6 to SP500 TR     0.0012839717               0.03521033
+HAM1 to EDHEC LS EQ -0.0001741347              -0.23890464
+HAM2 to EDHEC LS EQ -0.0027673634              -0.06632217
+HAM3 to EDHEC LS EQ  0.0062624783              -0.21733015
+HAM4 to EDHEC LS EQ -0.0033262023               0.16135997
+HAM5 to EDHEC LS EQ  0.0043380559               0.26882960
+HAM6 to EDHEC LS EQ -0.0053865004               0.05000616
+                    US 3m TR alpha at t - 1 Average beta
+HAM1 to SP500 TR                 0.08506313   0.51861197
+HAM2 to SP500 TR                -2.91835013   0.05157528
+HAM3 to SP500 TR                 4.10231175   0.17720080
+HAM4 to SP500 TR                -6.04090381   1.20562924
+HAM5 to SP500 TR                 1.56695525   0.57212866
+HAM6 to SP500 TR                -1.72313785   0.59611332
+HAM1 to EDHEC LS EQ             -0.43850123   1.17930984
+HAM2 to EDHEC LS EQ             -4.01769818   0.70673900
+HAM3 to EDHEC LS EQ              7.68048289   0.42606233
+HAM4 to EDHEC LS EQ             -0.20918897   1.63676093
+HAM5 to EDHEC LS EQ              3.84971482   1.22245465
+HAM6 to EDHEC LS EQ             -3.06643145   1.62819081
+                    US 10Y TR beta at t - 1 US 3m TR beta at t - 1
+HAM1 to SP500 TR                  -1.181057              -65.73676
+HAM2 to SP500 TR                   2.075534              -23.79983
+HAM3 to SP500 TR                   1.063350             -256.19346
+HAM4 to SP500 TR                  -1.812210              162.03456
+HAM5 to SP500 TR                   4.277306              183.06200
+HAM6 to SP500 TR                  -5.106318              189.51371
+HAM1 to EDHEC LS EQ                3.861212              -51.01409
+HAM2 to EDHEC LS EQ                5.682080              171.16658
+HAM3 to EDHEC LS EQ                1.507916             -705.20354
+HAM4 to EDHEC LS EQ               -7.622136             -565.85196
+HAM5 to EDHEC LS EQ                7.083956               39.70358
+HAM6 to EDHEC LS EQ              -11.035136              343.52891
+> 
+> 
+> 
+> cleanEx()
 > nameEx("CAPM.epsilon")
 > ### * CAPM.epsilon
 > 
@@ -413,19 +492,18 @@ Alpha: EDHEC LS EQ -0.002255793 0.004212371
 > 
 > ### Name: CAPM.epsilon
 > ### Title: Regression epsilon of the return distribution
-> ### Aliases: CAPM.epsilon epsilon Regression
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: CAPM.epsilon SFM.epsilon
 > 
 > ### ** Examples
 > 
 > data(portfolio_bacon)
-> print(CAPM.epsilon(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.013
+> print(SFM.epsilon(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.013
 [1] -0.01313932
 > 
 > data(managers)
-> print(CAPM.epsilon(managers['1996',1], managers['1996',8]))
+> print(SFM.epsilon(managers['1996',1], managers['1996',8]))
 [1] 0.07425366
-> print(CAPM.epsilon(managers['1996',1:5], managers['1996',8]))
+> print(SFM.epsilon(managers['1996',1:5], managers['1996',8]))
                                          HAM1      HAM2      HAM3       HAM4
 Regression epsilon (Risk free = 0) 0.07425366 0.5399193 0.2048063 0.05570592
                                    HAM5
@@ -441,19 +519,18 @@ Regression epsilon (Risk free = 0)   NA
 > 
 > ### Name: CAPM.jensenAlpha
 > ### Title: Jensen's alpha of the return distribution
-> ### Aliases: CAPM.jensenAlpha Jensen'sAlpha
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: CAPM.jensenAlpha SFM.jensenAlpha
 > 
 > ### ** Examples
 > 
 > data(portfolio_bacon)
-> print(CAPM.jensenAlpha(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.014
+> print(SFM.jensenAlpha(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.014
 [1] -0.01416944
 > 
 > data(managers)
-> print(CAPM.jensenAlpha(managers['1996',1], managers['1996',8]))
+> print(SFM.jensenAlpha(managers['1996',1], managers['1996',8]))
 [1] 0.08077871
-> print(CAPM.jensenAlpha(managers['1996',1:5], managers['1996',8]))
+> print(SFM.jensenAlpha(managers['1996',1:5], managers['1996',8]))
                                      HAM1 HAM2      HAM3       HAM4 HAM5
 Jensen's Alpha (Risk free = 0) 0.08077871   NA 0.2196026 0.06063837   NA
 > 
@@ -468,8 +545,7 @@ Jensen's Alpha (Risk free = 0) 0.08077871   NA 0.2196026 0.06063837   NA
 > ### Name: CDD
 > ### Title: Calculate Uryasev's proposed Conditional Drawdown at Risk (CDD
 > ###   or CDaR) measure
-> ### Aliases: CDaR CDD
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: CDD CDaR
 > 
 > ### ** Examples
 > 
@@ -501,7 +577,6 @@ Funds of Funds                          0.0563
 > ### Name: CalmarRatio
 > ### Title: calculate a Calmar or Sterling reward/risk ratio
 > ### Aliases: CalmarRatio SterlingRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -531,8 +606,8 @@ Sterling Ratio (Excess = 10%) 0.08471255 0.7678475
 > 
 > ### Name: CoMoments
 > ### Title: Functions for calculating comoments of financial time series
-> ### Aliases: CoKurtosis CoMoments CoSkewness CoVariance
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: CoKurtosis CoKurtosisMatrix CoMoments CoSkewness
+> ###   CoSkewnessMatrix CoVariance M3.MM M4.MM
 > 
 > ### ** Examples
 > 
@@ -555,7 +630,6 @@ Sterling Ratio (Excess = 10%) 0.08471255 0.7678475
 > ### Name: DRatio
 > ### Title: d ratio of the return distribution
 > ### Aliases: DRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -583,18 +657,17 @@ d ratio 0.04607631  1.361501        0
 > ### Name: DownsideDeviation
 > ### Title: downside risk (deviation, variance) of the return distribution
 > ### Aliases: DownsideDeviation DownsidePotential SemiDeviation SemiVariance
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > #with data used in Bacon 2008
 > 
 > data(portfolio_bacon)
-> MAR = 0.5
-> DownsideDeviation(portfolio_bacon[,1], MAR) #expected 0.493
-[1] 0.492524
-> DownsidePotential(portfolio_bacon[,1], MAR) #expected 0.491
-[1] 0.491
+> MAR = 0.005
+> DownsideDeviation(portfolio_bacon[,1], MAR) #expected 0.0255
+[1] 0.02553674
+> DownsidePotential(portfolio_bacon[,1], MAR) #expected 0.0137
+[1] 0.01370833
 > 
 > #with data of managers
 > 
@@ -636,7 +709,6 @@ Semi-Variance 0.02698249 0.02580294 0.03186006 0.05763839 0.04558371 0.02602228
 > ### Name: DownsideFrequency
 > ### Title: downside frequency of the return distribution
 > ### Aliases: DownsideFrequency
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -667,7 +739,6 @@ Downside Frequency (MAR = 0%)         NaN 0.1666667 0.5833333        0
 > ###   Value-at-Risk(CVaR) for univariate and component, using a variety of
 > ###   analytical methods.
 > ### Aliases: CVaR ES ETL
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -784,7 +855,6 @@ detaching ‘package:robustbase’
 > ### Name: FamaBeta
 > ### Title: Fama beta of the return distribution
 > ### Aliases: FamaBeta
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -812,7 +882,6 @@ Fama Beta  0.5351217   NA 1.007084 1.037632   NA
 > ### Name: Frequency
 > ### Title: Frequency of the return distribution
 > ### Aliases: Frequency
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -835,7 +904,6 @@ Frequency   12   12   12   12   NA
 > ### Name: InformationRatio
 > ### Title: InformationRatio = ActivePremium/TrackingError
 > ### Aliases: InformationRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -866,7 +934,6 @@ Information Ratio: EDHEC LS EQ -0.2277438 0.9667207
 > ### Name: Kappa
 > ### Title: Kappa of the return distribution
 > ### Aliases: Kappa
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -899,7 +966,6 @@ kappa (MAR = 0%) 1.274332 0.01674457      Inf
 > ### Title: calculate Kelly criterion ratio (leverage or bet size) for a
 > ###   strategy
 > ### Aliases: KellyRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -925,7 +991,6 @@ Kelly Ratio 6.010854 4.069873 3.458124 1.376354 0.3876476 7.948295
 > ### Name: M2Sortino
 > ### Title: M squared for Sortino of the return distribution
 > ### Aliases: M2Sortino
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -938,11 +1003,11 @@ Sortino Ratio (MAR = 0.5%)                    0.1034799
 > data(managers)
 > MAR = 0
 > print(MSquaredExcess(managers['1996',1], managers['1996',8], MAR))
-          HAM1
-HAM1 -0.127433
+           SP500 TR
+SP500 TR 0.02027322
 > print(MSquaredExcess(managers['1996',1:5], managers['1996',8], MAR))
-                                    HAM1 HAM2      HAM3        HAM4 HAM5
-MSquaredExcess (Risk free = 0) -0.127433   NA 0.1456129 -0.01310258   NA
+                                     HAM1 HAM2      HAM3        HAM4 HAM5
+MSquaredExcess (Risk free = 0) 0.02027322   NA 0.1409545 -0.02546609   NA
 > 
 > 
 > 
@@ -955,22 +1020,21 @@ MSquaredExcess (Risk free = 0) -0.127433   NA 0.1456129 -0.01310258   NA
 > ### Name: MSquared
 > ### Title: M squared of the return distribution
 > ### Aliases: MSquared
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(portfolio_bacon)
-> print(MSquared(portfolio_bacon[,1], portfolio_bacon[,2])) #expected 0.1068
-                             portfolio.monthly.return....
-portfolio.monthly.return....                    0.1068296
+> print(MSquared(portfolio_bacon[,1], portfolio_bacon[,2])) #expected 0.10062
+                     benchmark.return....
+benchmark.return....              0.10062
 > 
 > data(managers)
 > print(MSquared(managers['1996',1], managers['1996',8]))
-           HAM1
-HAM1 0.07287385
+          SP500 TR
+SP500 TR 0.2544876
 > print(MSquared(managers['1996',1:5], managers['1996',8]))
-                               HAM1 HAM2      HAM3    HAM4 HAM5
-MSquared (Risk free = 0) 0.07287385   NA 0.4086003 0.21345   NA
+                              HAM1 HAM2      HAM3      HAM4 HAM5
+MSquared (Risk free = 0) 0.2544876   NA 0.4028725 0.1982483   NA
 > 
 > 
 > 
@@ -983,25 +1047,66 @@ MSquared (Risk free = 0) 0.07287385   NA 0.4086003 0.21345   NA
 > ### Name: MSquaredExcess
 > ### Title: M squared excess of the return distribution
 > ### Aliases: MSquaredExcess
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(portfolio_bacon)
-> print(MSquaredExcess(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.00998
-                             portfolio.monthly.return....
-portfolio.monthly.return....                 -0.009976721
-> print(MSquaredExcess(portfolio_bacon[,1], portfolio_bacon[,2], Method="arithmetic")) #expected -0.011
-                             portfolio.monthly.return....
-portfolio.monthly.return....                  -0.01115381
+> MSquaredExcess(portfolio_bacon[,1], portfolio_bacon[,2]) #expected -0.00998
+                     benchmark.return....
+benchmark.return....          -0.01553103
+> 
+> MSquaredExcess(portfolio_bacon[,1], portfolio_bacon[,2], Method="arithmetic") #expected -0.011
+                     benchmark.return....
+benchmark.return....          -0.01736344
 > 
 > data(managers)
-> print(MSquaredExcess(managers['1996',1], managers['1996',8]))
-          HAM1
-HAM1 -0.127433
-> print(MSquaredExcess(managers['1996',1:5], managers['1996',8]))
-                                    HAM1 HAM2      HAM3        HAM4 HAM5
-MSquaredExcess (Risk free = 0) -0.127433   NA 0.1456129 -0.01310258   NA
+> MSquaredExcess(managers['1996',1], managers['1996',8])
+           SP500 TR
+SP500 TR 0.02027322
+> MSquaredExcess(managers['1996',1:5], managers['1996',8])
+                                     HAM1 HAM2      HAM3        HAM4 HAM5
+MSquaredExcess (Risk free = 0) 0.02027322   NA 0.1409545 -0.02546609   NA
+> 
+> 
+> 
+> cleanEx()
+> nameEx("MarketTiming")
+> ### * MarketTiming
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: MarketTiming
+> ### Title: Market timing models
+> ### Aliases: MarketTiming
+> 
+> ### ** Examples
+> 
+> data(managers)
+> MarketTiming(managers[,1], managers[,8], Rf=.035/12, method = "HM")
+                       Alpha      Beta      Gamma
+HAM1 to SP500 TR 0.008275839 0.4555824 -0.1344417
+> MarketTiming(managers[80:120,1:6], managers[80:120,7], managers[80:120,10])
+                            Alpha      Beta     Gamma
+HAM1 to EDHEC LS EQ -0.0005755802 1.3121058 -0.405150
+HAM2 to EDHEC LS EQ -0.0003616789 0.4370998  8.520620
+HAM3 to EDHEC LS EQ -0.0058148518 1.1898242 11.913786
+HAM4 to EDHEC LS EQ -0.0055113742 2.0616524 18.797340
+HAM5 to EDHEC LS EQ  0.0005125284 1.0703704 -5.077881
+HAM6 to EDHEC LS EQ  0.0003590925 1.2711094 -7.443428
+> MarketTiming(managers[80:120,1:6], managers[80:120,8:7], managers[80:120,10], method = "TM")
+                            Alpha      Beta      Gamma
+HAM1 to SP500 TR     0.0048833318 0.5970167 -0.2801650
+HAM2 to SP500 TR     0.0050694247 0.1190405 -0.5000263
+HAM3 to SP500 TR     0.0032110848 0.5272982 -0.6645684
+HAM4 to SP500 TR     0.0094634771 0.8779523 -0.8155100
+HAM5 to SP500 TR     0.0087234498 0.2869943 -2.7728051
+HAM6 to SP500 TR     0.0048031173 0.2902262  0.6910898
+HAM1 to EDHEC LS EQ -0.0005755802 1.3121058 -0.4051500
+HAM2 to EDHEC LS EQ -0.0003616789 0.4370998  8.5206196
+HAM3 to EDHEC LS EQ -0.0058148518 1.1898242 11.9137857
+HAM4 to EDHEC LS EQ -0.0055113742 2.0616524 18.7973395
+HAM5 to EDHEC LS EQ  0.0005125284 1.0703704 -5.0778814
+HAM6 to EDHEC LS EQ  0.0003590925 1.2711094 -7.4434281
 > 
 > 
 > 
@@ -1014,7 +1119,6 @@ MSquaredExcess (Risk free = 0) -0.127433   NA 0.1456129 -0.01310258   NA
 > ### Name: MartinRatio
 > ### Title: Martin ratio of the return distribution
 > ### Aliases: MartinRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1044,7 +1148,6 @@ Ulcer Index 15.49888
 > ### Name: MeanAbsoluteDeviation
 > ### Title: Mean absolute deviation of the return distribution
 > ### Aliases: MeanAbsoluteDeviation
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1064,6 +1167,36 @@ Mean absolute deviation         NaN  0.02225 0.01611653  0.00021
 > 
 > 
 > cleanEx()
+> nameEx("Modigliani")
+> ### * Modigliani
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Modigliani
+> ### Title: Modigliani-Modigliani measure
+> ### Aliases: Modigliani
+> 
+> ### ** Examples
+> 
+> data(managers)
+> Modigliani(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12)
+[1] 0.01678381
+> Modigliani(managers[,1:6], managers[,8,drop=FALSE], managers[,8,drop=FALSE])
+                                              HAM1       HAM2      HAM3
+Modigliani-Modigliani measure: SP500 TR 0.01281799 0.01505458 0.0131509
+                                              HAM4       HAM5       HAM6
+Modigliani-Modigliani measure: SP500 TR 0.01057959 0.01053081 0.01844616
+> Modigliani(managers[,1:6], managers[,8:7], managers[,8,drop=FALSE])
+                                                 HAM1       HAM2       HAM3
+Modigliani-Modigliani measure: SP500 TR    0.01281799 0.01505458 0.01315090
+Modigliani-Modigliani measure: EDHEC LS EQ 0.01062640 0.01168261 0.01078361
+                                                 HAM4        HAM5       HAM6
+Modigliani-Modigliani measure: SP500 TR    0.01057959 0.010530812 0.01844616
+Modigliani-Modigliani measure: EDHEC LS EQ 0.00956933 0.009546295 0.01328426
+> 
+> 
+> 
+> cleanEx()
 > nameEx("NetSelectivity")
 > ### * NetSelectivity
 > 
@@ -1072,7 +1205,6 @@ Mean absolute deviation         NaN  0.02225 0.01611653  0.00021
 > ### Name: NetSelectivity
 > ### Title: Net selectivity of the return distribution
 > ### Aliases: NetSelectivity
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1100,7 +1232,6 @@ Net Selectivity (Risk free = 0) 0.01333906   NA 0.1745397 -0.03249043   NA
 > ### Name: Omega
 > ### Title: calculate Omega for a return series
 > ### Aliases: Omega
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1272,7 +1403,6 @@ Omega (L = 0%)       5.265408
 > ### Name: OmegaExcessReturn
 > ### Title: Omega excess return of the return distribution
 > ### Aliases: OmegaExcessReturn OmegaExessReturn
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1300,7 +1430,6 @@ Omega Excess Return (MAR = 0) 0.1325302   NA 0.3991416 0.1985718   NA
 > ### Name: OmegaSharpeRatio
 > ### Title: Omega-Sharpe ratio of the return distribution
 > ### Aliases: OmegaSharpeRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1330,7 +1459,6 @@ OmegaSharpeRatio (MAR = 0%)          NA 3.340625 0.02827709      Inf
 > ### Name: PainIndex
 > ### Title: Pain index of the return distribution
 > ### Aliases: PainIndex
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1360,7 +1488,6 @@ Pain Index 0.3714087
 > ### Name: PainRatio
 > ### Title: Pain ratio of the return distribution
 > ### Aliases: PainRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1390,7 +1517,6 @@ Pain Index 36.7226
 > ### Name: ProspectRatio
 > ### Title: Prospect ratio of the return distribution
 > ### Aliases: ProspectRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1420,7 +1546,6 @@ Prospect ratio (MAR = 0%)          NA 0.7975008 -0.7234556      Inf
 > ### Name: Return.Geltner
 > ### Title: calculate Geltner liquidity-adjusted return series
 > ### Aliases: Return.Geltner
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1460,7 +1585,6 @@ Prospect ratio (MAR = 0%)          NA 0.7975008 -0.7234556      Inf
 > ### Title: calculate an annualized return for comparing instruments with
 > ###   different length history
 > ### Aliases: Return.annualized
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -1482,6 +1606,26 @@ Annualized Return     0.11454 0.1039841
 > 
 > 
 > cleanEx()
+> nameEx("Return.annualized.excess")
+> ### * Return.annualized.excess
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Return.annualized.excess
+> ### Title: calculates an annualized excess return for comparing instruments
+> ###   with different length history
+> ### Aliases: Return.annualized.excess
+> 
+> ### ** Examples
+> 
+> data(managers)
+> Return.annualized.excess(Rp = managers[,1], Rb = managers[,8])
+                        HAM1
+Annualized Return 0.03718883
+> 
+> 
+> 
+> cleanEx()
 > nameEx("Return.calculate")
 > ### * Return.calculate
 > 
@@ -1490,13 +1634,12 @@ Annualized Return     0.11454 0.1039841
 > ### Name: Return.calculate
 > ### Title: calculate simple or compound returns from prices
 > ### Aliases: CalculateReturns Return.calculate
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > ## Not run: 
-> ##D     require(tseries)
-> ##D     prices = get.hist.quote("IBM", start = "1999-01-01", end = "2007-01-01", quote = "AdjClose", compression = "d")
+> ##D     require(quantmod)
+> ##D     prices = getSymbols("IBM", from = "1999-01-01", to = "2007-01-01")
 > ##D   
 > ## End(Not run)
 >   ## Don't show: 
@@ -3532,7 +3675,6 @@ Annualized Return     0.11454 0.1039841
 > ### Title: clean returns in a time series to to provide more robust risk
 > ###   estimates
 > ### Aliases: Return.clean
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -3575,7 +3717,6 @@ detaching ‘package:robustbase’
 > ### Name: Return.cumulative
 > ### Title: calculate a compounded (geometric) cumulative return
 > ### Aliases: Return.cumulative
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -3604,7 +3745,6 @@ Cumulative Return 1.4682 1.7679 1.643 1.4542 0.3148 0.7075      1.1454 1.143825
 > ### Title: Calculates the returns of an asset in excess of the given risk
 > ###   free rate
 > ### Aliases: Return.excess
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -3657,1063 +3797,190 @@ Cumulative Return 1.4682 1.7679 1.643 1.4542 0.3148 0.7075      1.1454 1.143825
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: Return.rebalancing
-> ### Title: Calculates weighted returns for a portfolio of assets
+> ### Name: Return.portfolio
+> ### Title: Calculate weighted returns for a portfolio of assets
 > ### Aliases: Return.portfolio Return.rebalancing
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(edhec)
-> data(weights)
-> 
-> # calculate an equal weighted portfolio return
-> round(Return.portfolio(edhec),4)
-Warning in Return.portfolio(edhec) :
-  weighting vector is null, calulating an equal weighted portfolio
+> Return.portfolio(edhec["1997",1:5], rebalance_on="quarters") # returns time series
            portfolio.returns
-1997-01-31            0.0262
-1997-02-28            0.0172
-1997-03-31            0.0043
-1997-04-30            0.0043
-1997-05-31            0.0132
-1997-06-30            0.0208
-1997-07-31            0.0301
-1997-08-31           -0.0001
-1997-09-30            0.0223
-1997-10-31           -0.0015
-1997-11-30            0.0043
-1997-12-31            0.0134
-1998-01-31            0.0008
-1998-02-28            0.0186
-1998-03-31            0.0279
-1998-04-30            0.0114
-1998-05-31            0.0060
-1998-06-30            0.0000
-1998-07-31            0.0039
-1998-08-31           -0.0230
-1998-09-30           -0.0074
-1998-10-31           -0.0174
-1998-11-30            0.0100
-1998-12-31            0.0125
-1999-01-31            0.0058
-1999-02-28            0.0082
-1999-03-31            0.0123
-1999-04-30            0.0244
-1999-05-31            0.0091
-1999-06-30            0.0196
-1999-07-31            0.0077
-1999-08-31            0.0039
-1999-09-30            0.0087
-1999-10-31            0.0051
-1999-11-30            0.0175
-1999-12-31            0.0290
-2000-01-31            0.0126
-2000-02-29            0.0260
-2000-03-31            0.0060
-2000-04-30           -0.0038
-2000-05-31            0.0017
-2000-06-30            0.0124
-2000-07-31            0.0062
-2000-08-31            0.0145
-2000-09-30            0.0029
-2000-10-31            0.0006
-2000-11-30            0.0051
-2000-12-31            0.0173
-2001-01-31            0.0200
-2001-02-28            0.0050
-2001-03-31            0.0050
-2001-04-30            0.0006
-2001-05-31            0.0098
-2001-06-30            0.0044
-2001-07-31            0.0010
-2001-08-31            0.0099
-2001-09-30           -0.0052
-2001-10-31            0.0114
-2001-11-30            0.0006
-2001-12-31            0.0077
-2002-01-31            0.0097
-2002-02-28           -0.0006
-2002-03-31            0.0065
-2002-04-30            0.0083
-2002-05-31            0.0074
-2002-06-30           -0.0021
-2002-07-31           -0.0071
-2002-08-31            0.0067
-2002-09-30            0.0040
-2002-10-31           -0.0035
-2002-11-30            0.0068
-2002-12-31            0.0136
-2003-01-31            0.0143
-2003-02-28            0.0087
-2003-03-31           -0.0019
-2003-04-30            0.0120
-2003-05-31            0.0215
-2003-06-30            0.0059
-2003-07-31           -0.0006
-2003-08-31            0.0078
-2003-09-30            0.0132
-2003-10-31            0.0117
-2003-11-30            0.0070
-2003-12-31            0.0164
-2004-01-31            0.0156
-2004-02-29            0.0127
-2004-03-31            0.0032
-2004-04-30           -0.0075
-2004-05-31           -0.0052
-2004-06-30            0.0014
-2004-07-31           -0.0002
-2004-08-31            0.0024
-2004-09-30            0.0082
-2004-10-31            0.0087
-2004-11-30            0.0201
-2004-12-31            0.0103
-2005-01-31           -0.0001
-2005-02-28            0.0121
-2005-03-31           -0.0026
-2005-04-30           -0.0102
-2005-05-31            0.0022
-2005-06-30            0.0120
-2005-07-31            0.0132
-2005-08-31            0.0094
-2005-09-30            0.0156
-2005-10-31           -0.0078
-2005-11-30            0.0120
-2005-12-31            0.0121
-2006-01-31            0.0250
-2006-02-28            0.0048
-2006-03-31            0.0141
-2006-04-30            0.0179
-2006-05-31           -0.0065
-2006-06-30           -0.0007
-2006-07-31            0.0015
-2006-08-31            0.0058
-2006-09-30            0.0003
-2006-10-31            0.0123
-2006-11-30            0.0154
-2006-12-31            0.0149
-2007-01-31            0.0114
-2007-02-28            0.0098
-2007-03-31            0.0078
-2007-04-30            0.0143
-2007-05-31            0.0169
-2007-06-30            0.0082
-2007-07-31            0.0038
-2007-08-31           -0.0135
-2007-09-30            0.0204
-2007-10-31            0.0240
-2007-11-30           -0.0110
-2007-12-31            0.0040
-2008-01-31           -0.0151
-2008-02-29            0.0150
-2008-03-31           -0.0177
-2008-04-30            0.0088
-2008-05-31            0.0140
-2008-06-30           -0.0017
-2008-07-31           -0.0178
-2008-08-31           -0.0108
-2008-09-30           -0.0501
-2008-10-31           -0.0490
-2008-11-30           -0.0182
-2008-12-31            0.0013
-2009-01-31            0.0084
-2009-02-28           -0.0025
-2009-03-31            0.0056
-2009-04-30            0.0186
-2009-05-31            0.0384
-2009-06-30            0.0051
-2009-07-31            0.0204
-2009-08-31            0.0139
-> 
-> # now return the contribution too
-> round(Return.portfolio(edhec,contribution=TRUE),4)
-Warning in Return.portfolio(edhec, contribution = TRUE) :
-  weighting vector is null, calulating an equal weighted portfolio
-           Convertible.Arbitrage CTA.Global Distressed.Securities
-1997-01-31                0.0009     0.0030                0.0014
-1997-02-28                0.0009     0.0023                0.0009
-1997-03-31                0.0006    -0.0002               -0.0001
-1997-04-30                0.0007    -0.0013                0.0002
-1997-05-31                0.0012    -0.0001                0.0018
-1997-06-30                0.0016     0.0006                0.0017
-1997-07-31                0.0015     0.0044                0.0018
-1997-08-31                0.0010    -0.0036                0.0011
-1997-09-30                0.0009     0.0014                0.0027
-1997-10-31                0.0008    -0.0007               -0.0005
-1997-11-30                0.0000     0.0010                0.0004
-1997-12-31                0.0005     0.0021                0.0006
-1998-01-31                0.0011     0.0008                0.0007
-1998-02-28                0.0011    -0.0005                0.0018
-1998-03-31                0.0011     0.0009                0.0020
-1998-04-30                0.0010    -0.0021                0.0013
-1998-05-31                0.0004     0.0013                0.0000
-1998-06-30                0.0000     0.0004               -0.0004
-1998-07-31                0.0005    -0.0001               -0.0005
-1998-08-31               -0.0024     0.0048               -0.0064
-1998-09-30               -0.0015     0.0035               -0.0015
-1998-10-31               -0.0016     0.0000               -0.0002
-1998-11-30                0.0020    -0.0007                0.0012
-1998-12-31                0.0008     0.0018                0.0008
-1999-01-31                0.0016    -0.0014                0.0013
-1999-02-28                0.0006     0.0016               -0.0002
-1999-03-31                0.0010    -0.0005                0.0012
-1999-04-30                0.0019     0.0017                0.0030
-1999-05-31                0.0013    -0.0012                0.0015
-1999-06-30                0.0008     0.0018                0.0020
-1999-07-31                0.0008    -0.0004                0.0006
-1999-08-31                0.0004    -0.0002                0.0002
-1999-09-30                0.0007     0.0005               -0.0003
-1999-10-31                0.0003    -0.0027                0.0002
-1999-11-30                0.0009     0.0012                0.0016
-1999-12-31                0.0011     0.0010                0.0022
-2000-01-31                0.0017     0.0009                0.0007
-2000-02-29                0.0020    -0.0002                0.0031
-2000-03-31                0.0018    -0.0010                0.0008
-2000-04-30                0.0017    -0.0016               -0.0008
-2000-05-31                0.0012     0.0008               -0.0010
-2000-06-30                0.0014    -0.0008                0.0015
-2000-07-31                0.0007    -0.0009                0.0005
-2000-08-31                0.0013     0.0012                0.0010
-2000-09-30                0.0011    -0.0013               -0.0001
-2000-10-31                0.0004     0.0005               -0.0005
-2000-11-30               -0.0007     0.0027               -0.0015
-2000-12-31                0.0000     0.0045                0.0000
-2001-01-31                0.0027     0.0002                0.0022
-2001-02-28                0.0015    -0.0001                0.0007
-2001-03-31                0.0013     0.0030               -0.0003
-2001-04-30                0.0013    -0.0025                0.0003
-2001-05-31                0.0003     0.0005                0.0017
-2001-06-30                0.0001    -0.0005                0.0026
-2001-07-31                0.0008    -0.0003                0.0005
-2001-08-31                0.0012     0.0010                0.0008
-2001-09-30                0.0007     0.0016               -0.0001
-2001-10-31                0.0010     0.0023                0.0008
-2001-11-30                0.0007    -0.0038                0.0006
-2001-12-31               -0.0008     0.0010                0.0001
-2002-01-31                0.0013    -0.0005                0.0014
-2002-02-28               -0.0004    -0.0013               -0.0003
-2002-03-31                0.0004     0.0001                0.0004
-2002-04-30                0.0008    -0.0007                0.0011
-2002-05-31                0.0003     0.0017                0.0007
-2002-06-30                0.0000     0.0042               -0.0009
-2002-07-31               -0.0013     0.0028               -0.0010
-2002-08-31                0.0004     0.0016                0.0001
-2002-09-30                0.0012     0.0021               -0.0003
-2002-10-31                0.0009    -0.0028               -0.0002
-2002-11-30                0.0022    -0.0012                0.0018
-2002-12-31                0.0014     0.0034                0.0017
-2003-01-31                0.0025     0.0032                0.0018
-2003-02-28                0.0012     0.0030                0.0007
-2003-03-31                0.0008    -0.0034                0.0009
-2003-04-30                0.0014     0.0005                0.0027
-2003-05-31                0.0012     0.0036                0.0021
-2003-06-30               -0.0005    -0.0014                0.0021
-2003-07-31               -0.0006    -0.0013                0.0010
-2003-08-31               -0.0008     0.0006                0.0011
-2003-09-30                0.0015    -0.0001                0.0020
-2003-10-31                0.0013     0.0007                0.0022
-2003-11-30                0.0008     0.0001                0.0013
-2003-12-31                0.0005     0.0027                0.0017
-2004-01-31                0.0010     0.0014                0.0026
-2004-02-29                0.0001     0.0038                0.0007
-2004-03-31                0.0005    -0.0004                0.0004
-2004-04-30                0.0002    -0.0040                0.0008
-2004-05-31               -0.0011    -0.0008               -0.0001
-2004-06-30               -0.0009    -0.0022                0.0018
-2004-07-31                0.0001    -0.0008                0.0002
-2004-08-31                0.0003    -0.0006                0.0008
-2004-09-30               -0.0001     0.0015                0.0010
-2004-10-31               -0.0004     0.0024                0.0013
-2004-11-30                0.0007     0.0033                0.0031
-2004-12-31                0.0005     0.0000                0.0025
-2005-01-31               -0.0008    -0.0031                0.0004
-2005-02-28               -0.0005     0.0000                0.0013
-2005-03-31               -0.0011     0.0000                0.0003
-2005-04-30               -0.0025    -0.0024               -0.0005
-2005-05-31               -0.0010     0.0015                0.0001
-2005-06-30                0.0008     0.0017                0.0013
-2005-07-31                0.0012    -0.0001                0.0017
-2005-08-31                0.0005     0.0007                0.0012
-2005-09-30                0.0011     0.0005                0.0011
-2005-10-31               -0.0001    -0.0006               -0.0003
-2005-11-30                0.0000     0.0025                0.0010
-2005-12-31                0.0007    -0.0010                0.0012
-2006-01-31                0.0019     0.0012                0.0025
-2006-02-28                0.0009    -0.0012                0.0006
-2006-03-31                0.0008     0.0018                0.0017
-2006-04-30                0.0005     0.0025                0.0019
-2006-05-31                0.0007    -0.0010                0.0008
-2006-06-30                0.0001    -0.0009               -0.0001
-2006-07-31                0.0005    -0.0014                0.0001
-2006-08-31                0.0007     0.0001                0.0010
-2006-09-30                0.0007    -0.0003                0.0003
-2006-10-31                0.0004     0.0006                0.0019
-2006-11-30                0.0007     0.0014                0.0018
-2006-12-31                0.0010     0.0009                0.0017
-2007-01-31                0.0010     0.0007                0.0015
-2007-02-28                0.0009    -0.0009                0.0015
-2007-03-31                0.0005    -0.0009                0.0011
-2007-04-30                0.0002     0.0015                0.0017
-2007-05-31                0.0008     0.0014                0.0018
-2007-06-30                0.0001     0.0014                0.0003
-2007-07-31               -0.0004    -0.0008               -0.0006
-2007-08-31               -0.0011    -0.0017               -0.0012
-2007-09-30                0.0012     0.0028                0.0010
-2007-10-31                0.0013     0.0017                0.0017
-2007-11-30               -0.0009    -0.0001               -0.0017
-2007-12-31               -0.0006     0.0007                0.0000
-2008-01-31               -0.0001     0.0016               -0.0023
-2008-02-29               -0.0006     0.0041                0.0001
-2008-03-31               -0.0022    -0.0004               -0.0012
-2008-04-30                0.0005    -0.0005                0.0008
-2008-05-31                0.0007     0.0011                0.0013
-2008-06-30               -0.0006     0.0023               -0.0003
-2008-07-31               -0.0013    -0.0024               -0.0018
-2008-08-31               -0.0005    -0.0008               -0.0007
-2008-09-30               -0.0071     0.0001               -0.0050
-2008-10-31               -0.0081     0.0025               -0.0075
-2008-11-30               -0.0017     0.0017               -0.0041
-2008-12-31                0.0011     0.0012               -0.0018
-2009-01-31                0.0030    -0.0001                0.0007
-2009-02-28                0.0010    -0.0003               -0.0011
-2009-03-31                0.0015    -0.0015                0.0002
-2009-04-30                0.0033    -0.0011                0.0034
-2009-05-31                0.0039     0.0017                0.0045
-2009-06-30                0.0017    -0.0011                0.0018
-2009-07-31                0.0043    -0.0001                0.0029
-2009-08-31                0.0023     0.0004                0.0023
-           Emerging.Markets Equity.Market.Neutral Event.Driven
-1997-01-31           0.0061                0.0015       0.0016
-1997-02-28           0.0042                0.0008       0.0006
-1997-03-31          -0.0010                0.0001      -0.0002
-1997-04-30           0.0010                0.0009       0.0000
-1997-05-31           0.0026                0.0014       0.0026
-1997-06-30           0.0049                0.0013       0.0020
-1997-07-31           0.0049                0.0019       0.0024
-1997-08-31          -0.0006                0.0001       0.0005
-1997-09-30           0.0020                0.0015       0.0026
-1997-10-31          -0.0051                0.0007       0.0005
-1997-11-30          -0.0032                0.0003       0.0011
-1997-12-31           0.0013                0.0005       0.0012
-1998-01-31          -0.0035                0.0005       0.0004
-1998-02-28           0.0026                0.0010       0.0024
-1998-03-31           0.0025                0.0014       0.0021
-1998-04-30           0.0003                0.0005       0.0008
-1998-05-31          -0.0065                0.0006      -0.0007
-1998-06-30          -0.0030                0.0008       0.0000
-1998-07-31           0.0001                0.0001      -0.0003
-1998-08-31          -0.0131               -0.0008      -0.0070
-1998-09-30          -0.0022                0.0005      -0.0008
-1998-10-31           0.0008                0.0004       0.0007
-1998-11-30           0.0024                0.0013       0.0018
-1998-12-31          -0.0006                0.0017       0.0017
-1999-01-31          -0.0007                0.0008       0.0016
-1999-02-28           0.0006                0.0002      -0.0003
-1999-03-31           0.0033                0.0003       0.0015
-1999-04-30           0.0037                0.0009       0.0033
-1999-05-31           0.0004                0.0007       0.0017
-1999-06-30           0.0040                0.0013       0.0024
-1999-07-31          -0.0004                0.0011       0.0008
-1999-08-31          -0.0009                0.0008      -0.0002
-1999-09-30          -0.0004                0.0008       0.0007
-1999-10-31           0.0017                0.0005       0.0004
-1999-11-30           0.0043                0.0011       0.0023
-1999-12-31           0.0080                0.0016       0.0023
-2000-01-31           0.0005                0.0006       0.0007
-2000-02-29           0.0037                0.0020       0.0028
-2000-03-31           0.0023                0.0010       0.0006
-2000-04-30          -0.0040                0.0013      -0.0005
-2000-05-31          -0.0031                0.0005      -0.0003
-2000-06-30           0.0022                0.0014       0.0022
-2000-07-31           0.0002                0.0005       0.0005
-2000-08-31           0.0025                0.0017       0.0014
-2000-09-30          -0.0032                0.0005       0.0004
-2000-10-31          -0.0017                0.0003      -0.0006
-2000-11-30          -0.0025                0.0004      -0.0011
-2000-12-31           0.0007                0.0013       0.0010
-2001-01-31           0.0036                0.0006       0.0024
-2001-02-28          -0.0014                0.0010       0.0004
-2001-03-31          -0.0011                0.0009      -0.0003
-2001-04-30           0.0007                0.0006       0.0009
-2001-05-31           0.0017                0.0006       0.0015
-2001-06-30           0.0010                0.0001       0.0005
-2001-07-31          -0.0018                0.0003       0.0004
-2001-08-31           0.0002                0.0008       0.0007
-2001-09-30          -0.0026                0.0002      -0.0021
-2001-10-31           0.0016                0.0005       0.0012
-2001-11-30           0.0029                0.0005       0.0009
-2001-12-31           0.0026                0.0005       0.0009
-2002-01-31           0.0018                0.0005       0.0006
-2002-02-28           0.0012               -0.0001      -0.0006
-2002-03-31           0.0022                0.0004       0.0012
-2002-04-30           0.0010                0.0006       0.0004
-2002-05-31           0.0000                0.0004       0.0000
-2002-06-30          -0.0020                0.0002      -0.0023
-2002-07-31          -0.0021               -0.0001      -0.0024
-2002-08-31           0.0008                0.0006       0.0005
-2002-09-30          -0.0017                0.0001      -0.0005
-2002-10-31           0.0010                0.0001       0.0002
-2002-11-30           0.0012                0.0002       0.0017
-2002-12-31           0.0003                0.0008       0.0003
-2003-01-31           0.0001                0.0007       0.0012
-2003-02-28           0.0005                0.0002       0.0002
-2003-03-31           0.0001                0.0001       0.0006
-2003-04-30           0.0029                0.0003       0.0021
-2003-05-31           0.0029                0.0009       0.0024
-2003-06-30           0.0018                0.0003       0.0014
-2003-07-31           0.0007                0.0000       0.0010
-2003-08-31           0.0026                0.0002       0.0011
-2003-09-30           0.0019                0.0006       0.0011
-2003-10-31           0.0019                0.0009       0.0016
-2003-11-30           0.0007                0.0004       0.0010
-2003-12-31           0.0030                0.0004       0.0014
-2004-01-31           0.0019                0.0009       0.0019
-2004-02-29           0.0019                0.0005       0.0009
-2004-03-31           0.0013                0.0002       0.0001
-2004-04-30          -0.0020               -0.0006       0.0000
-2004-05-31          -0.0014                0.0002      -0.0002
-2004-06-30           0.0002                0.0003       0.0010
-2004-07-31          -0.0002                0.0000      -0.0007
-2004-08-31           0.0010               -0.0001       0.0003
-2004-09-30           0.0022                0.0007       0.0009
-2004-10-31           0.0015                0.0000       0.0011
-2004-11-30           0.0026                0.0011       0.0026
-2004-12-31           0.0016                0.0004       0.0021
-2005-01-31           0.0012                0.0006       0.0000
-2005-02-28           0.0028                0.0006       0.0013
-2005-03-31          -0.0017                0.0001       0.0000
-2005-04-30          -0.0004               -0.0002      -0.0011
-2005-05-31           0.0006                0.0004       0.0006
-2005-06-30           0.0013                0.0006       0.0012
-2005-07-31           0.0022                0.0006       0.0019
-2005-08-31           0.0013                0.0005       0.0008
-2005-09-30           0.0034                0.0007       0.0009
-2005-10-31          -0.0020                0.0000      -0.0015
-2005-11-30           0.0024                0.0005       0.0011
-2005-12-31           0.0025                0.0005       0.0012
-2006-01-31           0.0047                0.0009       0.0030
-2006-02-28           0.0015                0.0003       0.0004
-2006-03-31           0.0011                0.0007       0.0016
-2006-04-30           0.0034                0.0008       0.0015
-2006-05-31          -0.0037                0.0000       0.0001
-2006-06-30          -0.0009                0.0005       0.0001
-2006-07-31           0.0006                0.0004      -0.0001
-2006-08-31           0.0012               -0.0001       0.0010
-2006-09-30           0.0001                0.0001       0.0003
-2006-10-31           0.0023                0.0005       0.0019
-2006-11-30           0.0030                0.0006       0.0016
-2006-12-31           0.0027                0.0008       0.0015
-2007-01-31           0.0008                0.0006       0.0018
-2007-02-28           0.0009                0.0004       0.0019
-2007-03-31           0.0018                0.0007       0.0014
-2007-04-30           0.0024                0.0007       0.0018
-2007-05-31           0.0026                0.0009       0.0020
-2007-06-30           0.0023                0.0006      -0.0001
-2007-07-31           0.0027                0.0004      -0.0003
-2007-08-31          -0.0028               -0.0007      -0.0013
-2007-09-30           0.0043                0.0009       0.0012
-2007-10-31           0.0050                0.0012       0.0020
-2007-11-30          -0.0025               -0.0001      -0.0019
-2007-12-31           0.0013                0.0004       0.0001
-2008-01-31          -0.0053               -0.0008      -0.0025
-2008-02-29           0.0028                0.0009       0.0008
-2008-03-31          -0.0039               -0.0004      -0.0015
-2008-04-30           0.0019                0.0004       0.0011
-2008-05-31           0.0016                0.0009       0.0016
-2008-06-30          -0.0028                0.0011      -0.0010
-2008-07-31          -0.0033               -0.0007      -0.0015
-2008-08-31          -0.0033               -0.0010      -0.0002
-2008-09-30          -0.0093               -0.0021      -0.0056
-2008-10-31          -0.0120               -0.0003      -0.0055
-2008-11-30          -0.0032               -0.0047      -0.0026
-2008-12-31          -0.0001                0.0000      -0.0006
-2009-01-31          -0.0009                0.0006       0.0011
-2009-02-28          -0.0010               -0.0004      -0.0008
-2009-03-31           0.0027                0.0002       0.0010
-2009-04-30           0.0053               -0.0001       0.0029
-2009-05-31           0.0074                0.0011       0.0038
-2009-06-30           0.0001                0.0003       0.0011
-2009-07-31           0.0040                0.0003       0.0026
-2009-08-31           0.0015                0.0005       0.0018
-           Fixed.Income.Arbitrage Global.Macro Long.Short.Equity
-1997-01-31                 0.0015       0.0044            0.0022
-1997-02-28                 0.0009       0.0014            0.0000
-1997-03-31                 0.0008      -0.0009           -0.0006
-1997-04-30                 0.0010       0.0013            0.0006
-1997-05-31                 0.0009       0.0009            0.0030
-1997-06-30                 0.0008       0.0017            0.0017
-1997-07-31                 0.0007       0.0058            0.0035
-1997-08-31                 0.0007      -0.0015            0.0008
-1997-09-30                 0.0009       0.0023            0.0034
-1997-10-31                -0.0002      -0.0012            0.0001
-1997-11-30                 0.0004       0.0009           -0.0002
-1997-12-31                 0.0006       0.0021            0.0008
-1998-01-31                -0.0002      -0.0004            0.0001
-1998-02-28                 0.0007       0.0010            0.0027
-1998-03-31                 0.0009       0.0046            0.0027
-1998-04-30                 0.0005       0.0003            0.0010
-1998-05-31                 0.0003       0.0008           -0.0007
-1998-06-30                -0.0006       0.0010            0.0013
-1998-07-31                 0.0008       0.0005            0.0000
-1998-08-31                -0.0010      -0.0022           -0.0045
-1998-09-30                -0.0026      -0.0005            0.0016
-1998-10-31                -0.0056      -0.0019            0.0014
-1998-11-30                 0.0003       0.0016            0.0024
-1998-12-31                 0.0008       0.0020            0.0035
-1999-01-31                 0.0010       0.0007            0.0023
-1999-02-28                 0.0014      -0.0009           -0.0015
-1999-03-31                 0.0011       0.0002            0.0020
-1999-04-30                 0.0007       0.0027            0.0028
-1999-05-31                 0.0005      -0.0005            0.0008
-1999-06-30                 0.0006       0.0018            0.0028
-1999-07-31                 0.0003      -0.0001            0.0016
-1999-08-31                -0.0002      -0.0005            0.0002
-1999-09-30                 0.0006       0.0000            0.0010
-1999-10-31                 0.0006       0.0006            0.0019
-1999-11-30                 0.0007       0.0033            0.0045
-1999-12-31                 0.0006       0.0050            0.0071
-2000-01-31                 0.0003       0.0002            0.0007
-2000-02-29                 0.0006       0.0034            0.0069
-2000-03-31                -0.0004      -0.0009            0.0001
-2000-04-30                 0.0000      -0.0025           -0.0021
-2000-05-31                 0.0007      -0.0006           -0.0010
-2000-06-30                 0.0004       0.0012            0.0035
-2000-07-31                 0.0001       0.0003            0.0001
-2000-08-31                 0.0007       0.0020            0.0035
-2000-09-30                 0.0005      -0.0012           -0.0002
-2000-10-31                 0.0000      -0.0002           -0.0009
-2000-11-30                 0.0004       0.0010           -0.0016
-2000-12-31                 0.0003       0.0038            0.0025
-2001-01-31                 0.0010       0.0018            0.0017
-2001-02-28                 0.0003      -0.0006           -0.0027
-2001-03-31                 0.0003       0.0003           -0.0019
-2001-04-30                 0.0006       0.0004            0.0023
-2001-05-31                 0.0004       0.0003            0.0004
-2001-06-30                 0.0001       0.0001            0.0002
-2001-07-31                 0.0003      -0.0003           -0.0014
-2001-08-31                 0.0006       0.0000           -0.0009
-2001-09-30                -0.0001      -0.0006           -0.0032
-2001-10-31                 0.0008       0.0017            0.0009
-2001-11-30                -0.0001       0.0002            0.0018
-2001-12-31                 0.0003       0.0011            0.0017
-2002-01-31                 0.0005       0.0006           -0.0003
-2002-02-28                 0.0003      -0.0003           -0.0011
-2002-03-31                 0.0003       0.0005            0.0014
-2002-04-30                 0.0007       0.0008           -0.0004
-2002-05-31                 0.0006       0.0010           -0.0003
-2002-06-30                 0.0004      -0.0002           -0.0022
-2002-07-31                 0.0004      -0.0006           -0.0034
-2002-08-31                 0.0006       0.0005            0.0003
-2002-09-30                -0.0002       0.0004           -0.0013
-2002-10-31                -0.0004      -0.0007            0.0010
-2002-11-30                 0.0003       0.0004            0.0019
-2002-12-31                 0.0010       0.0016           -0.0013
-2003-01-31                 0.0007       0.0015            0.0000
-2003-02-28                 0.0005       0.0014           -0.0003
-2003-03-31                 0.0001      -0.0010            0.0002
-2003-04-30                 0.0006       0.0010            0.0024
-2003-05-31                 0.0013       0.0032            0.0030
-2003-06-30                 0.0003       0.0005            0.0011
-2003-07-31                -0.0006      -0.0003            0.0010
-2003-08-31                 0.0003       0.0017            0.0015
-2003-09-30                 0.0006       0.0018            0.0008
-2003-10-31                 0.0002       0.0009            0.0026
-2003-11-30                 0.0004       0.0003            0.0011
-2003-12-31                 0.0006       0.0025            0.0017
-2004-01-31                 0.0006       0.0010            0.0017
-2004-02-29                 0.0005       0.0013            0.0011
-2004-03-31                 0.0000       0.0005            0.0004
-2004-04-30                 0.0004      -0.0015           -0.0015
-2004-05-31                 0.0002      -0.0007           -0.0003
-2004-06-30                 0.0003      -0.0002            0.0008
-2004-07-31                 0.0004      -0.0001           -0.0014
-2004-08-31                 0.0002      -0.0003           -0.0002
-2004-09-30                 0.0001       0.0001            0.0018
-2004-10-31                 0.0002       0.0011            0.0006
-2004-11-30                 0.0005       0.0023            0.0027
-2004-12-31                 0.0004       0.0003            0.0016
-2005-01-31                 0.0003      -0.0004           -0.0002
-2005-02-28                 0.0005       0.0014            0.0019
-2005-03-31                 0.0001      -0.0002           -0.0009
-2005-04-30                 0.0000      -0.0007           -0.0016
-2005-05-31                -0.0001       0.0007            0.0010
-2005-06-30                 0.0001       0.0010            0.0017
-2005-07-31                 0.0005       0.0010            0.0024
-2005-08-31                 0.0002       0.0007            0.0009
-2005-09-30                 0.0004       0.0022            0.0020
-2005-10-31                 0.0003      -0.0006           -0.0016
-2005-11-30                 0.0001       0.0014            0.0019
-2005-12-31                 0.0003       0.0011            0.0023
-2006-01-31                 0.0005       0.0022            0.0035
-2006-02-28                 0.0002       0.0000            0.0002
-2006-03-31                 0.0003       0.0008            0.0022
-2006-04-30                 0.0007       0.0020            0.0016
-2006-05-31                 0.0003      -0.0013           -0.0023
-2006-06-30                 0.0002      -0.0001           -0.0006
-2006-07-31                 0.0004       0.0001           -0.0003
-2006-08-31                 0.0002      -0.0003            0.0010
-2006-09-30                 0.0001      -0.0006            0.0000
-2006-10-31                 0.0004       0.0008            0.0018
-2006-11-30                 0.0003       0.0016            0.0019
-2006-12-31                 0.0004       0.0010            0.0014
-2007-01-31                 0.0004       0.0005            0.0011
-2007-02-28                 0.0006       0.0001            0.0008
-2007-03-31                 0.0003       0.0002            0.0011
-2007-04-30                 0.0004       0.0012            0.0019
-2007-05-31                 0.0003       0.0016            0.0021
-2007-06-30                 0.0003       0.0009            0.0007
-2007-07-31                 0.0000       0.0009            0.0001
-2007-08-31                -0.0003      -0.0010           -0.0015
-2007-09-30                 0.0009       0.0027            0.0024
-2007-10-31                 0.0006       0.0025            0.0027
-2007-11-30                -0.0005      -0.0005           -0.0021
-2007-12-31                 0.0002       0.0009            0.0004
-2008-01-31                -0.0001      -0.0001           -0.0038
-2008-02-29                -0.0003       0.0027            0.0013
-2008-03-31                -0.0017      -0.0015           -0.0022
-2008-04-30                 0.0010       0.0007            0.0020
-2008-05-31                 0.0006       0.0010            0.0021
-2008-06-30                -0.0001       0.0003           -0.0015
-2008-07-31                -0.0001      -0.0019           -0.0024
-2008-08-31                 0.0000      -0.0012           -0.0013
-2008-09-30                -0.0028      -0.0027           -0.0061
-2008-10-31                -0.0048      -0.0014           -0.0056
-2008-11-30                -0.0016       0.0003           -0.0016
-2008-12-31                -0.0002       0.0011            0.0007
-2009-01-31                 0.0006       0.0003           -0.0001
-2009-02-28                 0.0003      -0.0005           -0.0014
-2009-03-31                 0.0003       0.0005            0.0016
-2009-04-30                 0.0012       0.0012            0.0033
-2009-05-31                 0.0019       0.0032            0.0046
-2009-06-30                 0.0007      -0.0007            0.0001
-2009-07-31                 0.0017       0.0015            0.0025
-2009-08-31                 0.0011       0.0005            0.0014
-           Merger.Arbitrage Relative.Value Short.Selling Funds.of.Funds
-1997-01-31           0.0012         0.0014       -0.0013         0.0024
-1997-02-28           0.0003         0.0009        0.0031         0.0008
-1997-03-31           0.0005         0.0001        0.0059        -0.0006
-1997-04-30           0.0000         0.0009       -0.0010         0.0001
-1997-05-31           0.0015         0.0013       -0.0059         0.0021
-1997-06-30           0.0017         0.0015       -0.0005         0.0017
-1997-07-31           0.0015         0.0014       -0.0030         0.0033
-1997-08-31           0.0006         0.0008       -0.0005         0.0004
-1997-09-30           0.0015         0.0014       -0.0010         0.0026
-1997-10-31           0.0007         0.0006        0.0036        -0.0008
-1997-11-30           0.0017         0.0009        0.0014        -0.0003
-1997-12-31           0.0012         0.0006        0.0011         0.0007
-1998-01-31           0.0004         0.0010        0.0001        -0.0003
-1998-02-28           0.0017         0.0010        0.0011         0.0020
-1998-03-31           0.0013         0.0011        0.0043         0.0029
-1998-04-30           0.0011         0.0011        0.0046         0.0010
-1998-05-31          -0.0001         0.0004        0.0106        -0.0006
-1998-06-30           0.0006         0.0002       -0.0004         0.0002
-1998-07-31           0.0001         0.0001        0.0029        -0.0001
-1998-08-31          -0.0042        -0.0026        0.0212        -0.0048
-1998-09-30           0.0006         0.0000       -0.0041        -0.0003
-1998-10-31           0.0012        -0.0011       -0.0115         0.0000
-1998-11-30           0.0017         0.0015       -0.0073         0.0017
-1998-12-31           0.0018         0.0013       -0.0047         0.0017
-1999-01-31           0.0009         0.0015       -0.0055         0.0016
-1999-02-28           0.0003         0.0007        0.0064        -0.0005
-1999-03-31           0.0011         0.0009       -0.0013         0.0016
-1999-04-30           0.0017         0.0019       -0.0030         0.0031
-1999-05-31           0.0017         0.0011        0.0001         0.0009
-1999-06-30           0.0018         0.0012       -0.0031         0.0022
-1999-07-31           0.0012         0.0009        0.0006         0.0007
-1999-08-31           0.0004         0.0005        0.0033         0.0002
-1999-09-30           0.0009         0.0008        0.0030         0.0004
-1999-10-31           0.0008         0.0006       -0.0010         0.0010
-1999-11-30           0.0020         0.0011       -0.0092         0.0039
-1999-12-31           0.0007         0.0014       -0.0073         0.0052
-2000-01-31           0.0012         0.0014        0.0024         0.0014
-2000-02-29           0.0019         0.0015       -0.0076         0.0057
-2000-03-31           0.0011         0.0013       -0.0011         0.0003
-2000-04-30           0.0015         0.0007        0.0048        -0.0024
-2000-05-31           0.0012         0.0006        0.0036        -0.0011
-2000-06-30           0.0014         0.0014       -0.0061         0.0027
-2000-07-31           0.0010         0.0007        0.0027        -0.0002
-2000-08-31           0.0013         0.0013       -0.0058         0.0023
-2000-09-30           0.0012         0.0006        0.0053        -0.0006
-2000-10-31           0.0002         0.0000        0.0039        -0.0009
-2000-11-30           0.0009         0.0000        0.0089        -0.0018
-2000-12-31           0.0011         0.0006        0.0004         0.0011
-2001-01-31           0.0010         0.0027       -0.0017         0.0019
-2001-02-28           0.0005         0.0002        0.0060        -0.0007
-2001-03-31          -0.0005        -0.0001        0.0040        -0.0006
-2001-04-30           0.0005         0.0014       -0.0067         0.0008
-2001-05-31           0.0014         0.0012       -0.0008         0.0007
-2001-06-30          -0.0007         0.0002        0.0007         0.0001
-2001-07-31           0.0007         0.0001        0.0021        -0.0003
-2001-08-31           0.0008        -0.0003        0.0047         0.0002
-2001-09-30          -0.0023        -0.0018        0.0062        -0.0011
-2001-10-31           0.0007         0.0013       -0.0022         0.0008
-2001-11-30           0.0001         0.0011       -0.0046         0.0005
-2001-12-31           0.0004         0.0008       -0.0016         0.0008
-2002-01-31           0.0006         0.0008        0.0022         0.0002
-2002-02-28          -0.0004        -0.0001        0.0025        -0.0001
-2002-03-31           0.0006         0.0012       -0.0030         0.0007
-2002-04-30          -0.0001         0.0006        0.0031         0.0004
-2002-05-31           0.0000         0.0003        0.0023         0.0004
-2002-06-30          -0.0014        -0.0009        0.0037        -0.0008
-2002-07-31          -0.0014        -0.0015        0.0046        -0.0011
-2002-08-31           0.0005         0.0005        0.0001         0.0003
-2002-09-30          -0.0002        -0.0009        0.0056        -0.0003
-2002-10-31           0.0003         0.0007       -0.0033        -0.0002
-2002-11-30           0.0004         0.0015       -0.0043         0.0008
-2002-12-31           0.0004         0.0002        0.0033         0.0006
-2003-01-31           0.0003         0.0005        0.0012         0.0006
-2003-02-28           0.0001         0.0000        0.0010         0.0002
-2003-03-31          -0.0001         0.0004       -0.0006         0.0000
-2003-04-30           0.0008         0.0015       -0.0050         0.0010
-2003-05-31           0.0012         0.0017       -0.0035         0.0016
-2003-06-30           0.0004         0.0006       -0.0011         0.0005
-2003-07-31           0.0004         0.0003       -0.0023         0.0002
-2003-08-31           0.0005         0.0005       -0.0022         0.0006
-2003-09-30           0.0006         0.0007        0.0008         0.0009
-2003-10-31           0.0009         0.0013       -0.0039         0.0012
-2003-11-30           0.0003         0.0008       -0.0007         0.0005
-2003-12-31           0.0007         0.0010       -0.0010         0.0011
-2004-01-31           0.0007         0.0012       -0.0005         0.0012
-2004-02-29           0.0004         0.0005        0.0001         0.0009
-2004-03-31           0.0001         0.0003       -0.0007         0.0003
-2004-04-30          -0.0003        -0.0004        0.0019        -0.0005
-2004-05-31           0.0000        -0.0003       -0.0001        -0.0006
-2004-06-30           0.0001         0.0002       -0.0003         0.0003
-2004-07-31          -0.0007         0.0001        0.0033        -0.0004
-2004-08-31           0.0001         0.0002        0.0007        -0.0001
-2004-09-30           0.0003         0.0004       -0.0012         0.0008
-2004-10-31           0.0006         0.0003       -0.0005         0.0005
-2004-11-30           0.0012         0.0012       -0.0030         0.0019
-2004-12-31           0.0010         0.0008       -0.0019         0.0011
-2005-01-31           0.0000         0.0001        0.0018         0.0000
-2005-02-28           0.0005         0.0006        0.0006         0.0010
-2005-03-31           0.0002        -0.0003        0.0012        -0.0003
-2005-04-30          -0.0008        -0.0008        0.0019        -0.0011
-2005-05-31           0.0007         0.0000       -0.0025         0.0001
-2005-06-30           0.0006         0.0007       -0.0002         0.0010
-2005-07-31           0.0009         0.0012       -0.0012         0.0010
-2005-08-31           0.0005         0.0004        0.0012         0.0006
-2005-09-30           0.0003         0.0009        0.0009         0.0011
-2005-10-31          -0.0011        -0.0003        0.0011        -0.0011
-2005-11-30           0.0008         0.0005       -0.0015         0.0012
-2005-12-31           0.0010         0.0010       -0.0002         0.0015
-2006-01-31           0.0020         0.0018       -0.0013         0.0022
-2006-02-28           0.0008         0.0006        0.0003         0.0003
-2006-03-31           0.0011         0.0012       -0.0006         0.0013
-2006-04-30           0.0009         0.0010       -0.0001         0.0013
-2006-05-31           0.0001        -0.0002        0.0010        -0.0010
-2006-06-30           0.0006         0.0002        0.0005        -0.0002
-2006-07-31           0.0004         0.0001        0.0008         0.0000
-2006-08-31           0.0004         0.0007       -0.0007         0.0005
-2006-09-30           0.0003         0.0003       -0.0010         0.0000
-2006-10-31           0.0010         0.0010       -0.0016         0.0012
-2006-11-30           0.0011         0.0010       -0.0011         0.0014
-2006-12-31           0.0010         0.0010        0.0002         0.0013
-2007-01-31           0.0014         0.0011       -0.0004         0.0009
-2007-02-28           0.0019         0.0009        0.0001         0.0007
-2007-03-31           0.0005         0.0006       -0.0002         0.0007
-2007-04-30           0.0012         0.0010       -0.0010         0.0013
-2007-05-31           0.0013         0.0012       -0.0007         0.0016
-2007-06-30          -0.0004         0.0008        0.0008         0.0006
-2007-07-31          -0.0004         0.0000        0.0017         0.0003
-2007-08-31           0.0000        -0.0006        0.0003        -0.0017
-2007-09-30           0.0010         0.0012       -0.0008         0.0015
-2007-10-31           0.0014         0.0016       -0.0001         0.0023
-2007-11-30          -0.0011        -0.0009        0.0025        -0.0011
-2007-12-31          -0.0002         0.0002        0.0002         0.0003
-2008-01-31          -0.0009        -0.0009        0.0021        -0.0021
-2008-02-29           0.0004         0.0005        0.0012         0.0011
-2008-03-31          -0.0003        -0.0012        0.0008        -0.0020
-2008-04-30           0.0011         0.0010       -0.0019         0.0007
-2008-05-31           0.0010         0.0012       -0.0006         0.0013
-2008-06-30          -0.0008        -0.0007        0.0029        -0.0005
-2008-07-31           0.0001        -0.0010        0.0003        -0.0020
-2008-08-31           0.0004        -0.0002       -0.0009        -0.0012
-2008-09-30          -0.0021        -0.0042        0.0016        -0.0046
-2008-10-31          -0.0019        -0.0054        0.0054        -0.0044
-2008-11-30           0.0000        -0.0016        0.0023        -0.0014
-2008-12-31           0.0013         0.0002       -0.0008        -0.0009
-2009-01-31           0.0005         0.0008        0.0016         0.0004
-2009-02-28           0.0001        -0.0001        0.0019        -0.0003
-2009-03-31           0.0010         0.0008       -0.0028         0.0001
-2009-04-30           0.0007         0.0026       -0.0047         0.0007
-2009-05-31           0.0009         0.0031        0.0000         0.0022
-2009-06-30           0.0008         0.0008       -0.0005         0.0002
-2009-07-31           0.0006         0.0020       -0.0029         0.0011
-2009-08-31           0.0008         0.0013       -0.0007         0.0008
+1997-01-31       0.033400000
+1997-02-28       0.023762011
+1997-03-31      -0.001413340
+1997-04-30       0.003680000
+1997-05-31       0.017660872
+1997-06-30       0.025452430
+1997-07-31       0.036500000
+1997-08-31      -0.005136602
+1997-09-30       0.022049167
+1997-10-31      -0.010780000
+1997-11-30      -0.002621013
+1997-12-31       0.012985944
+> Return.portfolio(edhec["1997",1:5], rebalance_on="quarters", verbose=TRUE) # returns list
+$returns
            portfolio.returns
-1997-01-31            0.0262
-1997-02-28            0.0172
-1997-03-31            0.0043
-1997-04-30            0.0043
-1997-05-31            0.0132
-1997-06-30            0.0208
-1997-07-31            0.0301
-1997-08-31           -0.0001
-1997-09-30            0.0223
-1997-10-31           -0.0015
-1997-11-30            0.0043
-1997-12-31            0.0134
-1998-01-31            0.0008
-1998-02-28            0.0186
-1998-03-31            0.0279
-1998-04-30            0.0114
-1998-05-31            0.0060
-1998-06-30            0.0000
-1998-07-31            0.0039
-1998-08-31           -0.0230
-1998-09-30           -0.0074
-1998-10-31           -0.0174
-1998-11-30            0.0100
-1998-12-31            0.0125
-1999-01-31            0.0058
-1999-02-28            0.0082
-1999-03-31            0.0123
-1999-04-30            0.0244
-1999-05-31            0.0091
-1999-06-30            0.0196
-1999-07-31            0.0077
-1999-08-31            0.0039
-1999-09-30            0.0087
-1999-10-31            0.0051
-1999-11-30            0.0175
-1999-12-31            0.0290
-2000-01-31            0.0126
-2000-02-29            0.0260
-2000-03-31            0.0060
-2000-04-30           -0.0038
-2000-05-31            0.0017
-2000-06-30            0.0124
-2000-07-31            0.0062
-2000-08-31            0.0145
-2000-09-30            0.0029
-2000-10-31            0.0006
-2000-11-30            0.0051
-2000-12-31            0.0173
-2001-01-31            0.0200
-2001-02-28            0.0050
-2001-03-31            0.0050
-2001-04-30            0.0006
-2001-05-31            0.0098
-2001-06-30            0.0044
-2001-07-31            0.0010
-2001-08-31            0.0099
-2001-09-30           -0.0052
-2001-10-31            0.0114
-2001-11-30            0.0006
-2001-12-31            0.0077
-2002-01-31            0.0097
-2002-02-28           -0.0006
-2002-03-31            0.0065
-2002-04-30            0.0083
-2002-05-31            0.0074
-2002-06-30           -0.0021
-2002-07-31           -0.0071
-2002-08-31            0.0067
-2002-09-30            0.0040
-2002-10-31           -0.0035
-2002-11-30            0.0068
-2002-12-31            0.0136
-2003-01-31            0.0143
-2003-02-28            0.0087
-2003-03-31           -0.0019
-2003-04-30            0.0120
-2003-05-31            0.0215
-2003-06-30            0.0059
-2003-07-31           -0.0006
-2003-08-31            0.0078
-2003-09-30            0.0132
-2003-10-31            0.0117
-2003-11-30            0.0070
-2003-12-31            0.0164
-2004-01-31            0.0156
-2004-02-29            0.0127
-2004-03-31            0.0032
-2004-04-30           -0.0075
-2004-05-31           -0.0052
-2004-06-30            0.0014
-2004-07-31           -0.0002
-2004-08-31            0.0024
-2004-09-30            0.0082
-2004-10-31            0.0087
-2004-11-30            0.0201
-2004-12-31            0.0103
-2005-01-31           -0.0001
-2005-02-28            0.0121
-2005-03-31           -0.0026
-2005-04-30           -0.0102
-2005-05-31            0.0022
-2005-06-30            0.0120
-2005-07-31            0.0132
-2005-08-31            0.0094
-2005-09-30            0.0156
-2005-10-31           -0.0078
-2005-11-30            0.0120
-2005-12-31            0.0121
-2006-01-31            0.0250
-2006-02-28            0.0048
-2006-03-31            0.0141
-2006-04-30            0.0179
-2006-05-31           -0.0065
-2006-06-30           -0.0007
-2006-07-31            0.0015
-2006-08-31            0.0058
-2006-09-30            0.0003
-2006-10-31            0.0123
-2006-11-30            0.0154
-2006-12-31            0.0149
-2007-01-31            0.0114
-2007-02-28            0.0098
-2007-03-31            0.0078
-2007-04-30            0.0143
-2007-05-31            0.0169
-2007-06-30            0.0082
-2007-07-31            0.0038
-2007-08-31           -0.0135
-2007-09-30            0.0204
-2007-10-31            0.0240
-2007-11-30           -0.0110
-2007-12-31            0.0040
-2008-01-31           -0.0151
-2008-02-29            0.0150
-2008-03-31           -0.0177
-2008-04-30            0.0088
-2008-05-31            0.0140
-2008-06-30           -0.0017
-2008-07-31           -0.0178
-2008-08-31           -0.0108
-2008-09-30           -0.0501
-2008-10-31           -0.0490
-2008-11-30           -0.0182
-2008-12-31            0.0013
-2009-01-31            0.0084
-2009-02-28           -0.0025
-2009-03-31            0.0056
-2009-04-30            0.0186
-2009-05-31            0.0384
-2009-06-30            0.0051
-2009-07-31            0.0204
-2009-08-31            0.0139
-> 
-> # calculate a portfolio return with rebalancing
-> round(Return.rebalancing(edhec,weights),4)
-           portfolio.returns
-2000-01-31            0.0115
-2000-02-29            0.0219
-2000-03-31            0.0093
-2000-04-30            0.0037
-2000-05-31            0.0057
-2000-06-30            0.0140
-2000-07-31            0.0043
-2000-08-31            0.0191
-2000-09-30            0.0015
-2000-10-31            0.0014
-2000-11-30            0.0061
-2000-12-31            0.0201
-2001-01-31            0.0151
-2001-02-28            0.0066
-2001-03-31            0.0131
-2001-04-30            0.0007
-2001-05-31            0.0092
-2001-06-30           -0.0001
-2001-07-31            0.0021
-2001-08-31            0.0103
-2001-09-30            0.0003
-2001-10-31            0.0142
-2001-11-30           -0.0048
-2001-12-31            0.0062
-2002-01-31            0.0093
-2002-02-28           -0.0011
-2002-03-31            0.0063
-2002-04-30            0.0082
-2002-05-31            0.0059
-2002-06-30            0.0008
-2002-07-31           -0.0059
-2002-08-31            0.0073
-2002-09-30            0.0026
-2002-10-31            0.0014
-2002-11-30            0.0105
-2002-12-31            0.0127
-2003-01-31            0.0159
-2003-02-28            0.0092
-2003-03-31            0.0002
-2003-04-30            0.0114
-2003-05-31            0.0199
-2003-06-30            0.0021
-2003-07-31           -0.0039
-2003-08-31            0.0036
-2003-09-30            0.0114
-2003-10-31            0.0117
-2003-11-30            0.0070
-2003-12-31            0.0117
-2004-01-31            0.0137
-2004-02-29            0.0087
-2004-03-31            0.0030
-2004-04-30           -0.0031
-2004-05-31           -0.0006
-2004-06-30            0.0039
-2004-07-31            0.0010
-2004-08-31            0.0022
-2004-09-30            0.0065
-2004-10-31            0.0042
-2004-11-30            0.0165
-2004-12-31            0.0094
-2005-01-31            0.0030
-2005-02-28            0.0103
-2005-03-31            0.0008
-2005-04-30           -0.0052
-2005-05-31            0.0021
-2005-06-30            0.0081
-2005-07-31            0.0119
-2005-08-31            0.0074
-2005-09-30            0.0102
-2005-10-31           -0.0012
-2005-11-30            0.0076
-2005-12-31            0.0089
-2006-01-31            0.0194
-2006-02-28            0.0050
-2006-03-31            0.0123
-2006-04-30            0.0162
-2006-05-31            0.0029
-2006-06-30            0.0009
-2006-07-31            0.0029
-2006-08-31            0.0062
-2006-09-30            0.0020
-2006-10-31            0.0128
-2006-11-30            0.0130
-2006-12-31            0.0126
-2007-01-31            0.0106
-2007-02-28            0.0106
-2007-03-31            0.0082
-2007-04-30            0.0121
-2007-05-31            0.0130
-2007-06-30            0.0054
-2007-07-31           -0.0002
-2007-08-31           -0.0097
-2007-09-30            0.0156
-2007-10-31            0.0172
-2007-11-30           -0.0113
-2007-12-31            0.0030
-2008-01-31           -0.0120
-2008-02-29            0.0046
-2008-03-31           -0.0189
-2008-04-30            0.0121
-2008-05-31            0.0127
-2008-06-30           -0.0003
-2008-07-31           -0.0118
-2008-08-31           -0.0065
-2008-09-30           -0.0478
-2008-10-31           -0.0631
-2008-11-30           -0.0354
-2008-12-31           -0.0047
-2009-01-31            0.0089
-2009-02-28           -0.0027
-2009-03-31            0.0051
-2009-04-30            0.0230
-2009-05-31            0.0374
-2009-06-30            0.0111
-2009-07-31            0.0256
-2009-08-31            0.0180
+1997-01-31       0.033400000
+1997-02-28       0.023762011
+1997-03-31      -0.001413340
+1997-04-30       0.003680000
+1997-05-31       0.017660872
+1997-06-30       0.025452430
+1997-07-31       0.036500000
+1997-08-31      -0.005136602
+1997-09-30       0.022049167
+1997-10-31      -0.010780000
+1997-11-30      -0.002621013
+1997-12-31       0.012985944
+
+$contribution
+           Convertible Arbitrage    CTA Global Distressed Securities
+1997-01-31           0.002380000  0.0078600000          0.0035600000
+1997-02-28           0.002408819  0.0059940275          0.0024031662
+1997-03-31           0.001510442 -0.0004248891         -0.0002337074
+1997-04-30           0.001720000 -0.0034000000          0.0006000000
+1997-05-31           0.003135294 -0.0002938187          0.0046568428
+1997-06-30           0.004252156  0.0016336242          0.0043610924
+1997-07-31           0.003860000  0.0118200000          0.0046800000
+1997-08-31           0.002635527 -0.0096662672          0.0029028423
+1997-09-30           0.002444218  0.0038748559          0.0070493383
+1997-10-31           0.002000000 -0.0019600000         -0.0012800000
+1997-11-30           0.000000000  0.0026626352          0.0010847819
+1997-12-31           0.001392218  0.0058170647          0.0014782579
+           Emerging Markets Equity Market Neutral
+1997-01-31      0.015820000          0.0037800000
+1997-02-28      0.010964341          0.0019916567
+1997-03-31     -0.002576485          0.0003112995
+1997-04-30      0.002380000          0.0023800000
+1997-05-31      0.006351596          0.0038109577
+1997-06-30      0.011874480          0.0033310776
+1997-07-31      0.011200000          0.0049400000
+1997-08-31     -0.001344834          0.0003361293
+1997-09-30      0.004659301          0.0040214532
+1997-10-31     -0.011440000          0.0019000000
+1997-11-30     -0.007205240          0.0008368108
+1997-12-31      0.002942265          0.0013561387
+
+$BOP.Weight
+           Convertible Arbitrage CTA Global Distressed Securities
+1997-01-31             0.2000000  0.2000000             0.2000000
+1997-02-28             0.1958390  0.2011419             0.1969808
+1997-03-31             0.1936464  0.2023282             0.1947562
+1997-04-30             0.2000000  0.2000000             0.2000000
+1997-05-31             0.2009804  0.1958792             0.1998645
+1997-06-30             0.2005734  0.1921911             0.2009720
+1997-07-31             0.2000000  0.2000000             0.2000000
+1997-08-31             0.1966811  0.2043608             0.1974723
+1997-09-30             0.2003458  0.1956998             0.2014097
+1997-10-31             0.2000000  0.2000000             0.2000000
+1997-11-30             0.2042013  0.2001981             0.2008855
+1997-12-31             0.2047379  0.2033939             0.2025011
+           Emerging Markets Equity Market Neutral
+1997-01-31        0.2000000             0.2000000
+1997-02-28        0.2088446             0.1971937
+1997-03-31        0.2147071             0.1945622
+1997-04-30        0.2000000             0.2000000
+1997-05-31        0.2016380             0.2016380
+1997-06-30        0.2043800             0.2018835
+1997-07-31        0.2000000             0.2000000
+1997-08-31        0.2037627             0.1977231
+1997-09-30        0.2034629             0.1990818
+1997-10-31        0.2000000             0.2000000
+1997-11-30        0.1906148             0.2041002
+1997-12-31        0.1838916             0.2054756
+
+$EOP.Weight
+           Convertible Arbitrage CTA Global Distressed Securities
+1997-01-31             0.1958390  0.2011419             0.1969808
+1997-02-28             0.1936464  0.2023282             0.1947562
+1997-03-31             0.1954330  0.2021890             0.1947978
+1997-04-30             0.2009804  0.1958792             0.1998645
+1997-05-31             0.2005734  0.1921911             0.2009720
+1997-06-30             0.1997416  0.1890138             0.2002366
+1997-07-31             0.1966811  0.2043608             0.1974723
+1997-08-31             0.2003458  0.1956998             0.2014097
+1997-09-30             0.1984151  0.1952691             0.2039618
+1997-10-31             0.2042013  0.2001981             0.2008855
+1997-11-30             0.2047379  0.2033939             0.2025011
+1997-12-31             0.2034876  0.2065290             0.2013644
+           Emerging Markets Equity Market Neutral
+1997-01-31        0.2088446             0.1971937
+1997-02-28        0.2147071             0.1945622
+1997-03-31        0.2124308             0.1951493
+1997-04-30        0.2016380             0.2016380
+1997-05-31        0.2043800             0.2018835
+1997-06-30        0.2108869             0.2001210
+1997-07-31        0.2037627             0.1977231
+1997-08-31        0.2034629             0.1990818
+1997-09-30        0.2036323             0.1987216
+1997-10-31        0.1906148             0.2041002
+1997-11-30        0.1838916             0.2054756
+1997-12-31        0.1844387             0.2041802
+
+$BOP.Value
+           Convertible Arbitrage CTA Global Distressed Securities
+1997-01-31             0.2000000  0.2000000             0.2000000
+1997-02-28             0.2023800  0.2078600             0.2035600
+1997-03-31             0.2048693  0.2140542             0.2060434
+1997-04-30             0.2112921  0.2112921             0.2112921
+1997-05-31             0.2131092  0.2077001             0.2119260
+1997-06-30             0.2164337  0.2073886             0.2168638
+1997-07-31             0.2213080  0.2213080             0.2213080
+1997-08-31             0.2255792  0.2343873             0.2264866
+1997-09-30             0.2286020  0.2233008             0.2298159
+1997-10-31             0.2332393  0.2332393             0.2332393
+1997-11-30             0.2355716  0.2309535             0.2317465
+1997-12-31             0.2355716  0.2340252             0.2329980
+           Emerging Markets Equity Market Neutral
+1997-01-31        0.2000000             0.2000000
+1997-02-28        0.2158200             0.2037800
+1997-03-31        0.2271506             0.2058382
+1997-04-30        0.2112921             0.2112921
+1997-05-31        0.2138065             0.2138065
+1997-06-30        0.2205414             0.2178474
+1997-07-31        0.2213080             0.2213080
+1997-08-31        0.2337012             0.2267743
+1997-09-30        0.2321588             0.2271598
+1997-10-31        0.2332393             0.2332393
+1997-11-30        0.2198980             0.2354550
+1997-12-31        0.2115858             0.2364204
+
+$EOP.Value
+           Convertible Arbitrage CTA Global Distressed Securities
+1997-01-31             0.2023800  0.2078600             0.2035600
+1997-02-28             0.2048693  0.2140542             0.2060434
+1997-03-31             0.2064673  0.2136047             0.2057962
+1997-04-30             0.2131092  0.2077001             0.2119260
+1997-05-31             0.2164337  0.2073886             0.2168638
+1997-06-30             0.2210221  0.2091514             0.2215698
+1997-07-31             0.2255792  0.2343873             0.2264866
+1997-08-31             0.2286020  0.2233008             0.2298159
+1997-09-30             0.2313909  0.2277221             0.2378595
+1997-10-31             0.2355716  0.2309535             0.2317465
+1997-11-30             0.2355716  0.2340252             0.2329980
+1997-12-31             0.2371735  0.2407183             0.2346988
+           Emerging Markets Equity Market Neutral
+1997-01-31        0.2158200             0.2037800
+1997-02-28        0.2271506             0.2058382
+1997-03-31        0.2244247             0.2061675
+1997-04-30        0.2138065             0.2138065
+1997-05-31        0.2205414             0.2178474
+1997-06-30        0.2333548             0.2214419
+1997-07-31        0.2337012             0.2267743
+1997-08-31        0.2321588             0.2271598
+1997-09-30        0.2374752             0.2317484
+1997-10-31        0.2198980             0.2354550
+1997-11-30        0.2115858             0.2364204
+1997-12-31        0.2149712             0.2379808
+
+> # with a weights object
+> data(weights) # rebalance at the beginning of the year to various weights through time
+> chart.StackedBar(weights)
+> x <- Return.portfolio(edhec["2000::",1:11], weights=weights,verbose=TRUE)
+> chart.CumReturns(x$returns)
+> chart.StackedBar(x$BOP.Weight)
+> chart.StackedBar(x$BOP.Value)
 > 
 > 
 > 
@@ -4726,7 +3993,6 @@ Warning in Return.portfolio(edhec, contribution = TRUE) :
 > ### Name: Return.read
 > ### Title: Read returns data with different date formats
 > ### Aliases: Return.read
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -4746,7 +4012,6 @@ Warning in Return.portfolio(edhec, contribution = TRUE) :
 > ### Name: Return.relative
 > ### Title: calculate the relative return of one asset to another
 > ### Aliases: Return.relative
-> ### Keywords: ts
 > 
 > ### ** Examples
 > 
@@ -4785,7 +4050,6 @@ Warning in Return.portfolio(edhec, contribution = TRUE) :
 > ### Name: Selectivity
 > ### Title: Selectivity of the return distribution
 > ### Aliases: Selectivity
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -4812,7 +4076,6 @@ Jensen's Alpha (Risk free = 0) 0.08077871   NA 0.2196026 0.06063837   NA
 > ### Title: calculate a traditional or modified Sharpe Ratio of Return over
 > ###   StdDev or VaR or ES
 > ### Aliases: SharpeRatio SharpeRatio.modified
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -4901,7 +4164,6 @@ ES Sharpe (Rf=0.3%, p=95%):         0.06890142   0.009175123     0.05597178
 > ### Name: SharpeRatio.annualized
 > ### Title: calculate annualized Sharpe Ratio
 > ### Aliases: SharpeRatio.annualized
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -4938,8 +4200,7 @@ Annualized Sharpe Ratio (Rf=3.9%) 0.1228211 1.311291
 > 
 > ### Name: SkewnessKurtosisRatio
 > ### Title: Skewness-Kurtosis ratio of the return distribution
-> ### Aliases: SkewnessKurtosisRatio Skewness-KurtosisRatio
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: Skewness-KurtosisRatio SkewnessKurtosisRatio
 > 
 > ### ** Examples
 > 
@@ -4967,7 +4228,6 @@ SkewnessKurtosisRatio          NA -0.03981589 -0.01634447 -0.2626715
 > ### Name: SmoothingIndex
 > ### Title: calculate Normalized Getmansky Smoothing Index
 > ### Aliases: SmoothingIndex
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5002,7 +4262,6 @@ Smoothing Index        0.4791138      0.4227911     0.7532756      0.4914581
 > ### Name: SortinoRatio
 > ### Title: calculate Sortino Ratio of performance over downside risk
 > ### Aliases: SortinoRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5027,7 +4286,6 @@ Sortino Ratio (MAR = 0%)   0.3064
 > ### Name: SpecificRisk
 > ### Title: Specific risk of the return distribution
 > ### Aliases: SpecificRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5055,7 +4313,6 @@ Specific Risk =  0.04977046   NA 0.06225051 0.0857627   NA
 > ###   series, also calculates component contribution to standard deviation
 > ###   of a portfolio
 > ### Aliases: StdDev
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5101,14 +4358,28 @@ $StdDev
 [1,] 0.01048561
 
 $contribution
- [1]  0.0008658123  0.0006049525  0.0010509579  0.0021479823  0.0004348643
- [6]  0.0011469074  0.0006822007  0.0010512230  0.0013150652  0.0005428396
-[11]  0.0007548481 -0.0013277224  0.0012156837
+ Convertible Arbitrage             CTA Global  Distressed Securities 
+          0.0008658123           0.0006049525           0.0010509579 
+      Emerging Markets  Equity Market Neutral           Event Driven 
+          0.0021479823           0.0004348643           0.0011469074 
+Fixed Income Arbitrage           Global Macro      Long/Short Equity 
+          0.0006822007           0.0010512230           0.0013150652 
+      Merger Arbitrage         Relative Value          Short Selling 
+          0.0005428396           0.0007548481          -0.0013277224 
+        Funds of Funds 
+          0.0012156837 
 
 $pct_contrib_StdDev
- [1]  0.08257143  0.05769357  0.10022854  0.20485039  0.04147247  0.10937913
- [7]  0.06506063  0.10025383  0.12541613  0.05176994  0.07198892 -0.12662322
-[13]  0.11593824
+ Convertible Arbitrage             CTA Global  Distressed Securities 
+            0.08257143             0.05769357             0.10022854 
+      Emerging Markets  Equity Market Neutral           Event Driven 
+            0.20485039             0.04147247             0.10937913 
+Fixed Income Arbitrage           Global Macro      Long/Short Equity 
+            0.06506063             0.10025383             0.12541613 
+      Merger Arbitrage         Relative Value          Short Selling 
+            0.05176994             0.07198892            -0.12662322 
+        Funds of Funds 
+            0.11593824 
 
 > 
 > 
@@ -5124,8 +4395,7 @@ detaching ‘package:robustbase’
 > 
 > ### Name: StdDev.annualized
 > ### Title: calculate a multiperiod or annualized Standard Deviation
-> ### Aliases: sd.annualized sd.multiperiod StdDev.annualized
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: StdDev.annualized sd.annualized sd.multiperiod
 > 
 > ### ** Examples
 > 
@@ -5162,7 +4432,6 @@ Annualized Standard Deviation   0.03178395
 > ### Name: SystematicRisk
 > ### Title: Systematic risk of the return distribution
 > ### Aliases: SystematicRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5190,7 +4459,6 @@ Systematic Risk to SP500 TR (Rf = 0)   NA
 > ### Name: TotalRisk
 > ### Title: Total risk of the return distribution
 > ### Aliases: TotalRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5216,7 +4484,6 @@ Total Risk =  0.05627721   NA 0.1079938 0.1099375   NA
 > ### Name: TrackingError
 > ### Title: Calculate Tracking Error of returns against a benchmark
 > ### Aliases: TrackingError
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5248,27 +4515,26 @@ Tracking Error: EDHEC LS EQ 0.1421533 0.05651657
 > ### Title: calculate Treynor Ratio or modified Treynor Ratio of excess
 > ###   return over CAPM beta
 > ### Aliases: TreynorRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(portfolio_bacon)
 > data(managers)
-> round(TreynorRatio(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf=.035/12),4)
+> round(TreynorRatio(managers[,1], managers[,8], Rf=.035/12),4)
 [1] 0.2528
-> round(TreynorRatio(managers[,1,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE]),4)
+> round(TreynorRatio(managers[,1], managers[,8], Rf = managers[,10]),4)
 [1] 0.2428
-> round(TreynorRatio(managers[,1:6], managers[,8,drop=FALSE], Rf=.035/12),4)
+> round(TreynorRatio(managers[,1:6], managers[,8], Rf=.035/12),4)
                           HAM1   HAM2  HAM3   HAM4   HAM5   HAM6
 Treynor Ratio: SP500 TR 0.2528 0.3925 0.201 0.1209 0.0052 0.3042
-> round(TreynorRatio(managers[,1:6], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE]),4)
+> round(TreynorRatio(managers[,1:6], managers[,8], Rf = managers[,10]),4)
                           HAM1   HAM2   HAM3   HAM4   HAM5   HAM6
 Treynor Ratio: SP500 TR 0.2428 0.3883 0.1956 0.1144 0.0219 0.3401
-> round(TreynorRatio(managers[,1:6], managers[,8:7,drop=FALSE], Rf=.035/12),4)
+> round(TreynorRatio(managers[,1:6], managers[,8:7], Rf=.035/12),4)
                              HAM1   HAM2   HAM3   HAM4   HAM5   HAM6
 Treynor Ratio: SP500 TR    0.2528 0.3925 0.2010 0.1209 0.0052 0.3042
 Treynor Ratio: EDHEC LS EQ 0.1297 0.1088 0.0776 0.0504 0.0014 0.0966
-> round(TreynorRatio(managers[,1:6], managers[,8:7,drop=FALSE], Rf = managers[,10,drop=FALSE]),4)
+> round(TreynorRatio(managers[,1:6], managers[,8:7], Rf = managers[,10]),4)
                              HAM1   HAM2   HAM3   HAM4   HAM5   HAM6
 Treynor Ratio: SP500 TR    0.2428 0.3883 0.1956 0.1144 0.0219 0.3401
 Treynor Ratio: EDHEC LS EQ 0.1242 0.1068 0.0753 0.0471 0.0060 0.1086
@@ -5293,7 +4559,6 @@ Treynor Ratio: SP500 TR 5.184256 9.129899 4.597618 2.990718   NA
 > ### Name: UpDownRatios
 > ### Title: calculate metrics on up and down markets for the benchmark asset
 > ### Aliases: UpDownRatios
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5343,7 +4608,6 @@ SP500 TR Down Capture 0.2076304
 > ### Name: UpsideFrequency
 > ### Title: upside frequency of the return distribution
 > ### Aliases: UpsideFrequency
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5373,7 +4637,6 @@ Upside Frequency (MAR = 0%) 0.8333333 0.4166667        1
 > ### Title: calculate Upside Potential Ratio of upside performance over
 > ###   downside risk
 > ### Aliases: UPR UpsidePotentialRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5400,7 +4663,6 @@ Upside Potential (MAR = 0%)             0.5200563    0.6294689
 > ### Name: UpsideRisk
 > ### Title: upside risk, variance and potential of the return distribution
 > ### Aliases: UpsideRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5434,7 +4696,6 @@ Upside Risk (MAR = 0%)           0 0.03204533 0.01397565 0.004324785
 > ### Name: VaR
 > ### Title: calculate various Value at Risk (VaR) measures
 > ### Aliases: VaR VaR.CornishFisher
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5551,7 +4812,6 @@ detaching ‘package:robustbase’
 > ### Name: VolatilitySkewness
 > ### Title: Volatility and variability of the return distribution
 > ### Aliases: VolatilitySkewness
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5580,7 +4840,6 @@ detaching ‘package:robustbase’
 > ### Title: calculate a function over an expanding window always starting
 > ###   from the beginning of the series
 > ### Aliases: apply.fromstart
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5642,7 +4901,6 @@ detaching ‘package:robustbase’
 > ### Name: apply.rolling
 > ### Title: calculate a function over a rolling window
 > ### Aliases: apply.rolling
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5792,8 +5050,7 @@ detaching ‘package:robustbase’
 > 
 > ### Name: Return.centered
 > ### Title: calculate centered Returns
-> ### Aliases: centeredcomoment centeredmoment Return.centered
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: Return.centered centeredcomoment centeredmoment
 > 
 > ### ** Examples
 > 
@@ -5941,10 +5198,9 @@ detaching ‘package:robustbase’
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: chart.ACFplus
+> ### Name: chart.ACF
 > ### Title: Create ACF chart or ACF with PACF two-panel chart
 > ### Aliases: chart.ACF chart.ACFplus
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5962,7 +5218,6 @@ detaching ‘package:robustbase’
 > ### Name: chart.Bar
 > ### Title: wrapper for barchart of returns
 > ### Aliases: chart.Bar charts.Bar
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5980,7 +5235,6 @@ detaching ‘package:robustbase’
 > ### Name: chart.BarVaR
 > ### Title: Periodic returns in a bar chart with risk metric overlay
 > ### Aliases: chart.BarVaR charts.BarVaR
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -5994,43 +5248,45 @@ detaching ‘package:robustbase’
 + 		main="... with Empirical VaR from Inception")
 > 
 > # with lines for all managers in the sample
+> 
 > chart.BarVaR(managers[,1:6],
 + 		methods="GaussianVaR",
 + 		all=TRUE, lty=1, lwd=2,
 + 		colorset= c("red", rep("gray", 5)),
 + 		main="... with Gaussian VaR and Estimates for Peers")
 > 
-> # with multiple methods
-> chart.BarVaR(managers[,1,drop=FALSE],
-+ 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"),
-+ 		main="... with Multiple Methods")
-> 
-> # cleaned up a bit
-> chart.BarVaR(managers[,1,drop=FALSE],
-+ 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"),
-+ 		lwd=2, ypad=.01,
-+ 		main="... with Padding for Bottom Legend")
-> 
-> # with 'cleaned' data for VaR estimates
-> chart.BarVaR(managers[,1,drop=FALSE],
-+ 		methods=c("HistoricalVaR", "ModifiedVaR"),
-+ 		lwd=2, ypad=.01, clean="boudt",
-+ 		main="... with Robust ModVaR Estimate")
-> 
-> # Cornish Fisher VaR estimated with cleaned data,
-> # with horizontal line to show exceptions
-> chart.BarVaR(managers[,1,drop=FALSE],
-+ 		methods="ModifiedVaR",
-+ 		lwd=2, ypad=.01, clean="boudt",
-+ 		show.horizontal=TRUE, lty=2,
-+ 		main="... with Robust ModVaR and Line for Identifying Exceptions")
+> ## Not run: 
+> ##D # not run on CRAN because of example time
+> ##D 
+> ##D # with multiple methods
+> ##D chart.BarVaR(managers[,1,drop=FALSE],
+> ##D 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"),
+> ##D 		main="... with Multiple Methods")
+> ##D 
+> ##D # cleaned up a bit
+> ##D chart.BarVaR(managers[,1,drop=FALSE],
+> ##D 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"),
+> ##D 		lwd=2, ypad=.01,
+> ##D 		main="... with Padding for Bottom Legend")
+> ##D 
+> ##D # with 'cleaned' data for VaR estimates
+> ##D chart.BarVaR(managers[,1,drop=FALSE],
+> ##D 		methods=c("HistoricalVaR", "ModifiedVaR"),
+> ##D 		lwd=2, ypad=.01, clean="boudt",
+> ##D 		main="... with Robust ModVaR Estimate")
+> ##D 
+> ##D # Cornish Fisher VaR estimated with cleaned data,
+> ##D # with horizontal line to show exceptions
+> ##D chart.BarVaR(managers[,1,drop=FALSE],
+> ##D 		methods="ModifiedVaR",
+> ##D 		lwd=2, ypad=.01, clean="boudt",
+> ##D 		show.horizontal=TRUE, lty=2,
+> ##D 		main="... with Robust ModVaR and Line for Identifying Exceptions")
+> ## End(Not run)
 > 
 > 
 > 
 > cleanEx()
-
-detaching ‘package:robustbase’
-
 > nameEx("chart.Boxplot")
 > ### * chart.Boxplot
 > 
@@ -6039,7 +5295,6 @@ detaching ‘package:robustbase’
 > ### Name: chart.Boxplot
 > ### Title: box whiskers plot wrapper
 > ### Aliases: chart.Boxplot
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6058,7 +5313,6 @@ detaching ‘package:robustbase’
 > ### Name: chart.CaptureRatios
 > ### Title: Chart of Capture Ratios against a benchmark
 > ### Aliases: chart.CaptureRatios
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6076,7 +5330,6 @@ detaching ‘package:robustbase’
 > ### Name: chart.Correlation
 > ### Title: correlation matrix chart
 > ### Aliases: chart.Correlation
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6438,7 +5691,6 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.CumReturns
 > ### Title: Cumulates and graphs a set of periodic returns
 > ### Aliases: chart.CumReturns
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6460,7 +5712,6 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.Drawdown
 > ### Title: Time series chart of drawdowns through time
 > ### Aliases: chart.Drawdown
-> ### Keywords: ts
 > 
 > ### ** Examples
 > 
@@ -6480,7 +5731,6 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.ECDF
 > ### Title: Create an ECDF overlaid with a Normal CDF
 > ### Aliases: chart.ECDF
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6498,19 +5748,19 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.Events
 > ### Title: Plots a time series with event dates aligned
 > ### Aliases: chart.Events
-> ### Keywords: hplot ts
 > 
 > ### ** Examples
 > 
-> data(managers)
-> R = Drawdowns(managers[,2,drop=FALSE])
-> n = table.Drawdowns(managers[,2,drop=FALSE])
-> chart.Events(Drawdowns(managers[,2,drop=FALSE]),
-+ 		dates = n$Trough,
-+ 		prior=max(na.omit(n$"To Trough")),
-+ 		post=max(na.omit(n$Recovery)),
-+ 		lwd=2, colorset=redfocus, legend.loc=NULL,
-+ 		main = "Worst Drawdowns")
+> ## Not run: 
+> ##D data(managers)
+> ##D n = table.Drawdowns(managers[,2,drop=FALSE])
+> ##D chart.Events(Drawdowns(managers[,2,drop=FALSE]),
+> ##D 		dates = n$Trough,
+> ##D 		prior=max(na.omit(n$"To Trough")),
+> ##D 		post=max(na.omit(n$Recovery)),
+> ##D 		lwd=2, colorset=redfocus, legend.loc=NULL,
+> ##D 		main = "Worst Drawdowns")
+> ## End(Not run)
 > 
 > 
 > 
@@ -6523,7 +5773,6 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.Histogram
 > ### Title: histogram of returns
 > ### Aliases: chart.Histogram
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6569,7 +5818,6 @@ Warning in title(...) : "method" is not a graphical parameter
 > ### Name: chart.QQPlot
 > ### Title: Plot a QQ chart
 > ### Aliases: chart.QQPlot
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6621,7 +5869,6 @@ detaching ‘package:MASS’
 > ### Title: Takes a set of returns and relates them to a market benchmark in
 > ###   a scatterplot
 > ### Aliases: chart.Regression
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6643,7 +5890,6 @@ detaching ‘package:MASS’
 > ### Name: chart.RelativePerformance
 > ### Title: relative performance chart between multiple return series
 > ### Aliases: chart.RelativePerformance
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6665,23 +5911,12 @@ detaching ‘package:MASS’
 > ### Title: scatter chart of returns vs risk for comparing multiple
 > ###   instruments
 > ### Aliases: chart.RiskReturnScatter
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(edhec)
 > chart.RiskReturnScatter(edhec, Rf = .04/12)
 > chart.RiskReturnScatter(edhec, Rf = .04/12, add.boxplots = TRUE)
-Warning in par(original.layout) :
-  graphical parameter "cin" cannot be set
-Warning in par(original.layout) :
-  graphical parameter "cra" cannot be set
-Warning in par(original.layout) :
-  graphical parameter "csi" cannot be set
-Warning in par(original.layout) :
-  graphical parameter "cxy" cannot be set
-Warning in par(original.layout) :
-  graphical parameter "din" cannot be set
 > 
 > 
 > 
@@ -6694,7 +5929,6 @@ Warning in par(original.layout) :
 > ### Name: chart.RollingCorrelation
 > ### Title: chart rolling correlation fo multiple assets
 > ### Aliases: chart.RollingCorrelation
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6716,7 +5950,6 @@ Warning in par(original.layout) :
 > ### Name: chart.RollingMean
 > ### Title: chart the rolling mean return
 > ### Aliases: chart.RollingMean
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6735,7 +5968,6 @@ Warning in par(original.layout) :
 > ### Title: wrapper to create a chart of rolling performance metrics in a
 > ###   line chart
 > ### Aliases: chart.RollingPerformance
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6763,7 +5995,6 @@ Warning in par(original.layout) :
 > ###   through time
 > ### Aliases: chart.RollingQuantileRegression chart.RollingRegression
 > ###   charts.RollingRegression
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6777,13 +6008,10 @@ Warning in par(original.layout) :
 > dev.new()
 > chart.RollingQuantileRegression(managers[, 1, drop=FALSE],
 + 		managers[, 8, drop=FALSE], Rf = .04/12)
-Package SparseM (0.96) loaded.
-	   To cite, see citation("SparseM")
-
 
 Attaching package: ‘SparseM’
 
-The following object(s) are masked from ‘package:base’:
+The following object is masked from ‘package:base’:
 
     backsolve
 
@@ -6806,7 +6034,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: chart.Scatter
 > ### Title: wrapper to draw scatter plot with sensible defaults
 > ### Aliases: chart.Scatter
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6824,7 +6051,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: chart.SnailTrail
 > ### Title: chart risk versus return over rolling time periods
 > ### Aliases: chart.SnailTrail
-> ### Keywords: ts
 > 
 > ### ** Examples
 > 
@@ -6847,7 +6073,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: chart.StackedBar
 > ### Title: create a stacked bar plot
 > ### Aliases: chart.StackedBar
-> ### Keywords: hplot multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6899,10 +6124,9 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: charts.TimeSeries
+> ### Name: chart.TimeSeries
 > ### Title: Creates a time series chart with some extensions.
-> ### Aliases: charts.TimeSeries chart.TimeSeries
-> ### Keywords: distribution hplot models multivariate ts
+> ### Aliases: chart.TimeSeries charts.TimeSeries
 > 
 > ### ** Examples
 > 
@@ -6964,7 +6188,13 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > R=edhec[,"Funds of Funds",drop=FALSE]
 > Return.cumulative = cumprod(1+R) - 1
 > chart.TimeSeries(Return.cumulative)
-> chart.TimeSeries(Return.cumulative, colorset = "darkblue", legend.loc = "bottomright", period.areas = cycles.dates, period.color = "lightblue", event.lines = risk.dates, event.labels = risk.labels, event.color = "red", lwd = 2)
+> chart.TimeSeries(Return.cumulative, colorset = "darkblue",
++                  legend.loc = "bottomright",
++                  period.areas = cycles.dates,
++                  period.color = "lightblue",
++                  event.lines = risk.dates,
++                  event.labels = risk.labels,
++                  event.color = "red", lwd = 2)
 > 
 > 
 > 
@@ -6978,7 +6208,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Title: show the sensitivity of Value-at-Risk or Expected Shortfall
 > ###   estimates
 > ### Aliases: chart.VaRSensitivity
-> ### Keywords: distribution multivariate ts
 > 
 > ### ** Examples
 > 
@@ -6999,7 +6228,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Title: Create combined wealth index, period performance, and drawdown
 > ###   chart
 > ### Aliases: charts.PerformanceSummary
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7017,12 +6245,15 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: charts.RollingPerformance
 > ### Title: rolling performance chart
 > ### Aliases: charts.RollingPerformance
-> ### Keywords: distribution hplot models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(managers)
-> charts.RollingPerformance(managers[,1:8], Rf=managers[,10,drop=FALSE], colorset=tim8equal, main="Rolling 12-Month Performance", legend.loc="topleft")
+> charts.RollingPerformance(managers[,1:8],
++                           Rf=managers[,10,drop=FALSE],
++                           colorset=tim8equal,
++                           main="Rolling 12-Month Performance",
++                           legend.loc="topleft")
 > 
 > 
 > 
@@ -7036,7 +6267,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Title: check input data type and format and coerce to the desired
 > ###   output type
 > ### Aliases: checkData
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7175,7 +6405,7 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: edhec
 > ### Title: EDHEC-Risk Hedge Fund Style Indices
 > ### Aliases: edhec
-> ### Keywords: datasets ts
+> ### Keywords: datasets
 > 
 > ### ** Examples
 > 
@@ -7272,7 +6502,6 @@ detaching ‘package:quantreg’, ‘package:SparseM’
 > ### Name: findDrawdowns
 > ### Title: Find the drawdowns and drawdown levels in a timeseries.
 > ### Aliases: Drawdowns findDrawdowns
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7353,7 +6582,6 @@ $recovery
 > ### Name: kurtosis
 > ### Title: Kurtosis
 > ### Aliases: kurtosis
-> ### Keywords: univar
 > 
 > ### ** Examples
 > 
@@ -7469,7 +6697,6 @@ Excess Kurtosis 4.893647  3.250776 4.817395
 > ### Name: maxDrawdown
 > ### Title: caclulate the maximum drawdown from peak equity
 > ### Aliases: maxDrawdown
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7502,8 +6729,7 @@ US 3m TR            0.0000
 > ### Name: mean.geometric
 > ### Title: calculate attributes relative to the mean of the observation
 > ###   series given, including geometric, stderr, LCL and UCL
-> ### Aliases: mean.geometric mean.LCL mean.stderr mean.UCL mean.utils
-> ### Keywords: distribution models multivariate ts
+> ### Aliases: mean.LCL mean.UCL mean.geometric mean.stderr mean.utils
 > 
 > ### ** Examples
 > 
@@ -7532,7 +6758,7 @@ Lower Confidence Level    0.002999801
 > ### Name: portfolio_bacon
 > ### Title: Bacon(2008) Data
 > ### Aliases: portfolio_bacon
-> ### Keywords: datasets ts
+> ### Keywords: datasets
 > 
 > ### ** Examples
 > 
@@ -7574,7 +6800,7 @@ Lower Confidence Level    0.002999801
 > ### Name: prices
 > ### Title: Selected Price Series Example Data
 > ### Aliases: prices
-> ### Keywords: datasets ts
+> ### Keywords: datasets
 > 
 > ### ** Examples
 > 
@@ -7602,7 +6828,6 @@ Lower Confidence Level    0.002999801
 > ### Name: skewness
 > ### Title: Skewness
 > ### Aliases: skewness
-> ### Keywords: univar
 > 
 > ### ** Examples
 > 
@@ -7636,7 +6861,6 @@ Skewness  0.01773013 -0.5531032 -0.4048722 -0.328171
 > ### Name: sortDrawdowns
 > ### Title: order list of drawdowns from worst to best
 > ### Aliases: sortDrawdowns
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7717,7 +6941,6 @@ $recovery
 > ### Name: table.AnnualizedReturns
 > ### Title: Annualized Returns Summary: Statistics and Stylized Facts
 > ### Aliases: table.AnnualizedReturns
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7734,37 +6957,34 @@ Annualized Sharpe (Rf=0%)   0.6449
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
 > result = t(table.AnnualizedReturns(managers[,1:8], Rf=.04/12))
 > 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++          cdec=c(3,3,1)), rmar = 0.8, cmar = 2,  max.cex=.9,
++          halign = "center", valign = "top", row.valign="center",
++          wrap.rownames=20, wrap.colnames=10, col.rownames=c("red",
++          rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
+> 
 > title(main="Annualized Performance")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.Arbitrary")
 > ### * table.Arbitrary
@@ -7775,12 +6995,12 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Title: wrapper function for combining arbitrary function list into a
 > ###   table
 > ### Aliases: statsTable table.Arbitrary
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(edhec)
-> table.Arbitrary(edhec,metrics=c("VaR", "ES"),metricsNames=c("Modified VaR","Modified Expected Shortfall"))
+> table.Arbitrary(edhec,metrics=c("VaR", "ES"),
++                 metricsNames=c("Modified VaR","Modified Expected Shortfall"))
                             Convertible Arbitrage  CTA Global
 Modified VaR                          -0.03247395 -0.03380228
 Modified Expected Shortfall           -0.09954768 -0.04284185
@@ -7812,7 +7032,6 @@ Modified Expected Shortfall   -0.09022777    -0.04618555
 > ### Title: table for calculating the first six autocorrelation coefficients
 > ###   and significance
 > ### Aliases: table.Autocorrelation
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7831,7 +7050,11 @@ US 10Y TR    0.0398 -0.1739  0.1049 -0.0355 -0.1116 -0.0602       0.2199
 US 3m TR     0.9224  0.9081  0.8968  0.8746  0.8363  0.8127       0.0000
 > 
 > result = t(table.Autocorrelation(managers[,1:8]))
-> textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> 
+> textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center",
++          valign = "top", row.valign="center", wrap.rownames=15,
++          wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> 
 > title(main="Autocorrelation")
 > 
 > 
@@ -7842,15 +7065,15 @@ US 3m TR     0.9224  0.9081  0.8968  0.8746  0.8363  0.8127       0.0000
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: table.CAPM
-> ### Title: Asset-Pricing Model Summary: Statistics and Stylized Facts
-> ### Aliases: table.CAPM
-> ### Keywords: distribution models multivariate ts
+> ### Name: table.SFM
+> ### Title: Single Factor Asset-Pricing Model Summary: Statistics and
+> ###   Stylized Facts
+> ### Aliases: table.CAPM table.SFM
 > 
 > ### ** Examples
 > 
 > data(managers)
-> table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
+> table.SFM(managers[,1:3], managers[,8], Rf = managers[,10])
                     HAM1 to SP500 TR HAM2 to SP500 TR HAM3 to SP500 TR
 Alpha                         0.0058           0.0091           0.0062
 Beta                          0.3901           0.3384           0.5523
@@ -7865,9 +7088,11 @@ Active Premium                0.0408           0.0776           0.0545
 Information Ratio             0.3604           0.5060           0.4701
 Treynor Ratio                 0.2428           0.3883           0.1956
 > 
-> result = table.CAPM(managers[,1:3,drop=FALSE], managers[,8,drop=FALSE], Rf = managers[,10,drop=FALSE])
-> textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
-> title(main="CAPM-Related Statistics")
+> result = table.SFM(managers[,1:3], managers[,8], Rf = managers[,10])
+> textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9,
++          halign = "center", valign = "top", row.valign="center",
++          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> title(main="Single Factor Model Related Statistics")
 > 
 > 
 > 
@@ -7880,7 +7105,6 @@ Treynor Ratio                 0.2428           0.3883           0.1956
 > ### Name: table.CalendarReturns
 > ### Title: Monthly and Calendar year Return table
 > ### Aliases: table.CalendarReturns table.Returns
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7906,36 +7130,35 @@ SP500 TR    23.0 33.4 28.6 21.0 -9.1 -11.9 -22.1 28.7 10.9  4.9 15.8
 > # prettify with format.df in hmisc package
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
 > result = t(table.CalendarReturns(managers[,c(1,8)]))
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c( rep("darkgray",12), "black", "blue"), mar = c(0,0,3,0)+0.1)
+> 
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++          cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,
++          max.cex=.9, halign = "center", valign = "top",
++          row.valign="center", wrap.rownames=20, wrap.colnames=10,
++          col.rownames=c( rep("darkgray",12), "black", "blue"),
++          mar = c(0,0,3,0)+0.1)
+> 
 > title(main="Calendar Returns")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.CaptureRatios")
 > ### * table.CaptureRatios
@@ -7946,7 +7169,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Title: Calculate and display a table of capture ratio and related
 > ###   statistics
 > ### Aliases: table.CaptureRatios table.UpDownRatios
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -7977,7 +7199,10 @@ HAM6 to EDHEC LS EQ       0.4762
 > 
 > result = t(table.UpDownRatios(managers[,1:6], managers[,7,drop=FALSE]))
 > colnames(result)=colnames(managers[,1:6])
-> textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(result, rmar = 0.8, cmar = 1.5,  max.cex=.9,
++          halign = "center", valign = "top", row.valign="center",
++          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> 
 > title(main="Capture Ratios for EDHEC LS EQ")
 > 
 > 
@@ -7991,7 +7216,6 @@ HAM6 to EDHEC LS EQ       0.4762
 > ### Name: table.Correlation
 > ### Title: calculate correlalations of multicolumn data
 > ### Aliases: table.Correlation
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8016,28 +7240,22 @@ HAM6 to SP500 TR      0.5091542 1.735968e-05 0.30101889 0.6709863
 > rownames(result)=colnames(managers[,1:6])
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,
++          max.cex=.9, halign = "center", valign = "top", row.valign="center"
++          , wrap.rownames=20, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > title(main="Correlations to SP500 TR")
 > 
 > ctable = table.Correlation(managers[,1:6],managers[,8,drop=FALSE], conf.level=.99)
@@ -8047,7 +7265,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.Distributions")
 > ### * table.Distributions
@@ -8057,7 +7276,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.Distributions
 > ### Title: Distributions Summary: Statistics and Stylized Facts
 > ### Aliases: table.Distributions
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8080,24 +7298,15 @@ Sample excess kurtosis   0.6285
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8113,7 +7322,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.DownsideRisk")
 > ### * table.DownsideRisk
@@ -8123,7 +7333,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.DownsideRisk
 > ### Title: Downside Risk Summary: Statistics and Stylized Facts
 > ### Aliases: table.DownsideRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8205,35 +7414,30 @@ Modified ES (95%)                 -0.0902        -0.0462
 > result=t(table.DownsideRisk(edhec, Rf=.04/12, MAR =.05/12, p=.95))
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,
++          max.cex=.9, halign = "center", valign = "top", row.valign="center",
++          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > title(main="Downside Risk Statistics")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.DownsideRiskRatio")
 > ### * table.DownsideRiskRatio
@@ -8243,7 +7447,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.DownsideRiskRatio
 > ### Title: Downside Summary: Statistics and ratios
 > ### Aliases: table.DownsideRiskRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8270,24 +7473,15 @@ Omega-sharpe ratio         0.6581
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8303,7 +7497,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.Drawdowns")
 > ### * table.Drawdowns
@@ -8313,7 +7508,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.Drawdowns
 > ### Title: Worst Drawdowns Summary: Statistics and Stylized Facts
 > ### Aliases: table.Drawdowns
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8345,7 +7539,10 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > 
 > # This was really nice before Hmisc messed up 'format' from R-base
 > #require("Hmisc")
-> #textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(3,4), rep(0,3))), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> #textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
+> #           cdec=c(rep(3,4), rep(0,3))), rmar = 0.8, cmar = 1.5,
+> #           max.cex=.9, halign = "center", valign = "top", row.valign="center",
+> #           wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > # title(main="Largest Drawdowns for HAM1")
 > 
 > 
@@ -8359,7 +7556,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.DrawdownsRatio
 > ### Title: Drawdowns Summary: Statistics and ratios
 > ### Aliases: table.DrawdownsRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8376,24 +7572,15 @@ Martin ratio   3.7992 1.7473 1.3572 1.0798 0.2042 4.5928      3.6345   0.5112
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8409,7 +7596,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.HigherMoments")
 > ### * table.HigherMoments
@@ -8419,7 +7607,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.HigherMoments
 > ### Title: Higher Moments Summary: Statistics and Stylized Facts
 > ### Aliases: table.HigherMoments
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8435,35 +7622,30 @@ Beta CoKurtosis           0.4815           0.1988           0.5068
 > rownames(result)=colnames(managers[,1:6])
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,
++          max.cex=.9, halign = "center", valign = "top", row.valign="center",
++          wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > title(main="Higher Co-Moments with SP500 TR")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.InformationRatio")
 > ### * table.InformationRatio
@@ -8473,7 +7655,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.InformationRatio
 > ### Title: Information ratio Summary: Statistics and Stylized Facts
 > ### Aliases: table.InformationRatio
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8490,24 +7671,15 @@ Information Ratio              NaN
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8523,7 +7695,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.MonthlyReturns")
 > ### * table.MonthlyReturns
@@ -8533,7 +7706,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.Stats
 > ### Title: Returns Summary: Statistics and Stylized Facts
 > ### Aliases: table.MonthlyReturns table.Stats
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8617,36 +7789,65 @@ Funds of Funds          -0.4594   3.2993
 > result=t(table.Stats(edhec))
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))),
++          rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top",
++          row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > title(main="Statistics for EDHEC Indexes")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
+> nameEx("table.ProbOutPerformance")
+> ### * table.ProbOutPerformance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: table.ProbOutPerformance
+> ### Title: Outperformance Report of Asset vs Benchmark
+> ### Aliases: table.ProbOutPerformance
+> 
+> ### ** Examples
+> 
+> data(edhec)
+> 
+> table.ProbOutPerformance(edhec[,1],edhec[,2])
+  period_lengths Convertible Arbitrage CTA Global total periods
+1              1                    83         69           152
+2              3                    86         64           150
+3              6                    82         65           147
+4              9                    77         67           144
+5             12                    69         72           141
+6             18                    61         74           135
+7             36                    52         65           117
+  prob_Convertible Arbitrage_outperformance prob_CTA Global_outperformance
+1                                 0.5460526                      0.4539474
+2                                 0.5733333                      0.4266667
+3                                 0.5578231                      0.4421769
+4                                 0.5347222                      0.4652778
+5                                 0.4893617                      0.5106383
+6                                 0.4518519                      0.5481481
+7                                 0.4444444                      0.5555556
+> title(main='Table of Convertible Arbitrage vs Benchmark')
+> 
+> 
+> 
+> cleanEx()
 > nameEx("table.RollingPeriods")
 > ### * table.RollingPeriods
 > 
@@ -8656,14 +7857,10 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Title: Rolling Periods Summary: Statistics and Stylized Facts
 > ### Aliases: table.RollingPeriods table.TrailingPeriods
 > ###   table.TrailingPeriodsRel
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
 > data(edhec)
-> #table.TrailingPeriods(edhec[,10:13], FUNCS=c("SharpeRatio","VaR"), funcs.names = c("Sharpe Ratio", "Modified VaR"), periods=c(12,24,36))
-> 
-> #result=table.TrailingPeriods(edhec[,10:13], FUNCS=c("SharpeRatio","VaR"), funcs.names = c("Sharpe Ratio", "Modified VaR"), periods=c(12,24,36))
 > table.TrailingPeriods(edhec[,10:13], periods=c(12,24,36))
                       Merger Arbitrage Relative Value Short Selling
 Last 12 month Average           0.0025         0.0003        0.0026
@@ -8683,35 +7880,30 @@ Last 36 month Std Dev         0.0217
 > result=table.TrailingPeriods(edhec[,10:13], periods=c(12,24,36))
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
-> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+> textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
++                    cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,
++                    max.cex=.9, halign = "center", valign = "top", row.valign="center",
++                    wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 > title(main="Trailing Period Statistics")
 > 
 > 
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.SpecificRisk")
 > ### * table.SpecificRisk
@@ -8721,7 +7913,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.SpecificRisk
 > ### Title: Specific risk Summary: Statistics and Stylized Facts
 > ### Aliases: table.SpecificRisk
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8734,24 +7925,15 @@ Total Risk      0.0886     NA 0.1262 0.1838     NA     NA          NA     0.15
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8767,7 +7949,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("table.Variability")
 > ### * table.Variability
@@ -8777,7 +7960,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: table.Variability
 > ### Title: Variability Summary: Statistics and Stylized Facts
 > ### Aliases: table.Variability
-> ### Keywords: distribution models multivariate ts
 > 
 > ### ** Examples
 > 
@@ -8794,24 +7976,15 @@ Annualized Std Dev        0.1500
 > 
 > require("Hmisc")
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
-NOTE:Hmisc no longer redefines [.factor to drop unused levels when
-subsetting.  To get the old behavior of Hmisc type dropUnusedLevels().
-
+Loading required package: Formula
 
 Attaching package: ‘Hmisc’
 
-The following object(s) are masked from ‘package:survival’:
-
-    untangle.specials
-
-The following object(s) are masked from ‘package:base’:
+The following objects are masked from ‘package:base’:
 
     format.pval, round.POSIXt, trunc.POSIXt, units
 
@@ -8827,7 +8000,8 @@ The following object(s) are masked from ‘package:base’:
 > 
 > cleanEx()
 
-detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
+detaching ‘package:Hmisc’, ‘package:Formula’, ‘package:survival’,
+  ‘package:splines’, ‘package:lattice’, ‘package:grid’
 
 > nameEx("textplot")
 > ### * textplot
@@ -8838,7 +8012,6 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Title: Display text information in a graphics plot.
 > ### Aliases: replaceTabs replaceTabs.inner textplot textplot.character
 > ###   textplot.data.frame textplot.default textplot.matrix
-> ### Keywords: hplot
 > 
 > ### ** Examples
 > 
@@ -8849,10 +8022,14 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > # This was really nice before Hmisc messed up 'format' from R-base
 > # prettify with format.df in hmisc package
 > # require("Hmisc")
->   result = t(table.CalendarReturns(managers[,1:8]))[-1:-12,]
+> # result = t(table.CalendarReturns(managers[,1:8]))[-1:-12,]
 > 
-> #  textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=20, wrap.colnames=10, col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,4,0)+0.1)
-> 
+> #  textplot(Hmisc::format.df(result, na.blank=TRUE, numeric.dollar=FALSE,
+> #           cdec=rep(1,dim(result)[2])), rmar = 0.8, cmar = 1,  max.cex=.9,
+> #           halign = "center", valign = "top", row.valign="center", wrap.rownames=20,
+> #           wrap.colnames=10, col.rownames=c("red", rep("darkgray",5),
+> #           rep("orange",2)), mar = c(0,0,4,0)+0.1)
+> #
 > # title(main="Calendar Returns")
 > 
 > 
@@ -8866,7 +8043,7 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > ### Name: weights
 > ### Title: Selected Portfolio Weights Data
 > ### Aliases: weights
-> ### Keywords: datasets ts
+> ### Keywords: datasets
 > 
 > ### ** Examples
 > 
@@ -8908,8 +8085,9 @@ detaching ‘package:Hmisc’, ‘package:survival’, ‘package:splines’
 > 
 > ### * <FOOTER>
 > ###
-> cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  80.165 1.052 105.03 0 0 
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  45.537 1.744 47.545 0 0 
 > grDevices::dev.off()
 pdf 
   2 

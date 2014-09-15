@@ -17,7 +17,7 @@
 #' @details The previous parameter \code{na.pad} has been replaced with \code{fill}; use \code{fill = NA} instead of 
 #' \code{na.pad = TRUE}, or \code{fill = NULL} instead of \code{na.pad = FALSE}.
 #' @author Peter Carl
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(edhec)
@@ -80,11 +80,11 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, lwd=c(2,1,1), ..., fill = NA
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingMean.R 2318 2013-01-28 22:56:57Z peter_carl $
+# $Id: chart.RollingMean.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

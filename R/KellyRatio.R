@@ -27,7 +27,7 @@
 #' Blackjack, Sports Betting, and the Stock Market.
 #' \url{http://www.bjmath.com/bjmath/thorp/paper.htm} \cr
 #' \url{http://en.wikipedia.org/wiki/Kelly_criterion}
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #'     data(managers)
@@ -74,11 +74,11 @@ function (R, Rf = 0, method = "half")
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: KellyRatio.R 2313 2013-01-23 20:24:43Z peter_carl $
+# $Id: KellyRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

@@ -36,7 +36,7 @@
 #' \code{\link{UpsidePotentialRatio}}
 #' @references Bacon, Carl. \emph{Practical Portfolio Performance Measurement
 #' and Attribution}. Wiley. 2004.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #'     data(managers)
@@ -119,11 +119,11 @@ function (R, scale=NA, excess=.1)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CalmarRatio.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: CalmarRatio.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

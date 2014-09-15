@@ -17,14 +17,18 @@
 #' @seealso \code{\link{Box.test}}, \code{\link{acf}}
 #' @references Lo, Andrew W. 2001. Risk Management for Hedge Funds:
 #' Introduction and Overview. SSRN eLibrary.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #' 
 #' data(managers)
 #' t(table.Autocorrelation(managers))
 #' 
 #' result = t(table.Autocorrelation(managers[,1:8]))
-#' textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", valign = "top", row.valign="center", wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#' 
+#' textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center", 
+#'          valign = "top", row.valign="center", wrap.rownames=15, 
+#'          wrap.colnames=10, mar = c(0,0,3,0)+0.1)
+#'          
 #' title(main="Autocorrelation")
 #' 
 #' @export
@@ -95,11 +99,11 @@ function (R, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.Autocorrelation.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: table.Autocorrelation.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

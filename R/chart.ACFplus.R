@@ -67,11 +67,11 @@ chart.ACFplus <- function(R, maxlag = NULL, elementcolor = "gray", main = NULL, 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.ACFplus.R 2163 2012-07-16 00:30:19Z braverock $
+# $Id: chart.ACFplus.R 3301 2014-01-18 15:26:12Z braverock $
 #
 ###############################################################################

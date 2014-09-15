@@ -21,7 +21,7 @@
 #' @author Peter Carl
 #' @seealso \code{\link{charts.RollingPerformance}},
 #' \code{\link[zoo]{rollapply}}
-#' @keywords ts multivariate distribution models hplot
+###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
 #' data(edhec)
@@ -79,7 +79,7 @@ chart.RollingPerformance <- function (R, width = 12, FUN = "Return.annualized", 
     for(column in 1:columns) {
         # the drop=FALSE flag is essential for when the zoo object only has one column
 		rollargs<-c(list(data=na.omit(x[,column,drop=FALSE])),funargs)
-		column.Return.calc <- do.call(xts:::rollapply.xts,rollargs)
+		column.Return.calc <- do.call(rollapply,rollargs)
         if(column == 1)
             Return.calc = xts(column.Return.calc)
         else
@@ -117,11 +117,11 @@ chart.RollingPerformance <- function (R, width = 12, FUN = "Return.annualized", 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingPerformance.R 2319 2013-01-28 23:17:29Z peter_carl $
+# $Id: chart.RollingPerformance.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

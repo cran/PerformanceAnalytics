@@ -8,7 +8,7 @@
 #' where \eqn{r_f} is the risk free rate, \eqn{\beta_r} is the regression beta,
 #' \eqn{r_p} is the portfolio return and b is the benchmark return
 #'
-#' @aliases Jensen'sAlpha
+#' @aliases SFM.jensenAlpha
 #' @param Ra an xts, vector, matrix, data frame, timeSeries or zoo object of
 #' asset returns
 #' @param Rb return vector of the benchmark asset
@@ -18,19 +18,20 @@
 #' @references Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.72
 #' 
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
 #'
 #' data(portfolio_bacon)
-#' print(CAPM.jensenAlpha(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.014
+#' print(SFM.jensenAlpha(portfolio_bacon[,1], portfolio_bacon[,2])) #expected -0.014
 #'
 #' data(managers)
-#' print(CAPM.jensenAlpha(managers['1996',1], managers['1996',8]))
-#' print(CAPM.jensenAlpha(managers['1996',1:5], managers['1996',8]))
+#' print(SFM.jensenAlpha(managers['1996',1], managers['1996',8]))
+#' print(SFM.jensenAlpha(managers['1996',1:5], managers['1996',8]))
 #'
-#' @export 
+#' @rdname CAPM.jensenAlpha
+#' @export CAPM.jensenAlpha SFM.jensenAlpha
 
-CAPM.jensenAlpha <-
+CAPM.jensenAlpha <- SFM.jensenAlpha <-
 function (Ra, Rb, Rf = 0, ...)
 {
     calcul = FALSE
@@ -70,11 +71,11 @@ function (Ra, Rb, Rf = 0, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.jensenAlpha.R 2271 2012-09-02 01:56:23Z braverock $
+# $Id: CAPM.jensenAlpha.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################

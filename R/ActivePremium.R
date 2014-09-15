@@ -1,12 +1,13 @@
-#' Active Premium
-#' 
+#' Active Premium or Active Return
+#'
 #' The return on an investment's annualized return minus the benchmark's
 #' annualized return.
-#' 
+#'
 #' Active Premium = Investment's annualized return - Benchmark's annualized
 #' return
-#' 
-#' 
+#'
+#' Also commonly referred to as 'active return'.
+#'
 #' @param Ra return vector of the portfolio
 #' @param Rb return vector of the benchmark asset
 #' @param scale number of periods in a year (daily scale = 252, monthly scale =
@@ -16,27 +17,27 @@
 #' \code{\link{Return.annualized}}
 #' @references Sharpe, W.F. The Sharpe Ratio,\emph{Journal of Portfolio
 #' Management},Fall 1994, 49-58.
-#' @keywords ts multivariate distribution models
+###keywords ts multivariate distribution models
 #' @examples
-#' 
+#'
 #'     data(managers)
 #'     ActivePremium(managers[, "HAM1", drop=FALSE], managers[, "SP500 TR", drop=FALSE])
-#'     ActivePremium(managers[,1,drop=FALSE], managers[,8,drop=FALSE]) 
-#'     ActivePremium(managers[,1:6], managers[,8,drop=FALSE]) 
+#'     ActivePremium(managers[,1,drop=FALSE], managers[,8,drop=FALSE])
+#'     ActivePremium(managers[,1:6], managers[,8,drop=FALSE])
 #'     ActivePremium(managers[,1:6], managers[,8:7,drop=FALSE])
-#' 
-#' @export
-#' 
-#' 
-
-ActivePremium <- function (Ra, Rb, scale = NA)
+#' @rdname ActivePremium
+#' @aliases
+#' ActivePremium
+#' ActiveReturn
+#' @export ActiveReturn ActivePremium
+ActiveReturn <- ActivePremium <- function (Ra, Rb, scale = NA)
 { # @author Peter Carl
 
     # FUNCTION
     Ra = checkData(Ra)
     Rb = checkData(Rb)
 
-    Ra.ncols = NCOL(Ra) 
+    Ra.ncols = NCOL(Ra)
     Rb.ncols = NCOL(Rb)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
@@ -76,11 +77,11 @@ ActivePremium <- function (Ra, Rb, scale = NA)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2012 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: ActivePremium.R 1955 2012-05-23 16:38:16Z braverock $
+# $Id: ActivePremium.R 3528 2014-09-11 12:43:17Z braverock $
 #
 ###############################################################################
