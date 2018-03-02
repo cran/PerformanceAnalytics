@@ -58,7 +58,7 @@
 #' 		main="Trailing 36-month Performance Calc'd Every 12 Months")
 #' 
 #' 
-#' @export 
+#' @export
 chart.SnailTrail <-
 function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "lastonly", "firstandlast", "none"), xlab = "Annualized Risk", ylab = "Annualized Return", add.sharpe = c(1,2,3), colorset = 1:12, symbolset = 16, legend.loc = NULL, xlim = NULL, ylim = NULL, width = 12, stepsize = 12, lty=1, lwd=2, cex.axis=0.8, cex.main = 1, cex.lab = 1, cex.text = 0.8, cex.legend = 0.8, element.color="darkgray", ...)
 { # @author Peter Carl
@@ -216,11 +216,11 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = c("all", "
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.SnailTrail.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -31,7 +31,12 @@
 #' of the asset columns may be specified.  In either case, if no rebalancing period is
 #' specified, the weights will be applied at the beginning of the asset time series
 #' and no further rebalancing will take place. If a rebalancing period is specified, 
-#' the portfolio will be rebalanced to the starting weights at the interval specified.  
+#' the portfolio will be rebalanced to the starting weights at the interval specified.
+#' 
+#' Note that if \code{weights} is an xts object, then any value passed to 
+#' \code{rebalance_on} is ignored. The \code{weights} object specifies the 
+#' rebalancing dates, therefore a regular rebalancing frequency provided via
+#' \code{rebalance_on} is not needed and ignored.
 #' 
 #' \code{Return.portfolio} will work only on daily or lower frequencies. If you are 
 #' rebalancing intraday, you should be using a trades/prices framework like 
@@ -102,7 +107,10 @@
 #' contributed by the asset in a given period. Default FALSE
 #' @param geometric utilize geometric chaining (TRUE) or simple/arithmetic (FALSE)
 #' to aggregate returns. Default TRUE. 
-#' @param rebalance_on Default "none"; alternatively "daily" "weekly" "monthly" "annual"  to specify calendar-period rebalancing supported by \code{\link[xts]{endpoints}}.
+#' @param rebalance_on Default "none"; alternatively "daily" "weekly" "monthly" 
+#' "annual"  to specify calendar-period rebalancing supported by 
+#' \code{\link[xts]{endpoints}}. Ignored if \code{weights} is an xts object
+#' that specifies the rebalancing dates.
 #' @param value The beginning of period total portfolio value. This is used for calculating position value.
 #' @param verbose If verbose is TRUE, return a list of intermediary calculations. 
 #' See Details below.
@@ -128,7 +136,7 @@
 #' chart.StackedBar(x$BOP.Value)
 #' 
 #' @rdname Return.portfolio
-#' @export Return.portfolio 
+#' @export Return.portfolio
 #' @export Return.rebalancing
 Return.portfolio <- Return.rebalancing <- function(R, 
                                                    weights=NULL,
@@ -173,7 +181,7 @@ Return.portfolio <- Return.rebalancing <- function(R,
       weights = xts(matrix(weights, nrow=1), order.by=as.Date(start_date))
     } else { # and endpoints are specified
       #  generate a time series of the given weights at the endpoints
-      weight_dates = c(as.Date(start_date), index(R[endpoints(R, on=rebalance_on)]))
+      weight_dates = c(as.Date(start_date), as.Date(index(R[endpoints(R, on=rebalance_on)])))
       weights = xts(matrix(rep(weights, length(weight_dates)), ncol=NCOL(R), byrow=TRUE), order.by=as.Date(weight_dates))
     }
     colnames(weights) = colnames(R)
@@ -237,10 +245,12 @@ Return.portfolio.arithmetic <- function(R,
   # bop = beginning of period
   # eop = end of period
   # Initialize objects
-  bop_weights = matrix(0, NROW(R), NCOL(R))
+  # portfolio returns are only accounted for after the first rebalancing date
+  R.idx = index(R[paste0(as.Date(index(weights[1,]))+1, "/")])
+  bop_weights = matrix(0, NROW(R.idx), NCOL(R))
   colnames(bop_weights) = colnames(R)
   eop_weights = period_contrib = bop_weights
-  ret = vector("numeric", NROW(R))
+  ret = vector("numeric", NROW(R.idx))
   
   # initialize counter
   k = 1
@@ -254,7 +264,6 @@ Return.portfolio.arithmetic <- function(R,
       to = as.Date(index(weights[(i+1),]))
     }
     returns = R[paste0(from, "::", to)]
-    
     # Only enter the loop if we have a valid returns object
     if(nrow(returns) >= 1){
       # inner loop counter
@@ -266,13 +275,11 @@ Return.portfolio.arithmetic <- function(R,
         period_contrib[k,] = coredata(returns[j,]) * bop_weights[k,]
         eop_weights[k,] = (period_contrib[k,] + bop_weights[k,]) / sum(c(period_contrib[k,], bop_weights[k,]))
         ret[k] = sum(period_contrib[k,])
-        
         # increment the counters
         k = k + 1
       }
     }
   }
-  R.idx = index(R)
   ret = xts(ret, R.idx)
   colnames(ret) = "portfolio.returns"
   
@@ -312,7 +319,9 @@ Return.portfolio.geometric <- function(R,
   # bop = beginning of period
   # eop = end of period
   # Initialize objects
-  bop_value = matrix(0, NROW(R), NCOL(R))
+  # portfolio returns are only accounted for after the first rebalancing date
+  R.idx = index(R[paste0(as.Date(index(weights[1,]))+1, "/")])
+  bop_value = matrix(0, NROW(R.idx), NCOL(R))
   colnames(bop_value) = colnames(R)
   eop_value = bop_value
   
@@ -323,7 +332,7 @@ Return.portfolio.geometric <- function(R,
       eop_weights = bop_value
     }
   }
-  ret = eop_value_total = bop_value_total = vector("numeric", NROW(R))
+  ret = eop_value_total = bop_value_total = vector("numeric", NROW(R.idx))
   
   # The end_value is the end of period total value from the prior period
   end_value <- value
@@ -340,7 +349,6 @@ Return.portfolio.geometric <- function(R,
       to = as.Date(index(weights[(i+1),]))
     }
     returns = R[paste0(from, "::", to)]
-    
     # Only enter the loop if we have a valid returns object
     if(nrow(returns) >= 1){
       # inner loop counter
@@ -385,7 +393,7 @@ Return.portfolio.geometric <- function(R,
       }
     }
   }
-  R.idx = index(R)
+  #R.idx = index(R)
   ret = xts(ret, R.idx)
   colnames(ret) = "portfolio.returns"
   
@@ -418,11 +426,11 @@ Return.portfolio.geometric <- function(R,
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.portfolio.R 3529 2014-09-11 14:33:02Z braverock $
+# $Id$
 #
 ###############################################################################

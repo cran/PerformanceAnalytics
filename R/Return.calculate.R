@@ -70,7 +70,7 @@ function(prices, method = c("discrete","log"))
 
     if(method=="simple" || method=='discrete'){
         #Returns = pr/pr[-nrow(pr), ] - 1
-        Returns = pr/lag(pr) - 1
+        Returns = pr/lag.xts(pr) - 1
         xtsAttributes(Returns) <- list(ret_type="discrete")
     }
     if(method=="compound" || method=='log') {
@@ -82,7 +82,7 @@ function(prices, method = c("discrete","log"))
 }
 
 #' @rdname Return.calculate
-#' @export 
+#' @export
 CalculateReturns <- 
 function(prices, method = c("discrete","log"))
 { # @ author Peter Carl
@@ -91,11 +91,11 @@ function(prices, method = c("discrete","log"))
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.calculate.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

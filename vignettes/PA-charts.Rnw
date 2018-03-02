@@ -1,4 +1,4 @@
-% $Id: PA-charts.Rnw 3333 2014-02-23 16:21:50Z braverock $
+% $Id$
 
 %% no need for  \DeclareGraphicsExtensions{.pdf,.eps}
 

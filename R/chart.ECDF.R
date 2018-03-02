@@ -29,7 +29,6 @@
 #' @references Ruppert, David. \emph{Statistics and Finance, an Introduction}.
 #' Springer. 2004. Ch. 2 Fig. 2.5
 #' 
-#' \url{http://www.stat.tamu.edu/~ljin/Finance/chapter2/Fig2_5.txt}
 ###keywords ts multivariate distribution models hplot
 #' @examples
 #' 
@@ -37,7 +36,7 @@
 #' chart.ECDF(edhec[, 1, drop=FALSE])
 #' 
 #' 
-#' @export 
+#' @export
 chart.ECDF <-
 function(R, main = "Empirical CDF", xlab="x", ylab="F(x)", colorset = c("black", "#005AFF"), lwd = 1, lty = c(1,1), element.color = "darkgray", xaxis=TRUE, yaxis=TRUE, ...)
 { # @author Peter Carl
@@ -76,11 +75,11 @@ function(R, main = "Empirical CDF", xlab="x", ylab="F(x)", colorset = c("black",
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.ECDF.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

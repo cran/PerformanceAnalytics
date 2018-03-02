@@ -57,8 +57,8 @@
 #' CAPM.dynamic(managers[80:120,1:6], managers[80:120,8:7],
 #'               managers[80:120,10,drop=FALSE], Z=managers[80:120, 9:10])
 #' 
-#' @rdname CAPM.dynamic 
-#' @export CAPM.dynamic SFM.dynamic 
+#' @rdname CAPM.dynamic
+#' @export CAPM.dynamic SFM.dynamic
 CAPM.dynamic <- SFM.dynamic <- function (Ra, Rb, Rf = 0, Z, lags = 1, ...)
 { # @author Andrii Babii
     
@@ -78,10 +78,10 @@ CAPM.dynamic <- SFM.dynamic <- function (Ra, Rb, Rf = 0, Z, lags = 1, ...)
     xRb = Return.excess(Rb, Rf)[1:(nrow(Rb) - 1)]
     z = Z - matrix(rep(mean(Z), nrow(Z)), nrow(Z), ncol(Z), byrow = TRUE)
     # Construct the matrix with information regressors (lagged values)
-    inform = lag(z)
+    inform = lag.xts(z)
     if (lags > 1){
       for (i in 2:lags) {
-        inform = cbind(inform, lag(z, i))
+        inform = cbind(inform, lag.xts(z, i))
       }
     }
     z = inform[(lags + 1):nrow(z), ]

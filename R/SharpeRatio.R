@@ -73,9 +73,8 @@
 #' SharpeRatio(managers[,1:9], Rf = managers[,10,drop=FALSE])
 #' SharpeRatio(edhec,Rf = .04/12)
 #' 
-#' @export 
+#' @export
 #' @rdname SharpeRatio
-#' 
 SharpeRatio <-
 function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annualize = FALSE , ...)
 { # @author Brian G. Peterson
@@ -136,11 +135,14 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annual
     }
     sra <-function (R, ..., Rf, p, FUNC)
     {
-        if(FUNC == "StdDev")
-            FUNC = "StdDev.annualized"
-        FUNCT <- match.fun(FUNC)
+        if(FUNC == "StdDev") {
+            risk <- StdDev.annualized(x=R, ...)
+        } else {
+            FUNCT <- match.fun(FUNC)
+            risk <- FUNCT(R=R, p=p, ...=..., invert=FALSE)
+        }
         xR = Return.excess(R, Rf)
-        SRA = Return.annualized(xR)/FUNCT(R=R, p=p, ...=..., invert=FALSE)
+        SRA = Return.annualized(xR)/risk
         SRA
     }
     
@@ -172,7 +174,7 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, annual
     return (result)
 }
 
-#' @export 
+#' @export
 #' @rdname SharpeRatio
 SharpeRatio.modified <-
 function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, ...) {
@@ -184,11 +186,11 @@ function (R, Rf = 0, p = 0.95, FUN=c("StdDev", "VaR","ES"), weights=NULL, ...) {
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: SharpeRatio.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -83,10 +83,10 @@
 #' region when legend is placed by keyword.
 #' @seealso \code{\link[graphics]{legend}}
 #' @keywords internal
-#' @export 
-#' @export allsymbols bluefocus bluemono bond.dates bond.labels closedsymbols cycles.dates 
+#' @export legend
+#' @export allsymbols bluefocus bluemono bond.dates bond.labels closedsymbols cycles.dates
 #' @export dark6equal dark8equal equity.dates equity.labels fillsymbols greenfocus greenmono grey6mono
-#' @export grey8mono legend linesymbols macro.dates macro.labels opensymbols rainbow10equal 
+#' @export grey8mono legend linesymbols macro.dates macro.labels opensymbols rainbow10equal
 #' @export rainbow12equal rainbow6equal rainbow8equal redfocus redmono rich10equal rich12equal rich6equal
 #' @export rich8equal risk.dates risk.labels set6equal set8equal tim10equal tim12equal tim6equal tim8equal
 #' @export tol1qualitative tol2qualitative tol3qualitative tol4qualitative tol5qualitative tol6qualitative tol7qualitative tol8qualitative tol9qualitative tol10qualitative tol11qualitative tol12qualitative
@@ -538,11 +538,11 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: legend.R 3326 2014-02-21 21:49:56Z peter_carl $
+# $Id$
 #
 ###############################################################################

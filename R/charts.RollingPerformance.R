@@ -27,7 +27,7 @@
 #'                           main="Rolling 12-Month Performance", 
 #'                           legend.loc="topleft")
 #' 
-#' @export 
+#' @export
 charts.RollingPerformance <-
 function (R, width = 12, Rf = 0, main = NULL, event.labels = NULL, legend.loc=NULL, ...)
 { # @author Peter Carl
@@ -72,37 +72,39 @@ function (R, width = 12, Rf = 0, main = NULL, event.labels = NULL, legend.loc=NU
 
     # First, we lay out the graphic as a three row, one column format
 #    plot.new()
-    layout(matrix(c(1,2,3)),heights=c(1,0.75,1),widths=1)
+
     # to see the resulting layout, use layout.show(3)
 
     # mar: a numerical vector of the form c(bottom, left, top, right) which
     # gives the number of lines of margin to be specified on the four sides
     # of the plot. The default is c(5, 4, 4, 2) + 0.1
 
-    par(mar=c(1,4,4,2))
+    par(oma = c(2, 0, 2, 0), mar=c(1,4,4,2))
 
     # The first row is the annualized returns
-    chart.RollingPerformance(R, width = width, main = main, xaxis = FALSE, ylab = "Annualized Return", FUN = "Return.annualized", legend.loc = legend.loc, event.labels = event.labels, ...)
+    plot_object <- chart.RollingPerformance(R, width = width, main = "Annualized Return", ylab = "Annualized Return", FUN = "Return.annualized", legend.loc = legend.loc, event.labels = event.labels, ...)
 
     # The second row is the annualized standard deviation
     par(mar=c(1,4,0,2))
-    chart.RollingPerformance(R, width = width, main = "", xaxis = FALSE, ylab = "Annualized Standard Deviation", FUN = "StdDev.annualized", event.labels= NULL, ...)
+    plot_object <- chart.RollingPerformance(R, width = width, main = "Annualized Standard Deviation", ylab = "Annualized Standard Deviation", FUN = "StdDev.annualized", event.labels= NULL, add = TRUE, ...)
 
-    # The third row is the annualized SR
+    # The third row is the annualized Sharpe Ratio
     par(mar=c(5,4,0,2))
-    chart.RollingPerformance(R, width = width, main = "", ylab = "Annualized Sharpe Ratio", Rf = Rf, FUN = "SharpeRatio.annualized", event.labels= NULL, ...)
+    plot_object <- chart.RollingPerformance(R, width = width, main = "Annualized Sharpe Ratio", ylab = "Annualized Sharpe Ratio", Rf = Rf, FUN = "SharpeRatio.annualized", event.labels= NULL, add = TRUE, ...)
 
+    suppressWarnings(print(plot_object))
+    title(main, outer = TRUE)
     par(op)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: charts.RollingPerformance.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -25,15 +25,16 @@
 #' \code{\link{maxDrawdown}} \cr 
 #' \code{\link{table.Drawdowns}} \cr
 #' \code{\link{table.DownsideRisk}}
-###keywords ts
+#' 
+#' @references Bacon, C. \emph{Practical Portfolio Performance Measurement and
+#' Attribution}. Wiley. 2004. p. 88 \cr
 #' @examples
 #' 
 #' data(edhec)
 #' chart.Drawdown(edhec[,c(1,2)], 
 #' 		main="Drawdown from Peak Equity Attained", 
 #' 		legend.loc="bottomleft")
-#' 
-#' @export 
+#' @export
 chart.Drawdown <-
 function (R, geometric = TRUE, legend.loc = NULL, colorset = (1:12), ...)
 { # @author Peter Carl
@@ -71,18 +72,26 @@ function (R, geometric = TRUE, legend.loc = NULL, colorset = (1:12), ...)
     }
     
     # Chart the drawdown level
-    chart.TimeSeries(drawdown, colorset = colorset, legend.loc = legend.loc, ...)
+    if(hasArg("add")) {
+      plotargs <- list(...)
+      plotargs$add <- NULL
+      plotcall <- match.call()
+      colset <- eval.parent(plotcall$colorset)
+      p <- addSeries(drawdown, col = colset, legend.loc = legend.loc, main = plotargs$main)
+    } else
+      p <- chart.TimeSeries(drawdown, colorset = colorset, legend.loc = legend.loc, ...)
+    return(p)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Drawdown.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

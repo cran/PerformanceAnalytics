@@ -72,7 +72,7 @@
 #' \code{\link{ES}} \cr \code{\link{VaR}} \cr \code{\link{Return.clean}}
 ###keywords ts multivariate distribution models hplot
 #' @examples
-#' 
+#' \dontrun{ # not run on CRAN because of example time
 #' data(managers)
 #' # plain
 #' chart.BarVaR(managers[,1,drop=FALSE], main="Monthly Returns")
@@ -81,18 +81,14 @@
 #' chart.BarVaR(managers[,1,drop=FALSE], 
 #' 		methods="HistoricalVaR", 
 #' 		main="... with Empirical VaR from Inception")
-#' 
+#' 		
 #' # with lines for all managers in the sample
-#' 
 #' chart.BarVaR(managers[,1:6], 
 #' 		methods="GaussianVaR", 
 #' 		all=TRUE, lty=1, lwd=2, 
 #' 		colorset= c("red", rep("gray", 5)), 
 #' 		main="... with Gaussian VaR and Estimates for Peers")
 #' 
-#' \dontrun{
-#' # not run on CRAN because of example time
-#'
 #' # with multiple methods
 #' chart.BarVaR(managers[,1,drop=FALSE],
 #' 		methods=c("HistoricalVaR", "ModifiedVaR", "GaussianVaR"), 
@@ -138,7 +134,7 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
                             ylim = NA, 
                             lwd = 2, 
                             colorset = 1:12, 
-                            lty = c(1,2,4,5,6), 
+                            lty = c(1,2,4,5,6),
                             ypad=0, 
                             legend.cex = 0.8 )
 { # @author Peter Carl
@@ -321,24 +317,26 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
         ylim = range(c(na.omit(as.vector(x.orig[,1])), na.omit(as.vector(risk)), -na.omit(as.vector(risk))))
         ylim = c(ylim[1]-ypad,ylim[2]) # pad the bottom of the chart for the legend
     }
-    if(!show.greenredbars){
-    	chart.TimeSeries(x.orig[,1, drop=FALSE], type = "h", colorset = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
-    }
-    else {
-        positives = x.orig[,1,drop=FALSE]
-        for(row in 1:length(x.orig[,1,drop=FALSE])){ 
-            positives[row,]=max(0,x.orig[row,1])
+    if(hasArg("add")) {
+        plotargs <- list(...)
+        plotargs$add <- NULL
+
+        if(show.greenredbars) {
+            p <- addSeries(x.orig[,1, drop = FALSE], main = plotargs$main, type = "h", legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
+        } else {
+            p <- addSeries(x.orig[,1, drop = FALSE], main = plotargs$main, type = "h", up.col = bar.color, dn.col = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt")
         }
-        negatives = x.orig[,1,drop=FALSE]
-        for(row in 1:length(x.orig[,1,drop=FALSE])){ 
-            negatives[row,]=min(0,x.orig[row,1])
+    } else {
+        if(show.greenredbars) {
+            p <- chart.TimeSeries(x.orig[, 1, drop = FALSE], type = "h", legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
+        } else {
+            p <- chart.TimeSeries(x.orig[,1, drop = FALSE], type = "h", up.col = bar.color, dn.col = bar.color, legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", ...)
         }
-        chart.TimeSeries(positives, type = "h", legend.loc = NULL, ylim = ylim, lwd = lwd, lend="butt", colorset="darkgreen", ...)
-        lines(1:length(x.orig[,1]), negatives, type="h", lend="butt", col="darkred", lwd=lwd)
     }
 
+    on = p$Env$frame/2
     if(show.clean) {
-        lines(1:rows, x[,1, drop=FALSE], type="h", col=colorset[1], lwd = lwd, lend="butt")
+      p <- addSeries(xts(x[,1, drop=FALSE], time(x)), type="h", col=colorset[1], lwd = lwd, lend="butt", on = on)
     }
 
 #     symmetric = symmetric[-1]
@@ -349,35 +347,41 @@ chart.BarVaR <- function (R, width = 0, gap = 12,
         risk.columns = ncol(risk)
         if(length(lty)==1)
             lty = rep(lty, risk.columns)
+        p$Env$lty = lty
+        p$Env$colorset = colorset
         for(column in (risk.columns):2) {
-            if (show.symmetric && symmetric[column-1]){
-                lines(1:rows, -risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
-            }
-        }
-        for(column in (risk.columns):2) {
-            lines(1:rows, risk[,column], col = colorset[column-1], lwd = 1, type = "l", lty=lty[column-1])
+          p$Env$column = column
+          col = colorset[column-1]
+          p$Env$col = col
+              if (show.symmetric && symmetric[column-1])
+                p <- addSeries(xts(-risk[,column], time(risk)), col = col, lwd = 1, type = "l", lty=lty[column-1], on = on)
+              
+              p <- addSeries(xts(risk[,column], time(risk)), col = col, lwd = 1, type = "l", lty=lty[column-1], on = on)
             if(show.horizontal)
-                lines(1:rows, rep(tail(risk[,2],1),rows), col = colorset[1], lwd=1, type="l", lty=1)
+              p <- addSeries(xts(rep(tail(risk[,2],1),rows), time(risk)), col = colorset[1], lwd=1, type="l", lty=1, on = on)
 	    if(show.endvalue){
-		points(rows, tail(risk[,2],1), col = colorset[1], pch=20, cex=.7)
-		mtext(paste(round(100*tail(risk[,2],1),2),"%", sep=""), line=.5, side = 4, at=tail(risk[,2],1), adj=0, las=2, cex = 0.7, col = colorset[1])
+	      p <- points(last(risk), col = colorset[1], pch=20, cex=.7, on = on)
+	      mtext(paste(round(100*tail(risk[,2],1),2),"%", sep=""), line=.5, side = 4, at=tail(risk[,2],1), adj=0, las=2, cex = 0.7, col = colorset[1])
 	    }
         }
     }
 
+    p$Env$legend.cex = legend.cex
+    p$Env$legend.txt = legend.txt
     if(legend.txt[1] != "" & !is.null(legend.loc))
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = legend.cex, border.col = "grey", lwd = 1, lty=lty, bty = "n", legend = legend.txt, horiz=TRUE)
+      p <- addLegend(legend.loc, legend.txt, inset = 0.02, text.col = colorset, col = colorset, cex = legend.cex, lwd = 1, lty=lty, horiz=TRUE)
+    return(p)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.BarVaR.R 3541 2014-09-15 09:39:58Z braverock $
+# $Id$
 #
 ###############################################################################

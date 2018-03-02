@@ -40,7 +40,7 @@
 #' 		colorset=rich8equal, legend.loc="bottomright", 
 #' 		main="Relative Performance to S&P")
 #' 
-#' @export 
+#' @export
 chart.RelativePerformance <-
 function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12), legend.loc = NULL, ylog = FALSE, elementcolor = "darkgray", lty = 1, cex.legend=.7, ...)
 { # @author Peter Carl
@@ -81,23 +81,28 @@ function (Ra, Rb, main = "Relative Performance", xaxis = TRUE, colorset = (1:12)
         }
     }
 columnnames = colnames(Result.calc)
-    chart.TimeSeries(Result.calc, xaxis = xaxis, main = main, colorset = colorset, ylog = ylog, lty = lty, ...)
-    abline(h=1,col=elementcolor)
+    p <- chart.TimeSeries(Result.calc, xaxis = xaxis, main = main, colorset = colorset, ylog = ylog, lty = lty, ...)
+    p$Env$elementcolor <- elementcolor
+    p <- addSeries(xts(rep(1, nrow(Result.calc)), time(Result.calc)), col = elementcolor, on = 1)
     if(!is.null(legend.loc)){
-        # There's no good place to put this automatically, except under the graph.
-        # That requires a different solution, but here's the quick fix
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = cex.legend, border.col = elementcolor, lty = lty, lwd = 2, bg = "white", legend = columnnames)
+      # There's no good place to put this automatically, except under the graph.
+      # That requires a different solution, but here's the quick fix
+      p$Env$cex.legend <- cex.legend
+      p$Env$colorset <- colorset
+      p$Env$columnnames <- columnnames
+      p <- addLegend(legend.loc, columnnames, inset = 0.02, col = colorset, cex = cex.legend, lty = lty, lwd = 2, bg = "white")
     }
+    return(p)
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RelativePerformance.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

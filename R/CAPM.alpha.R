@@ -100,11 +100,11 @@ CAPM.alpha <- SFM.alpha <- function (Ra, Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.alpha.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

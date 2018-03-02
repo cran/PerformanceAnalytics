@@ -34,7 +34,7 @@
 #' chart.CumReturns(managers,main="Cumulative Returns",begin="first")
 #' chart.CumReturns(managers,main="Cumulative Returns",begin="axis")
 #' 
-#' @export 
+#' @export
 chart.CumReturns <-
 function (R, wealth.index = FALSE, geometric = TRUE, legend.loc = NULL, colorset = (1:12), begin = c("first","axis"), ...)
 { # @author Peter Carl
@@ -124,11 +124,11 @@ function (R, wealth.index = FALSE, geometric = TRUE, legend.loc = NULL, colorset
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.CumReturns.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

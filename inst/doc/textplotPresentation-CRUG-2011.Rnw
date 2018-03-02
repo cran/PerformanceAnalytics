@@ -1,4 +1,4 @@
-% $Id: textplotPresentation-CRUG-2011.Rnw 3333 2014-02-23 16:21:50Z braverock $
+% $Id$
 
 \documentclass[10pt,presentation]{beamer} %usletter handout
 %\usepackage{pgfpages}

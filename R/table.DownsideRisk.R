@@ -34,7 +34,7 @@
 #'          wrap.rownames=15, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Downside Risk Statistics")
 #'
-#' @export 
+#' @export
 table.DownsideRisk <-
 function (R, ci = 0.95, scale = NA, Rf = 0, MAR = .1/12, p= 0.95, digits = 4)
 {# @author Peter Carl
@@ -139,11 +139,11 @@ function (R, ci = 0.95, scale = NA, Rf = 0, MAR = .1/12, p= 0.95, digits = 4)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: table.DownsideRisk.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

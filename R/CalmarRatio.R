@@ -45,7 +45,7 @@
 #'     SterlingRatio(managers[,1,drop=FALSE])
 #'     SterlingRatio(managers[,1:6])
 #' 
-#' @export 
+#' @export
 #' @rdname CalmarRatio
 CalmarRatio <- function (R, scale = NA)
 { # @author Brian G. Peterson
@@ -80,7 +80,7 @@ CalmarRatio <- function (R, scale = NA)
     return(result)
 }
 
-#' @export 
+#' @export
 #' @rdname CalmarRatio
 SterlingRatio <-
 function (R, scale=NA, excess=.1)
@@ -119,11 +119,11 @@ function (R, scale=NA, excess=.1)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CalmarRatio.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

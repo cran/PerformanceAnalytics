@@ -31,7 +31,7 @@
 #' data(edhec)
 #' chart.Bar(edhec[,"Funds of Funds"], main="Monthly Returns")
 #' 
-#' @export 
+#' @export
 chart.Bar <- function (R, legend.loc = NULL, colorset = (1:12), ...)
 { # @author Peter Carl
 
@@ -58,11 +58,11 @@ chart.Bar <- function (R, legend.loc = NULL, colorset = (1:12), ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Bar.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

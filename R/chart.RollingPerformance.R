@@ -35,7 +35,7 @@
 #' 		colorset = rich8equal, lwd = 2, legend.loc = "topleft", 
 #' 		main = "Rolling 24-Month Sharpe Ratio")
 #' 
-#' @export 
+#' @export
 chart.RollingPerformance <- function (R, width = 12, FUN = "Return.annualized", ...,  ylim = NULL, main = NULL, fill = NA)
 { # @author Peter Carl
 
@@ -108,20 +108,27 @@ chart.RollingPerformance <- function (R, width = 12, FUN = "Return.annualized", 
     }
 
 	
-	plotargs$R=Return.calc
-	plotargs$main=main
-	plotargs$ylim=ylim
-	do.call(chart.TimeSeries,plotargs)
+    plotargs$main=main
+    plotargs$ylim=ylim
+    if(hasArg("add")){
+      plotargs$x=Return.calc
+      plotargs$add=NULL
+      suppressWarnings(do.call(addSeries,plotargs))
+    }
+    else{
+      plotargs$R=Return.calc
+      suppressWarnings(do.call(chart.TimeSeries,plotargs))
+    }
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingPerformance.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

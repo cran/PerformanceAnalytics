@@ -129,7 +129,7 @@ CAPM.beta <- SFM.beta <- function (Ra, Rb, Rf = 0)
 }
 
 #' @rdname CAPM.beta
-#' @export 
+#' @export
 CAPM.beta.bull <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -159,7 +159,13 @@ function (Ra, Rb, Rf = 0)
     xRb = Return.excess(Rb, Rf)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
-
+    
+    # .beta fails if subset contains no positive values, all(xRb <= 0) is true
+    if (all(xRb <= 0)) {
+        message("Function CAPM.beta.bull: Cannot perform lm. No positive Rb values (no bull periods).")
+        return(NA)
+    }
+    
     result = apply(pairs, 1, FUN = function(n, xRa, xRb)
         .beta(xRa[,n[1]], xRb[,n[2]], xRb[,n[2]] > 0), xRa = xRa, xRb = xRb)
 
@@ -174,7 +180,7 @@ function (Ra, Rb, Rf = 0)
 }
 
 #' @rdname CAPM.beta
-#' @export 
+#' @export
 CAPM.beta.bear <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -204,7 +210,13 @@ function (Ra, Rb, Rf = 0)
     xRb = Return.excess(Rb, Rf)
 
     pairs = expand.grid(1:Ra.ncols, 1:Rb.ncols)
-
+    
+    # .beta fails if subset contains no negative values, all(xRb >= 0) is true
+    if (all(xRb >= 0)) {
+        message("Function CAPM.beta.bear: Cannot perform lm. No negative Rb values (no bear periods).")
+        return(NA)
+    }
+    
     result = apply(pairs, 1, FUN = function(n, xRa, xRb)
         .beta(xRa[,n[1]], xRb[,n[2]], xRb[,n[2]] < 0), xRa = xRa, xRb = xRb)
 
@@ -220,7 +232,7 @@ function (Ra, Rb, Rf = 0)
 
 
 #' @rdname CAPM.beta
-#' @export 
+#' @export
 TimingRatio <-
 function (Ra, Rb, Rf = 0)
 { # @author Peter Carl
@@ -264,11 +276,11 @@ function (Ra, Rb, Rf = 0)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: CAPM.beta.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

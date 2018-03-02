@@ -51,7 +51,7 @@
 #' 		excess.returns = TRUE, fit = c("loess", "linear"), 
 #' 		legend.loc = "topleft")
 #' 
-#' @export 
+#' @export
 chart.Regression <-
 function (Ra, Rb, Rf = 0, excess.returns = FALSE, reference.grid = TRUE, main = "Title", ylab=NULL, xlab=NULL, xlim = NA, colorset = 1:12, symbolset = 1:12, element.color = "darkgray", legend.loc = NULL, ylog = FALSE, fit = c("loess", "linear", "conditional", "quadratic"), span = 2/3, degree = 1, family = c("symmetric", "gaussian"),  ylim = NA, evaluation = 50, legend.cex= 0.8, cex = 0.8, lwd = 2, ...)
 { # @author Peter Carl
@@ -204,11 +204,11 @@ function (Ra, Rb, Rf = 0, excess.returns = FALSE, reference.grid = TRUE, main = 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.Regression.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

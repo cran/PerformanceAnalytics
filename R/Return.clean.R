@@ -202,7 +202,7 @@ function(R, alpha=.01 , trim=1e-3)
 {# @author Kris Boudt, Brian Peterson
 
    # set up by loading robustbase library
-   stopifnot("package:robustbase" %in% search() || require("robustbase",quietly=TRUE))
+   stopifnot(requireNamespace("robustbase",quietly=TRUE))
 
    # Function used to bound the effect of the most extreme returns on the downside
    # risk prediction.
@@ -214,10 +214,16 @@ function(R, alpha=.01 , trim=1e-3)
    MCD = robustbase::covMcd(as.matrix(R),alpha=1-alpha)
    mu = as.matrix(MCD$raw.center) #no reweighting
    sigma = MCD$raw.cov
-   invSigma = solve(sigma);
+   invSigma = try(solve(sigma), silent=TRUE)
    vd2t = c();
    cleaneddata = R
    outlierdate = c()
+
+   if(inherits(invSigma, "try-error")) {
+     warning("Returning original data; unable to clean data due to error:\n",
+       attr(invSigma, "condition")[["message"]])
+     return(list(cleaneddata,outlierdate))
+   }
 
    # 1. Sort the data in function of their extremeness
    # Extremeness is proxied by the robustly estimated squared Mahalanbobis distance
@@ -258,11 +264,11 @@ function(R, alpha=.01 , trim=1e-3)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.clean.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

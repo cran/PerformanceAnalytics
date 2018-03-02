@@ -1,4 +1,4 @@
-% $Id: PerformanceAnalyticsChartsPresentation-Meielisalp-2007.Rnw 3541 2014-09-15 09:39:58Z braverock $
+% $Id$
 
 \documentclass{beamer}
 

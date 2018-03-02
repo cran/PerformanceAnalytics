@@ -49,7 +49,7 @@
 #' print(UpsideRisk(managers['1996'], MAR, stat="risk"))
 #' print(UpsideRisk(managers['1996',1], MAR, stat="risk")) #expected 1.820
 #'
-#' @export 
+#' @export
 
 UpsideRisk <-
 function (R, MAR = 0, method=c("full","subset"), stat=c("risk","variance","potential"), ...)
@@ -99,11 +99,11 @@ function (R, MAR = 0, method=c("full","subset"), stat=c("risk","variance","poten
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: UpsideRisk.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -58,7 +58,7 @@ function (Ra, ...)
 
     clean.geltner <- function(column.R) {
         # compute the lagged return series
-        lagR = lag(column.R, k=1)
+        lagR = lag.xts(column.R, k=1)
         # compute the first order autocorrelation
         f_acf = as.numeric(acf(as.numeric(column.R), plot = FALSE)[1][[1]])
         # now calculate and return the Geltner series
@@ -84,11 +84,11 @@ function (Ra, ...)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: Return.Geltner.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -27,7 +27,7 @@
 #' @param date.format re-format the dates for the xaxis; the default is "\%m/\%y"
 #' @param xlim set the x-axis limit, same as in \code{\link{plot}}
 #' @param ylim set the y-axis limit, same as in \code{\link{plot}}
-#' @param event.lines If not null, vertical lines will be drawn to indicate
+#' @param event.lines if not null, vertical lines will be drawn to indicate
 #' that an event happened during that time period.  \code{event.lines} should
 #' be a list of dates (e.g., \code{c("09/03","05/06"))} formatted the same as
 #' date.format.  This function matches the re-formatted row names (dates) with
@@ -69,6 +69,8 @@
 #' @param xaxis.labels Allows for non-date labeling of date axes, default is
 #' NULL
 #' @param space default 0
+#' @param dygraphPlot Plot using dygraphs default FALSE
+#' @param yaxis.pct if TRUE, scales the y axis labels by 100
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
 #' @seealso \code{\link{plot}}, \code{\link{par}},
@@ -138,14 +140,15 @@
 #' chart.TimeSeries(Return.cumulative, colorset = "darkblue", 
 #'                  legend.loc = "bottomright", 
 #'                  period.areas = cycles.dates, 
-#'                  period.color = "lightblue", 
+#'                  period.color = rgb(204/255, 204/255, 204/255, alpha=0.25), 
 #'                  event.lines = risk.dates, 
 #'                  event.labels = risk.labels, 
 #'                  event.color = "red", lwd = 2)
 #' 
-#' @export 
+#' @export
 chart.TimeSeries <-
 function (R, 
+          ... , 
           auto.grid=TRUE, 
           xaxis = TRUE, 
           yaxis = TRUE, 
@@ -179,7 +182,9 @@ function (R,
           minor.ticks=TRUE, 
           grid.color="lightgray", 
           grid.lty="dotted", 
-          xaxis.labels = NULL, ...)
+          xaxis.labels = NULL,
+          dygraphPlot=FALSE,
+          yaxis.pct=FALSE)
 { # @author Peter Carl, Brian Peterson
 
     # DESCRIPTION:
@@ -239,137 +244,80 @@ function (R,
 
     time.scale = periodicity(y)$scale
     ep = axTicksByTime(y,major.ticks, format.labels = date.format)
-
-    # If the Y-axis is ln
-    logaxis = ""
-    if(ylog) {
-        logaxis = "y"
+  
+  if(dygraphPlot==FALSE){
+    chart.TimeSeries.base(R, 
+                          auto.grid, 
+                          xaxis, 
+                          yaxis, 
+                          yaxis.right, 
+                          type, 
+                          lty, 
+                          lwd , 
+                          las ,
+                          main , 
+                          ylab, 
+                          xlab, 
+                          date.format.in, 
+                          date.format , 
+                          xlim , 
+                          ylim , 
+                          element.color, 
+                          event.lines, 
+                          event.labels, 
+                          period.areas, 
+                          event.color , 
+                          period.color , colorset , 
+                          pch, 
+                          legend.loc , 
+                          ylog , 
+                          cex.axis, 
+                          cex.legend , 
+                          cex.lab , 
+                          cex.labels, 
+                          cex.main , 
+                          major.ticks, 
+                          minor.ticks, 
+                          grid.color, 
+                          grid.lty, 
+                          xaxis.labels,
+                          yaxis.pct, ...)
+    
+    
+    
+    
+    }else{
+          if(is.null(main))
+              main=columnnames[1]
+          
+              if(is.null(ylab)) {
+                  if(ylog) 
+                      ylab = "ln(Value)"
+          
+                  else 
+                      ylab = "Value"
+              }
+      
+      ##@TODO Get all the graphical parameters integrated with these two
+      if(requireNamespace("dygraphs", quietly = TRUE)) {
+        dygraphs::dyRangeSelector(
+          dygraphs::dygraph(y, main = main, xlab = xlab, ylab = ylab)
+        )
+      } else {
+        stop("Please install the dygraphs package to use dygraphPlot = TRUE")
+      }
     }
-
-    plot.new()
-
-    if(is.null(xlim[1])) # is.na or is.null?
-        xlim = c(1,rows)
-    if(is.null(ylim[1])){
-        ylim = as.numeric(range(y, na.rm=TRUE))
-    }
-    plot.window(xlim, ylim, xaxs = "r", log = logaxis)
-
-    # par("usr"): A vector of the form 'c(x1, x2, y1, y2)' giving the extremes
-    #           of the user coordinates of the plotting region.  When a
-    #           logarithmic scale is in use (i.e., 'par("xlog")' is true, see
-    #           below), then the x-limits will be '10 ^ par("usr")[1:2]'.
-    #           Similarly for the y-axis.
-
-    if(is.null(ylab)) {
-        if(ylog) 
-            ylab = "ln(Value)"
-
-        else 
-            ylab = "Value"
-    }
-
-    if(ylog)
-        dimensions=10^par("usr")
-    else
-        dimensions = par("usr")
-
-    # Draw any areas in the background
-    if(!is.null(period.areas)) {
-        # build a list of specific dates to find from xts ranges given
-        period.dat = lapply(period.areas,function(x,y) c(first(index(y[x])),last(index(y[x]))),y=y)
-        period.ind = NULL
-        for(period in 1:length(period.dat)){
-          if(!is.na(period.dat[[period]][1])){ 
-            period.ind = list(grep(period.dat[[period]][1], index(y)), grep(period.dat[[period]][2], index(y)))
-            rect(period.ind[1], dimensions[3], period.ind[2], dimensions[4], col = period.color, border=NA)
-          }
-        }
-    }
-
-    # Draw the grid
-    if(auto.grid) {
-        abline(v=ep, col=grid.color, lty=grid.lty)
-        grid(NA, NULL, col = grid.color)
-    }
-
-    # Draw a solid reference line at zero
-    abline(h = 0, col = element.color)
-
-    # Add event.lines before drawing the data
-    # This only labels the dates it finds
-    if(!is.null(event.lines)) {
-        event.ind = NULL
-        for(event in 1:length(event.lines)){
-            event.ind = c(event.ind, grep(event.lines[event], rownames))
-        }
-        number.event.labels = ((length(event.labels)-length(event.ind) + 1):length(event.labels))
-
-        abline(v = event.ind, col = event.color, lty = 2)
-        if(!is.null(event.labels)) {
-            text(x=event.ind,y=ylim[2], label = event.labels[number.event.labels], offset = .2, pos = 2, cex = cex.labels, srt=90, col = event.color)
-        }
-    }
-
-    # Expand the attributes to #columns if fewer values are passed in
-    # (e.g., only one), to allow the user to pass in line, type, or
-    # symbol variations.
-    if(length(lwd) < columns)
-        lwd = rep(lwd,columns)
-    if(length(lty) < columns)
-        lty = rep(lty,columns)
-    if(length(pch) < columns)
-        pch = rep(pch,columns)
-
-    for(column in columns:1) {
-        lines(1:rows, y[,column], col = colorset[column], lwd = lwd[column], pch = pch[column], lty = lty[column], type = type, ...)
-    }
-
-    if (xaxis) {
-        if(minor.ticks)
-            axis(1, at=1:NROW(y), labels=FALSE, col='#BBBBBB', las=las)
-        label.height = cex.axis *(.5 + apply(t(names(ep)),1, function(X) max(strheight(X, units="in")/par('cin')[2]) ))
-        if(is.null(xaxis.labels))
-            xaxis.labels = names(ep)
-        else
-            ep = 1:length(xaxis.labels)
-        axis(1, at=ep, labels=xaxis.labels, las=1, lwd=1, mgp=c(3,label.height,0), cex.axis = cex.axis, las=las) 
-#         axis(1, at=ep, labels=xaxis.labels, las=1, lwd=1, mgp=c(3,2,0), cex.axis = cex.axis) 
-        #axis(1, at = lab.ind, lab=rownames[lab.ind], cex.axis = cex.axis, col = elementcolor)
-        title(xlab = xlab, cex = cex.lab)
-        # use axis(..., las=3) for vertical labels.
-    }
-
-    # set up y-axis
-    if (yaxis)
-        if(yaxis.right)
-            axis(4, cex.axis = cex.axis, col=element.color, ylog=ylog, las=las)
-        else
-            axis(2, cex.axis = cex.axis, col=element.color, ylog=ylog, las=las)
-    box(col = element.color)
-
-    if(!is.null(legend.loc)){
-        # There's no good place to put this automatically, except under the graph.
-        # That requires a different solution, but here's the quick fix
-        legend(legend.loc, inset = 0.02, text.col = colorset, col = colorset, cex = cex.legend, border.col = element.color, lty = lty, lwd = 2, bg = "white", legend = columnnames, pch=pch)
-    }
-
-    # Add the other titles
-    if(is.null(main))
-        main=columnnames[1]
-    title(ylab = ylab, cex.lab = cex.lab)
-    title(main = main, cex.main = cex.main)
 
 }
 
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.TimeSeries.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

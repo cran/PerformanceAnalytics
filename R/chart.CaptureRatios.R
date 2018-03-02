@@ -45,7 +45,7 @@
 #'     data(managers)
 #'     chart.CaptureRatios(managers[,1:6], managers[,7,drop=FALSE])
 #' 
-#' @export 
+#' @export
 chart.CaptureRatios <-
 function (Ra, Rb, main = "Capture Ratio", add.names = TRUE, xlab = "Downside Capture", ylab = "Upside Capture", colorset = 1, symbolset = 1, legend.loc = NULL, xlim = NULL, ylim = NULL, cex.legend = 1, cex.axis=0.8, cex.main = 1, cex.lab = 1, element.color="darkgray", benchmark.color = "darkgray",...)
 { # @author Peter Carl
@@ -120,11 +120,11 @@ function (Ra, Rb, main = "Capture Ratio", add.names = TRUE, xlab = "Downside Cap
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.CaptureRatios.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

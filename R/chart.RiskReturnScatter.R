@@ -57,7 +57,7 @@
 #' chart.RiskReturnScatter(edhec, Rf = .04/12)
 #' chart.RiskReturnScatter(edhec, Rf = .04/12, add.boxplots = TRUE)
 #' 
-#' @export 
+#' @export
 chart.RiskReturnScatter <-
 function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab = "Annualized Risk", ylab = "Annualized Return", method = "calc", geometric = TRUE, scale = NA, add.sharpe = c(1,2,3), add.boxplots = FALSE, colorset = 1, symbolset = 1, element.color = "darkgray", legend.loc = NULL, xlim = NULL, ylim = NULL, cex.legend = 1, cex.axis = 0.8, cex.main = 1, cex.lab = 1, ...)
 { # @author Peter Carl
@@ -207,11 +207,11 @@ function (R, Rf = 0, main = "Annualized Return and Risk", add.names = TRUE, xlab
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RiskReturnScatter.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

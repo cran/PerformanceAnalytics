@@ -1,11 +1,11 @@
 #' @rdname chart.RollingRegression
-#' @export 
+#' @export
 chart.RollingQuantileRegression <-
 function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"), main=NULL, na.pad = TRUE, ...)
 { # @author Peter Carl, Brian Peterson
 
     # Check to see if the required libraries are loaded
-    if(!require("quantreg", quietly=TRUE))
+    if(!requireNamespace("quantreg", quietly=TRUE))
         stop("package", sQuote("quantreg"), "is needed.  Stopping")
 
     # DESCRIPTION:
@@ -76,11 +76,11 @@ function (Ra, Rb, width = 12, Rf = 0, attribute = c("Beta", "Alpha", "R-Squared"
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingQuantileRegression.R 3526 2014-09-07 19:30:25Z braverock $
+# $Id$
 #
 ###############################################################################

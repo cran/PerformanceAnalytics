@@ -29,7 +29,7 @@
 #' 		colorset=rich8equal, legend.loc="bottomright", 
 #' 		width=24, main = "Rolling 12-Month Correlation")
 #' 
-#' @export 
+#' @export
 chart.RollingCorrelation <-
 function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12), ..., fill=NA)
 { # @author Peter Carl
@@ -74,11 +74,11 @@ function (Ra, Rb, width = 12, xaxis = TRUE, legend.loc = NULL, colorset = (1:12)
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: chart.RollingCorrelation.R 3528 2014-09-11 12:43:17Z braverock $
+# $Id$
 #
 ###############################################################################

@@ -40,7 +40,7 @@
 #' data(managers)
 #' t(round(maxDrawdown(managers),4))
 #' 
-#' @export 
+#' @export
 maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 { # @author Peter Carl
 	
@@ -102,7 +102,7 @@ maxDrawdown <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, ...)
 #' data(edhec)
 #' t(round(CDD(edhec),4))
 #' 
-#' @export 
+#' @export
 CDD <- function (R, weights=NULL, geometric = TRUE, invert=TRUE, p=.95 ,  ...)
 {
     p=.setalphaprob(p)
@@ -174,7 +174,7 @@ function (R, ...) {
 #' asset returns
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
-#' @export 
+#' @export
 AverageDrawdown <-
 function (R, ...) {
 
@@ -208,7 +208,7 @@ function (R, ...) {
 #' asset returns
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
-#' @export 
+#' @export
 AverageRecovery <-
 function (R, ...) {
 
@@ -236,7 +236,7 @@ function (R, ...) {
 #' asset returns
 #' @param \dots any other passthru parameters
 #' @author Peter Carl
-#' @export 
+#' @export
 AverageLength <-
 function (R, ...) {
 
@@ -261,11 +261,11 @@ function (R, ...) {
 ###############################################################################
 # R (http://r-project.org/) Econometrics for Performance and Risk Analysis
 #
-# Copyright (c) 2004-2014 Peter Carl and Brian G. Peterson
+# Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson
 #
 # This R package is distributed under the terms of the GNU Public License (GPL)
 # for full details see the file COPYING
 #
-# $Id: maxDrawdown.R 3532 2014-09-11 22:22:21Z peter_carl $
+# $Id$
 #
 ###############################################################################
