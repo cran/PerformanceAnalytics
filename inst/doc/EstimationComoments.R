@@ -1,4 +1,5 @@
 ### R code from vignette source 'EstimationComoments.Rnw'
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: LoadData

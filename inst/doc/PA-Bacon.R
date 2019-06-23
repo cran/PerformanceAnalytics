@@ -1,4 +1,5 @@
 ### R code from vignette source 'PA-Bacon.Rnw'
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: PA-Bacon.Rnw:39-40

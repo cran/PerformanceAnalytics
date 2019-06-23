@@ -1,4 +1,5 @@
 ### R code from vignette source 'PA-charts.Rnw'
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: LoadLibrary

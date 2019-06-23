@@ -1,4 +1,5 @@
 ### R code from vignette source 'portfolio_returns.Rnw'
+### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: portfolio_returns.Rnw:59-63
