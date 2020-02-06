@@ -13,9 +13,13 @@ Authors@R: c(
   , person(given="Matthieu",family="Lestel",role="ctb")
   , person(given="Kyle",family="Balkissoon",role="ctb")  
   , person(given="Diethelm",family="Wuertz",role="ctb")  
+  , person(given=c("Anthony","Alexander"),family="Christidis",role="ctb")  
+  , person(given="R. Douglas",family="Martin",role="ctb")  
+  , person(given=c("Zeheng", "'Zenith'"),family="Zhou",role="ctb")  
+  , person(given=c("Justin", "M."),family="Shea",role="ctb")   
   )
-Version: 1.5.3
-Date: 2019-06-22 $Date$
+Version: 2.0.4
+Date: 2020-02-05
 Description: Collection of econometric functions for performance and risk 
     analysis. In addition to standard risk and performance metrics, this 
     package aims to aid practitioners and researchers in utilizing the latest
@@ -24,16 +28,19 @@ Description: Collection of econometric functions for performance and risk
     functions will work with irregular return data as well, and increasing
     numbers of functions will work with P&L or price data where possible.
 Imports: methods, quadprog, zoo
-Depends: R (>= 3.0.0), xts (>= 0.10.0)
+Depends: R (>= 3.5.0), xts (>= 0.10.0)
 Suggests: dygraphs, Hmisc, MASS, quantmod, gamlss, gamlss.dist,
-        robustbase, quantreg, gplots, testthat
+        robustbase, quantreg, tinytest, ggplot2, RColorBrewer,
+        googleVis, plotly, gridExtra, ggpubr, RPESE, R.rsp, RobStatTM
+VignetteBuilder: R.rsp
 License: GPL-2 | GPL-3
 Encoding: UTF-8
+LazyData: true
 URL: https://github.com/braverock/PerformanceAnalytics
-Copyright: (c) 2004-2019
-RoxygenNote: 6.1.1.9000
+Copyright: (c) 2004-2020
+RoxygenNote: 7.0.2
 NeedsCompilation: yes
-Packaged: 2019-06-22 21:24:37.467506 UTC; brian
+Packaged: 2020-02-05 23:43:30.960783 UTC; brian
 Author: Brian G. Peterson [cre, aut, cph],
   Peter Carl [aut, cph],
   Kris Boudt [ctb, cph],
@@ -44,7 +51,11 @@ Author: Brian G. Peterson [cre, aut, cph],
   Eric Hung [ctb],
   Matthieu Lestel [ctb],
   Kyle Balkissoon [ctb],
-  Diethelm Wuertz [ctb]
+  Diethelm Wuertz [ctb],
+  Anthony Alexander Christidis [ctb],
+  R. Douglas Martin [ctb],
+  Zeheng 'Zenith' Zhou [ctb],
+  Justin M. Shea [ctb]
 Maintainer: Brian G. Peterson <brian@braverock.com>
 Repository: CRAN
-Date/Publication: 2019-06-23 16:50:03 UTC
+Date/Publication: 2020-02-06 12:10:11 UTC

@@ -2,7 +2,7 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: portfolio_returns.Rnw:59-63
+### code chunk number 1: portfolio_returns.Rnw:60-64
 ###################################################
 prices = cbind(c(5, 7, 6, 7),
                 c(10, 11, 12, 8))
@@ -11,7 +11,7 @@ prices
 
 
 ###################################################
-### code chunk number 2: portfolio_returns.Rnw:90-95
+### code chunk number 2: portfolio_returns.Rnw:91-96
 ###################################################
 V_P0 = 1000
 N = ncol(prices)
@@ -21,7 +21,7 @@ lambda
 
 
 ###################################################
-### code chunk number 3: portfolio_returns.Rnw:100-106
+### code chunk number 3: portfolio_returns.Rnw:101-107
 ###################################################
 # Compute the value of the assets
 V_assets <- matrix(0, nrow(prices), ncol(prices), dimnames=dimnames(prices))
@@ -32,7 +32,7 @@ V_assets
 
 
 ###################################################
-### code chunk number 4: portfolio_returns.Rnw:109-112
+### code chunk number 4: portfolio_returns.Rnw:110-113
 ###################################################
 # Compute the value of the portfolio
 V_P = rowSums(V_assets)
@@ -40,7 +40,7 @@ V_P
 
 
 ###################################################
-### code chunk number 5: portfolio_returns.Rnw:117-120
+### code chunk number 5: portfolio_returns.Rnw:118-121
 ###################################################
 # Compute the portfolio returns
 R_t = diff(V_P) / V_P[1:3]
@@ -48,14 +48,14 @@ R_t
 
 
 ###################################################
-### code chunk number 6: portfolio_returns.Rnw:125-127
+### code chunk number 6: portfolio_returns.Rnw:126-128
 ###################################################
 weights = V_assets / V_P
 weights
 
 
 ###################################################
-### code chunk number 7: portfolio_returns.Rnw:135-140
+### code chunk number 7: portfolio_returns.Rnw:136-141
 ###################################################
 library(PerformanceAnalytics)
 data(edhec)
@@ -65,7 +65,7 @@ R
 
 
 ###################################################
-### code chunk number 8: portfolio_returns.Rnw:151-155
+### code chunk number 8: portfolio_returns.Rnw:152-156
 ###################################################
 N = ncol(R)
 weights = xts(matrix(rep(1 / N, N), 1), as.Date("1996-12-31"))
@@ -74,14 +74,14 @@ weights
 
 
 ###################################################
-### code chunk number 9: portfolio_returns.Rnw:183-185
+### code chunk number 9: portfolio_returns.Rnw:184-186
 ###################################################
 V_0 = 1
 bop_value = eop_value = matrix(0, 2, ncol(R))
 
 
 ###################################################
-### code chunk number 10: portfolio_returns.Rnw:189-192
+### code chunk number 10: portfolio_returns.Rnw:190-193
 ###################################################
 t = 1
 bop_value[t,] = coredata(weights) * V_0
@@ -89,7 +89,7 @@ eop_value[t,] = coredata(1 + R[t,]) * bop_value[t,]
 
 
 ###################################################
-### code chunk number 11: portfolio_returns.Rnw:196-199
+### code chunk number 11: portfolio_returns.Rnw:197-200
 ###################################################
 t = 2
 bop_value[t,] = eop_value[t-1,]
@@ -97,7 +97,7 @@ eop_value[t,] = coredata(1 + R[t,]) * bop_value[t,]
 
 
 ###################################################
-### code chunk number 12: portfolio_returns.Rnw:210-217
+### code chunk number 12: portfolio_returns.Rnw:211-218
 ###################################################
 bop_weights = eop_weights = matrix(0, 2, ncol(R))
 for(t in 1:2){
@@ -109,7 +109,7 @@ eop_weights
 
 
 ###################################################
-### code chunk number 13: portfolio_returns.Rnw:225-228
+### code chunk number 13: portfolio_returns.Rnw:226-229
 ###################################################
 V = c(V_0, rowSums(eop_value))
 R_P = diff(V) / V[1:2]
@@ -117,7 +117,7 @@ R_P
 
 
 ###################################################
-### code chunk number 14: portfolio_returns.Rnw:236-241
+### code chunk number 14: portfolio_returns.Rnw:237-242
 ###################################################
 contribution = matrix(0, 2, ncol(R))
 for(t in 1:2){
@@ -127,13 +127,13 @@ contribution
 
 
 ###################################################
-### code chunk number 15: portfolio_returns.Rnw:251-252
+### code chunk number 15: portfolio_returns.Rnw:252-253
 ###################################################
 args(Return.portfolio)
 
 
 ###################################################
-### code chunk number 16: portfolio_returns.Rnw:257-267
+### code chunk number 16: portfolio_returns.Rnw:258-268
 ###################################################
 # Equally weighted, buy and hold portfolio returns
 Return.portfolio(R)

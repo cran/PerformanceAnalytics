@@ -33,9 +33,8 @@ ham1.downside
 ###################################################
 ### code chunk number 4: gplotstextplot
 ###################################################
-library(gplots)
-#args(gplots:::textplot)
-gplots:::textplot(ham1.downside); box(col="lightblue")
+#args(textplot)
+textplot(ham1.downside); box(col="lightblue")
 
 
 ###################################################
