@@ -33,7 +33,7 @@ function specified}
 
 \item{fill}{a three-component vector or list (recycled otherwise) providing 
 filling values at the left/within/to the right of the data range. See the 
-fill argument of \code{\link{na.fill}} for details.}
+fill argument of \code{\link[zoo]{na.fill}} for details.}
 }
 \description{
 A wrapper to create a chart of rolling performance metrics in a line chart
@@ -43,8 +43,7 @@ The parameter \code{na.pad} has been deprecated; use \code{fill = NA} instead of
 or \code{fill = NULL} instead of \code{na.pad = FALSE}.
 }
 \examples{
-if(!( Sys.info()[['sysname']]=="Windows") ){
-# if on Windows, cut and paste this example
+\donttest{
 data(edhec)
 chart.RollingPerformance(edhec[, 1:3], width = 24)
 chart.RollingPerformance(edhec[, 1:3], 

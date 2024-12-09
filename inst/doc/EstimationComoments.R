@@ -1,17 +1,22 @@
 ### R code from vignette source 'EstimationComoments.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: LoadData
 ###################################################
 library(PerformanceAnalytics)
-data(edhec)
-colnames(edhec)
-head(edhec[, 1:6], n = 5)
 
 
 ###################################################
-### code chunk number 2: Plugin
+### code chunk number 2: LoadData
+###################################################
+data(edhec)
+colnames(edhec)
+head(edhec[, c(2,4,5,6,8,9,11,12)], n = 3)
+tail(edhec[, c(2,4,5,6,8,9,11,12)], n = 3)
+
+
+###################################################
+### code chunk number 3: Plugin
 ###################################################
 m3 <- M3.MM(edhec)
 m4 <- M4.MM(edhec)
@@ -20,7 +25,7 @@ dim(m4)
 
 
 ###################################################
-### code chunk number 3: PluginPort
+### code chunk number 4: PluginPort
 ###################################################
 p <- ncol(edhec)
 w <- rep(1 / p, p)
@@ -29,7 +34,7 @@ m4port <- t(w) %*% m4 %*% (w %x% w %x% w)
 
 
 ###################################################
-### code chunk number 4: PluginPortHidden
+### code chunk number 5: PluginPortHidden
 ###################################################
 m3port_2 <- PerformanceAnalytics:::portm3(w, M3.MM(edhec))
 m3port_3 <- PerformanceAnalytics:::portm3(w, M3.MM(edhec, as.mat = F))
@@ -37,7 +42,7 @@ c(m3port, m3port_2, m3port_3)
 
 
 ###################################################
-### code chunk number 5: PluginPort2
+### code chunk number 6: PluginPort2
 ###################################################
 portreturns <- edhec %*% w
 m3port_univ <- mean((portreturns - mean(portreturns))^3)
@@ -46,14 +51,14 @@ c(m3port, m3port_univ, m4port, m4port_univ)
 
 
 ###################################################
-### code chunk number 6: PluginPortsumm
+### code chunk number 7: PluginPortsumm
 ###################################################
 summ_moms <- matrix(NA, nrow = 17, ncol = 2)
 summ_moms[1,] <- c(m3port_univ, m4port_univ)
 
 
 ###################################################
-### code chunk number 7: PluginUnb
+### code chunk number 8: PluginUnb
 ###################################################
 m3 <- M3.MM(edhec, unbiased = TRUE)
 
@@ -66,7 +71,7 @@ mean(skews_plugin) * 50^2 / (49 * 48)
 
 
 ###################################################
-### code chunk number 8: StructIndep
+### code chunk number 9: StructIndep
 ###################################################
 m3 <- M3.struct(edhec, "Indep")
 m4 <- M4.struct(edhec, "Indep")
@@ -76,20 +81,20 @@ c(m3port_univ, m3port, m4port_univ, m4port)
 
 
 ###################################################
-### code chunk number 9: StructIndepsumm
+### code chunk number 10: StructIndepsumm
 ###################################################
 summ_moms[2,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 10: StructIndepInd
+### code chunk number 11: StructIndepInd
 ###################################################
 m3 <- M3.struct(edhec, "IndepId")
 m4 <- M4.struct(edhec, "IndepId")
 
 
 ###################################################
-### code chunk number 11: StructIndepIndsumm
+### code chunk number 12: StructIndepIndsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -97,15 +102,15 @@ summ_moms[3,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 12: Struct1f
+### code chunk number 13: Struct1f
 ###################################################
-f <- rowMeans(edhec)
+f <- rowMeans(edhec, na.rm = TRUE)
 m3 <- M3.struct(edhec, "observedfactor", f)
 m4 <- M4.struct(edhec, "observedfactor", f)
 
 
 ###################################################
-### code chunk number 13: Struct1fsumm
+### code chunk number 14: Struct1fsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -113,14 +118,14 @@ summ_moms[4,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 14: structCC
+### code chunk number 15: structCC
 ###################################################
 m3 <- M3.struct(edhec, "CC")
 m4 <- M4.struct(edhec, "CC")
 
 
 ###################################################
-### code chunk number 15: structCCsumm
+### code chunk number 16: structCCsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -128,26 +133,26 @@ summ_moms[5,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 16: structSim
+### code chunk number 17: structSim
 ###################################################
 m3 <- M3.struct(edhec, "latent1factor")
 
 
 ###################################################
-### code chunk number 17: structSimsumm
+### code chunk number 18: structSimsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 summ_moms[6,] <- c(m3port, NA)
 
 
 ###################################################
-### code chunk number 18: structSim
+### code chunk number 19: structSim
 ###################################################
 m3 <- M3.struct(edhec, "CS")
 
 
 ###################################################
-### code chunk number 19: ShrinkIndep
+### code chunk number 20: ShrinkIndep
 ###################################################
 # target "Indep"
 m3 <- M3.shrink(edhec, 1)$M3sh
@@ -173,7 +178,7 @@ m3 <- M3.shrink(edhec, 6)$M3sh
 
 
 ###################################################
-### code chunk number 20: ShrinkIndepsumm
+### code chunk number 21: ShrinkIndepsumm
 ###################################################
 m3 <- M3.shrink(edhec, 1)$M3sh
 m4 <- M4.shrink(edhec, 1)$M4sh
@@ -204,14 +209,14 @@ summ_moms[12,] <- c(m3port, NA)
 
 
 ###################################################
-### code chunk number 21: ShrinkMTb
+### code chunk number 22: ShrinkMTb
 ###################################################
 m3 <- M3.shrink(edhec, c(1, 3, 4), f)$M3sh
 m4 <- M4.shrink(edhec, c(1, 3, 4), f)$M4sh
 
 
 ###################################################
-### code chunk number 22: ShrinkMTbsumm
+### code chunk number 23: ShrinkMTbsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -219,27 +224,27 @@ summ_moms[13,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 23: ShrinkMTunb
+### code chunk number 24: ShrinkMTunb
 ###################################################
 m3 <- M3.shrink(edhec, c(1, 2, 6), unbiasedMSE = T)$M3sh
 
 
 ###################################################
-### code chunk number 24: ShrinkMTunbsumm
+### code chunk number 25: ShrinkMTunbsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 summ_moms[14,] <- c(m3port, NA)
 
 
 ###################################################
-### code chunk number 25: EMWA
+### code chunk number 26: EMWA
 ###################################################
 m3 <- M3.ewma(edhec, lambda = 0.97)
 m4 <- M4.ewma(edhec, lambda = 0.97)
 
 
 ###################################################
-### code chunk number 26: EWMAsumm
+### code chunk number 27: EWMAsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -254,14 +259,14 @@ summ_moms[15,] <- c(m3port, m4port)
 
 
 ###################################################
-### code chunk number 27: MCA
+### code chunk number 28: MCA
 ###################################################
 m3 <- M3.MCA(edhec, k = 3)$M3mca
 m4 <- M4.MCA(edhec, k = 3)$M4mca
 
 
 ###################################################
-### code chunk number 28: MCAsumm
+### code chunk number 29: MCAsumm
 ###################################################
 m3port <- PerformanceAnalytics:::portm3(w, m3)
 m4port <- PerformanceAnalytics:::portm4(w, m4)
@@ -279,13 +284,13 @@ summary_momentestimates <- 1e07 * summary_momentestimates
 
 
 ###################################################
-### code chunk number 29: giveSummary
+### code chunk number 30: giveSummary
 ###################################################
 summary_momentestimates
 
 
 ###################################################
-### code chunk number 30: VaRsample
+### code chunk number 31: VaRsample
 ###################################################
 w <- rep(1 / ncol(edhec), ncol(edhec))
 p <- 0.95
@@ -299,7 +304,7 @@ VaR95
 
 
 ###################################################
-### code chunk number 31: VaRsample
+### code chunk number 32: VaRsample
 ###################################################
 ES95 <- ES(p = p, method = "modified", portfolio_method = "component", 
            weights = w, mu = m, sigma = sigma, m3 = m3, m4 = m4)
@@ -307,7 +312,7 @@ ES95
 
 
 ###################################################
-### code chunk number 32: VaRestimates
+### code chunk number 33: VaRestimates
 ###################################################
 rm95 <- matrix(NA, nrow = 13, ncol = 2)
 VaRcomp <- matrix(NA, nrow = 13, ncol = 13)
@@ -474,7 +479,7 @@ rownames(rm95) <- c("sample", "struct - Indep", "struct - IndepId", "struct - 1f
 
 
 ###################################################
-### code chunk number 33: EWMArm
+### code chunk number 34: EWMArm
 ###################################################
 CCVaR <- VaR(p = p, method = "modified", portfolio_method = "component", 
              weights = w, mu = m, sigma = M2.struct(edhec, "CC"), m3 = M3.struct(edhec, "CC", as.mat = F), 
@@ -485,7 +490,7 @@ CCES <- ES(p = p, method = "modified", portfolio_method = "component",
 
 
 ###################################################
-### code chunk number 34: EWMArm
+### code chunk number 35: EWMArm
 ###################################################
 rm95
 

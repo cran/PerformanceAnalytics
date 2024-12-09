@@ -4,7 +4,7 @@
 \alias{Return.centered}
 \alias{centeredcomoment}
 \alias{centeredmoment}
-\title{calculate centered Returns}
+\title{calculate centered moment/co-moment return matrices}
 \usage{
 Return.centered(R, ...)
 
@@ -34,11 +34,13 @@ index, benchmark, portfolio, or secondary asset returns to compare against}
 usage, or leave the default mathematical meaning}
 }
 \description{
-the \eqn{n}-th centered moment is calculated as \deqn{ }{moment^n(R) =
-E[R-E(R)^n]}\deqn{ \mu^{(n)}(R) = E\lbrack(R-E(R))^n\rbrack }{moment^n(R) =
-E[R-E(R)^n]}
+the \eqn{n}-th centered moment is calculated as
 }
 \details{
+\deqn{.}{moment^n(R) =
+E[R-E(R)^n]}\deqn{ \mu^{(n)}(R) = E\lbrack(R-E(R))^n\rbrack }{moment^n(R) =
+E[R-E(R)^n]}
+
 These functions are used internally by PerformanceAnalytics to calculate
 centered moments for a multivariate distribution as well as the standardized
 moments of a portfolio distribution.  They are exposed here for users who
@@ -47,13 +49,8 @@ can.
 
 These functions were first utilized in Boudt, Peterson, and Croux (2008),
 and have been subsequently used in our other research.
-
-~~ Additional Details will be added to documentation as soon as we have time
-to write them. Documentation Patches Welcome. ~~
 }
 \examples{
-
-
 data(managers)
 Return.centered(managers[,1:3,drop=FALSE])
 

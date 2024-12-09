@@ -213,10 +213,7 @@
 #' expected shortfall. Mathematical Finance, 2002, vol. 14, 74-86.
 ###keywords ts multivariate distribution models
 #' @examples
-#' 
-#' if(!( Sys.info()[['sysname']]=="Windows") ){
-#' # if on Windows, cut and paste this example
-#' 
+#' \donttest{ 
 #'     data(edhec)
 #' 
 #'     # first do normal ES calc
@@ -232,12 +229,16 @@
 #'     ES(edhec, p=.99)
 #'     # or the equivalent alpha=.01
 #'     ES(edhec, p=.01)
+#'     
+#'     # CRAN (questionably(ahem) requires these methods to not run if you don't have Suggests loaded)
+#'     if(requireNamespace("robustbase", quietly = TRUE)){
+#        now with outliers squished
+#'       ES(edhec, clean="boudt")
 #' 
-#'     # now with outliers squished
-#'     ES(edhec, clean="boudt")
-#' 
-#'     # add Component ES for the equal weighted portfolio
-#'     ES(edhec, clean="boudt", portfolio_method="component")
+#'       # add Component ES for the equal weighted portfolio
+#'       ES(edhec, clean="boudt", portfolio_method="component")
+#'     } # end CRAN workaround
+#'     
 #' 
 #' } # end CRAN Windows check
 #'     
@@ -254,22 +255,6 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
     # Descripion:
 
     # wrapper for univariate and multivariate ES functions.
-  
-    # Fix parameters if SE=TRUE
-    if(SE){
-      
-      # Setting the control parameters
-      if(is.null(SE.control))
-        SE.control <- RPESE.control(estimator="ES")
-      
-      # Fix the method
-      method="historical"
-      portfolio_method="single"
-      invert=FALSE
-      if(SE.control$cleanOutliers=="locScaleRob")
-        clean="locScaleRob" else
-          clean="none"
-    }
 
     # Setup:
     #if(exists(modified)({if( modified == TRUE) { method="modified" }}
@@ -277,6 +262,37 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
     method = method[1]
     clean = clean[1]
     portfolio_method = portfolio_method[1]
+    
+    # Checking input if SE = TRUE
+    if(SE){
+      SE.check <- TRUE
+      if(!requireNamespace("RPESE", quietly = TRUE)){
+        warning("Package \"RPESE\" needed for standard errors computation. Please install it.",
+                call. = FALSE)
+        SE <- FALSE
+      }
+      if(!(clean %in% c("none", "locScaleRob"))){
+        warning("To return SEs, \"clean\" must be one of \"locScaleRob\" or \"none\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(!(portfolio_method %in% c("single"))){
+        warning("To return SEs, \"portfolio_method\" must be \"single\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(!(method %in% c("historical"))){
+        warning("To return SEs, \"method\" must be \"historical\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(invert){
+        warning("To return SEs, \"invert\" must be FALSE.",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+    }
+    
     if (is.null(weights) & portfolio_method != "single"){
         message("no weights passed in, assuming equal weighted portfolio")
         weights=t(rep(1/dim(R)[[2]], dim(R)[[2]]))
@@ -311,11 +327,12 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
         }
     }
     
-    if(isTRUE(SE)){
-      if(!requireNamespace("RPESE", quietly = TRUE)){
-        stop("Package \"pkg\" needed for standard errors computation. Please install it.",
-             call. = FALSE)
-      }
+    # SE Computation
+    if(SE){
+      
+      # Setting the control parameters
+      if(is.null(SE.control))
+        SE.control <- RPESE.control(estimator="ES")
       
       # Computation of SE (optional)
       ses=list()
@@ -327,10 +344,19 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
                                            freq.include=SE.control$freq.include,
                                            freq.par=SE.control$freq.par,
                                            a=SE.control$a, b=SE.control$b,
-                                           p=p, # Additional parameter
+                                           alpha.ES = 1-p,
                                            ...)
+        ses[[mymethod]]=ses[[mymethod]]$se
       }
       ses <- t(data.frame(ses))
+      # Removing SE output if inappropriate arguments
+      if(!SE.check){
+        ses.rownames <- rownames(ses)
+        ses.colnames <- colnames(ses)
+        ses <- matrix(NA, nrow=nrow(ses), ncol=ncol(ses))
+        rownames(ses) <- ses.rownames
+        colnames(ses) <- ses.colnames
+      }
     }
     
     switch(portfolio_method,
@@ -408,7 +434,7 @@ ETL <- CVaR <- ES <- function (R=NULL , p=0.95, ...,
 } # end ES wrapper function
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

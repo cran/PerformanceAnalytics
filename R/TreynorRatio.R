@@ -22,7 +22,7 @@
 #' @author Peter Carl, Matthieu Lestel
 #' @seealso \code{\link{SharpeRatio}} \code{\link{SortinoRatio}}
 #' \code{\link{CAPM.beta}}
-#' @references \url{http://en.wikipedia.org/wiki/Treynor_ratio}, 
+#' @references \url{https://en.wikipedia.org/wiki/Treynor_ratio}, 
 #' Carl Bacon, \emph{Practical portfolio performance measurement 
 #' and attribution}, second edition 2008 p.77
 ###keywords ts multivariate distribution models
@@ -39,8 +39,8 @@
 #'
 #' print(TreynorRatio(portfolio_bacon[,1], portfolio_bacon[,2], modified = TRUE)) #expected 0.7975 
 #'
-#' print(TreynorRatio(managers['1996',1], managers['1996',8], modified = TRUE))
-#' print(TreynorRatio(managers['1996',1:5], managers['1996',8], modified = TRUE)) 
+#' print(TreynorRatio(managers['2002',1], managers['2002',8], modified = TRUE))
+#' print(TreynorRatio(managers['2002',1:5], managers['2002',8], modified = TRUE)) 
 #' 
 #' @export
 
@@ -111,7 +111,7 @@ function (Ra, Rb, Rf = 0, scale = NA, modified = FALSE)
 
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

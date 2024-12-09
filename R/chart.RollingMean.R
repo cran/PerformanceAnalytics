@@ -13,7 +13,7 @@
 #' @param \dots any other passthru parameters
 #' @param fill a three-component vector or list (recycled otherwise) providing 
 #' filling values at the left/within/to the right of the data range. See the 
-#' fill argument of \code{\link{na.fill}} for details.
+#' fill argument of \code{\link[zoo]{na.fill}} for details.
 #' @details The previous parameter \code{na.pad} has been replaced with \code{fill}; use \code{fill = NA} instead of 
 #' \code{na.pad = TRUE}, or \code{fill = NULL} instead of \code{na.pad = FALSE}.
 #' @author Peter Carl
@@ -78,7 +78,7 @@ function (R, width = 12, xaxis = TRUE, ylim = NULL, lwd=c(2,1,1), ..., fill = NA
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

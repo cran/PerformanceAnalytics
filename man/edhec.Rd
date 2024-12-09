@@ -5,7 +5,7 @@
 \description{
 EDHEC composite hedge fund style index returns.
 }
-\usage{edhec}
+\usage{data(edhec)}
 \details{
 EDHEC Data used in PerformanceAnalytics and related publications with the kind permission of the EDHEC Risk and Asset Management Research Center.
 
@@ -16,16 +16,13 @@ From the EDHEC website:
 
 To further assist financial institutions and investors implement the latest research advances in order to meet the challenges of the changing asset management landscape, the centre has spawned two consultancies and an executive education arm. Clients of these derivative activities include many of the leading organisations throughout Europe.}
 
-see \url{http://www.edhec-risk.com/about_us}
 }
-\format{CSV conformed into an xts object with monthly observations}
-\source{\url{http://www.edhec-risk.com/indexes/pure_style}}
+\format{CSV loaded into R and saved as an xts object with monthly observations. NOTE: In the era of CoVid-19, a few observations in the `Short Selling` index have not been reported. We chose to zero fill them at this time. These are observations on 2020-04-30, 2020-05-31, 2020-11-30, 2020-12-31, 2021-01-31, 2021-04-30, and 2021-05-31.}
+\source{\url{https://climateimpact.edhec.edu/}}
 \references{
 About EDHEC Alternative Indexes. December 16, 2003. EDHEC-Risk. \cr
-\url{http://www.edhec-risk.com/indexes/pure_style/about}
 
 Vaissie Mathieu. A Detailed Analysis of the Construction Methods and Management Principles of Hedge Fund Indices. October 2003. EDHEC. \cr
-\url{http://www.edhec-risk.com/site_edhecrisk/public/indexes/EDHEC_Publications/RISKReview1072705188065793513}
 }
 \examples{
 data(edhec)

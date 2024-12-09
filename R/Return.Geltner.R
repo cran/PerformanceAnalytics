@@ -10,8 +10,8 @@
 #' 
 #' The Geltner autocorrelation adjusted return series may be calculated via:
 #' 
-#' \deqn{ }{Geltner.returns = [R(t) - R(t-1)*acf(R(t-1))]/1-acf(R(t-1)) }\deqn{
-#' R_{G}=\frac{R_{t}-(R_{t-1}\cdot\rho_{1})}{1-\rho_{1}} }{Geltner.returns =
+#' \deqn{.}{Geltner.returns = [R(t) - R(t-1)*acf(R(t-1))]/1-acf(R(t-1)) }
+#' \deqn{R_{G}=\frac{R_{t}-(R_{t-1}\cdot\rho_{1})}{1-\rho_{1}} }{Geltner.returns =
 #' [R(t) - R(t-1)*acf(R(t-1))]/1-acf(R(t-1)) }
 #' 
 #' where \eqn{\rho_{1}}{acf(R(t-1))} is the first-order autocorrelation of the
@@ -33,7 +33,7 @@
 #' Geltner, David, 1993, Estimating Market Values from Appraised Values without
 #' Assuming an Efficient Market, Journal of Real Estate Research, Vol.8,
 #' p.325-345.
-###keywords ts multivariate distribution models
+#' 
 #' @examples
 #' 
 #' data(managers)
@@ -82,7 +82,7 @@ function (Ra, ...)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

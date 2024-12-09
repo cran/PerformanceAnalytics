@@ -45,8 +45,8 @@
 #' values are \code{"o"} (the default) and \code{"n"}.
 #' @param bg the background color for the legend box.  (Note that this is only
 #' used if \code{bty != "n"}.)
-#' @param box.lty,box.lwd the line type and width for the legend box.
-#' @param border.lty,border.lwd the line type and width for the legend border.
+#' @param box.col,box.lty,box.lwd the color, line type and width for the legend box.
+#' @param border.col,border.lty,border.lwd the color, line type and width for the legend border.
 #' @param pt.bg the background color for the \code{\link{points}},
 #' corresponding to its argument \code{bg}.
 #' @param cex character expansion factor \bold{relative} to current
@@ -143,7 +143,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
     else nx <- 0
     xlog <- par("xlog")
     ylog <- par("ylog")
-    rect2 <- function(left, top, dx, dy, density = NULL, angle, border = border.col, lty = border.lty, lwd = border.lwd, ...) {
+    rect2 <- function(left, top, dx, dy, density = NULL, angle, border = box.col, lty = box.lty, lwd = box.lwd, ...) {
         r <- left + dx
         if (xlog) {
             left <- 10^left
@@ -290,7 +290,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
         if (trace)
             catn("  rect2(", left, ",", top, ", w=", w, ", h=",
                 h, ", ...)", sep = "")
-        rect2(left, top, dx = w, dy = h, col = bg, density = NULL, border = border.col)#added border = border.col
+        rect2(left, top, dx = w, dy = h, col = bg, density = NULL, border = box.col)
     }
     xt <- left + xchar + xextra + (w0 * rep.int(0:(ncol - 1),
         rep.int(n.legpercol, ncol)))[1:n.leg]
@@ -301,7 +301,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
             fill <- rep(fill, length.out = n.leg)
             rect2(left = xt, top = yt + ybox/2, dx = xbox, dy = ybox,
                 col = fill, density = density, angle = angle,
-                border = box.col) #removed internal border
+                border = border.col, lty = border.lty, lwd = border.lwd) 
         }
         xt <- xt + dx.fill
     }
@@ -445,7 +445,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
     grey6mono = c("#242424", "#494949", "#6D6D6D", "#929292", "#B6B6B6", "#DBDBDB")
 
     # QUALITATIVE
-    # by Paul Tol, http://www.sron.nl/~pault/colourschemes.pdf
+    # by Paul Tol, https://www.sron.nl/~pault/colourschemes.pdf
     tol1qualitative=c("#4477AA")
     tol2qualitative=c("#4477AA", "#CC6677")
     tol3qualitative=c("#4477AA", "#DDCC77", "#CC6677")
@@ -517,7 +517,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
     macro.labels = c()
 
     # Period beginning and endings, e.g., these are peak and trough dates from
-    # http://www.nber.org/cycles.html/
+    # https://www.nber.org/cycles.html/
     cycles.dates = list(
         c("10/26","11/27"),
         c("08/29","03/33"),
@@ -537,7 +537,7 @@ function (x, y = NULL, legend, fill = NULL, col = par("col"),
 # ------------------------------------------------------------------------------
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

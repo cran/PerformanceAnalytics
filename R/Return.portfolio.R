@@ -54,7 +54,7 @@
 #' xts Date subsetting via endpoints.
 #'
 #' In verbose mode, the function returns a list of data and intermediary calculations.
-#' \itemize{
+#' \describe{
 #'   \item{\code{returns}:}{ The portfolio returns.}
 #'   \item{\code{contribution}:}{ The per period contribution to portfolio 
 #'   return of each asset. Contribution is calculated as BOP weight times the 
@@ -171,7 +171,7 @@ Return.portfolio <- Return.rebalancing <- function(R,
   
   # calculates the end of the prior period 
   # need to use the if on quarter as quarter is incompatible with seq (it does not work with by)
-  if(time_unit=='quarter'){  start_date = as.yearqtr(seq(as.Date(index(R)[1]), length = 2, by = paste("-3", 'month'))[2])}else{  start_date = seq(as.Date(index(R)[1]), length = 2, by = paste("-1", time_unit))[2]}  
+  if(time_unit=='quarter'){  start_date = as.yearqtr(seq(as.Date(index(R)[1]), length.out = 2, by = paste("-3", 'month'))[2])}else{  start_date = seq(as.Date(index(R)[1]), length.out = 2, by = paste("-1", time_unit))[2]}  
   if(is.null(weights)){
     # generate equal weight vector for return columns  
     weights = rep(1 / NCOL(R), NCOL(R))
@@ -273,7 +273,11 @@ Return.portfolio.arithmetic <- function(R,
       for(j in 1:nrow(returns)){
         # For arithmetic returns, the beginning of period weights are always 
         # equal to the rebalance weights
-        bop_weights[k,] = weights[i,]
+        if (j == 1) {
+          bop_weights[k, ] = weights[i, ]
+        } else {
+          bop_weights[k, ] = eop_weights[k - 1, ]
+        }
         period_contrib[k,] = coredata(returns[j,]) * bop_weights[k,]
         eop_weights[k,] = (period_contrib[k,] + bop_weights[k,]) / sum(c(period_contrib[k,], bop_weights[k,]))
         ret[k] = sum(period_contrib[k,])
@@ -439,7 +443,7 @@ Return.portfolio.geometric <- function(R,
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

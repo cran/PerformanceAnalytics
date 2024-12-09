@@ -29,8 +29,8 @@
 #' print(SystematicRisk(portfolio_bacon[,1], portfolio_bacon[,2])) #expected 0.013
 #'
 #' data(managers)
-#' print(SystematicRisk(managers['1996',1], managers['1996',8]))
-#' print(SystematicRisk(managers['1996',1:5], managers['1996',8]))
+#' print(SystematicRisk(managers['2002',1], managers['2002',8]))
+#' print(SystematicRisk(managers['2002',1:5], managers['2002',8]))
 #'
 #' @export
 SystematicRisk <-
@@ -82,7 +82,7 @@ function (Ra, Rb, Rf = 0, scale = NA, ...)
 
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

@@ -15,7 +15,7 @@
 #' the period.
 #'
 #' Valid period character strings for period include: "weeks", "months", "quarters", "years", or "all".
-#' These are calculated internally via \code{\link{endpoints}}. See that function's help page for further details.
+#' These are calculated internally via \code{\link[xts]{endpoints}}. See that function's help page for further details.
 #'
 #' For the special period "all", the contribution is calculated over all rows,
 #' giving a single contribution across all observations.
@@ -23,10 +23,10 @@
 #' @param Contributions a time series of the per period contribution to portfolio return of each asset
 #' @param period period to convert to.  See details. "weeks", "months", "quarters", "years", or "all".
 #' @author Peter Carl, with thanks to Paolo Cavatore
-#' @seealso \code{\link{Return.portfolio}} \cr \code{\link{endpoints}} \cr
+#' @seealso \code{\link{Return.portfolio}} \cr \code{\link[xts]{endpoints}} \cr
 #' @references Morningstar, \emph{Total Portfolio Performance Attribution Methodology}, p.36.
 #'   Available at
-#'   \url{http://corporate.morningstar.com/US/documents/MethodologyDocuments/MethodologyPapers/TotalPortfolioPerformanceAttributionMethodology.pdf}
+#'   \url{https://corporate.morningstar.com/US/documents/MethodologyDocuments/MethodologyPapers/TotalPortfolioPerformanceAttributionMethodology.pdf}
 #' @aliases to.monthly.contributions to.weekly.contributions to.quarterly.contributions to.yearly.contributions
 #'
 #' @export
@@ -120,7 +120,7 @@ to.yearly.contributions <- function(Contributions) {
 
 ################################################################################
 #
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

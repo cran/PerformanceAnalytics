@@ -58,10 +58,12 @@
 #' \code{\link{plot}}
 #' @references main code forked/borrowed/ported from the excellent: \cr Fox,
 #' John (2007) \emph{car: Companion to Applied Regression} \cr
-#' \url{http://socserv.socsci.mcmaster.ca/jfox/}
+#' \url{https://socserv.socsci.mcmaster.ca/jfox/}
 ###keywords ts multivariate distribution models hplot
 #' 
 #' @examples
+#' # you'll need lots of extra packages to run these examples of different distributions
+#' \dontrun{ # these examples require multiple packages from 'Suggests', so don't test on CRAN
 #' library(MASS) 
 #' library(PerformanceAnalytics)
 #' data(managers)
@@ -78,11 +80,9 @@
 #' chart.QQPlot(1+x, main = "Log-Normal Distribution", envelope=0.95, 
 #'     distribution='lnorm',distributionParameter='meanlog = fit$estimate[[1]], 
 #'     sdlog = fit$estimate[[2]]')
-#' 
-#' 
-#' \dontrun{ 
+#'  
 #' # Panel 3: Mixture Normal distribution
-#' library(nor1mix)
+#' # library(nor1mix)
 #' obj = norMixEM(x,m=2)
 #' chart.QQPlot(x, main = "Normal Mixture Distribution",
 #' 		line=c("quartiles"), distribution = 'norMix',  distributionParameter='obj',
@@ -125,7 +125,7 @@
 #'                  gamma = fit(stable.fit)$estimate[[3]], 
 #'                  delta = fit(stable.fit)$estimate[[4]], pm = 0')
 #' }
-#' 
+
 #' #end examples
 #' 
 #' @export 
@@ -228,7 +228,7 @@ chart.QQPlot <-
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

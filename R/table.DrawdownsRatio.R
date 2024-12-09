@@ -21,6 +21,8 @@
 #' data(managers)
 #' table.DrawdownsRatio(managers[,1:8])
 #' 
+#' \donttest{ # don't test on CRAN, since it requires Suggested packages
+#' 
 #' require("Hmisc")
 #' result = t(table.DrawdownsRatio(managers[,1:8], Rf=.04/12))
 #' 
@@ -29,7 +31,7 @@
 #' row.valign="center", wrap.rownames=20, wrap.colnames=10,
 #' col.rownames=c("red", rep("darkgray",5), rep("orange",2)), mar = c(0,0,3,0)+0.1)
 #' title(main="Drawdowns ratio statistics")
-#' 
+#' } 
 #' @export
 table.DrawdownsRatio <-
 function (R, Rf = 0, scale = NA, digits = 4)
@@ -75,7 +77,7 @@ function (R, Rf = 0, scale = NA, digits = 4)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

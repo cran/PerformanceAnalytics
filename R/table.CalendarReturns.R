@@ -24,6 +24,8 @@
 #' data(managers)
 #' t(table.CalendarReturns(managers[,c(1,7,8)]))
 #' 
+#' \donttest{ # don't test on CRAN, since it requires Suggested packages
+#' 
 #' # prettify with format.df in hmisc package
 #' require("Hmisc")
 #' result = t(table.CalendarReturns(managers[,c(1,8)]))
@@ -36,7 +38,7 @@
 #'          mar = c(0,0,3,0)+0.1)
 #'          
 #' title(main="Calendar Returns")
-#' 
+#' }
 #' @export
 table.CalendarReturns <-
 function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
@@ -161,7 +163,7 @@ function (R, digits = 1, as.perc = TRUE, geometric = TRUE)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

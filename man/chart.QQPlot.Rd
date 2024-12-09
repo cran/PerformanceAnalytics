@@ -107,6 +107,8 @@ the reference line, the greater the evidence that the data set have come
 from a population with a different distribution.
 }
 \examples{
+# you'll need lots of extra packages to run these examples of different distributions
+\dontrun{ # these examples require multiple packages from 'Suggests', so don't test on CRAN
 library(MASS) 
 library(PerformanceAnalytics)
 data(managers)
@@ -123,11 +125,9 @@ fit = fitdistr(1+x, 'lognormal')
 chart.QQPlot(1+x, main = "Log-Normal Distribution", envelope=0.95, 
     distribution='lnorm',distributionParameter='meanlog = fit$estimate[[1]], 
     sdlog = fit$estimate[[2]]')
-
-
-\dontrun{ 
+ 
 # Panel 3: Mixture Normal distribution
-library(nor1mix)
+# library(nor1mix)
 obj = norMixEM(x,m=2)
 chart.QQPlot(x, main = "Normal Mixture Distribution",
 		line=c("quartiles"), distribution = 'norMix',  distributionParameter='obj',
@@ -170,14 +170,13 @@ chart.QQPlot(x, main = "Stable Paretian Distribution", envelope=0.95,
                  gamma = fit(stable.fit)$estimate[[3]], 
                  delta = fit(stable.fit)$estimate[[4]], pm = 0')
 }
-
 #end examples
 
 }
 \references{
 main code forked/borrowed/ported from the excellent: \cr Fox,
 John (2007) \emph{car: Companion to Applied Regression} \cr
-\url{http://socserv.socsci.mcmaster.ca/jfox/}
+\url{https://socserv.socsci.mcmaster.ca/jfox/}
 }
 \seealso{
 \code{\link[stats]{qqplot}} \cr 

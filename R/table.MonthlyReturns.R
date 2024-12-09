@@ -23,12 +23,15 @@
 #' t(table.Stats(edhec))
 #' 
 #' result=t(table.Stats(edhec))
+#' 
+#' \donttest{ # don't test on CRAN, since it requires Suggested packages
+#' 
 #' require("Hmisc")
 #' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, cdec=c(rep(1,2),rep(3,14))), 
 #'          rmar = 0.8, cmar = 1.5,  max.cex=.9, halign = "center", valign = "top", 
 #'          row.valign="center", wrap.rownames=10, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Statistics for EDHEC Indexes")
-#' 
+#' }
 #' @rdname table.MonthlyReturns
 #' @export
 table.Stats <-
@@ -76,11 +79,11 @@ function (R, ci = 0.95, digits = 4)
         z = c(
             length(x), 
             x.na, min(x), 
-            as.numeric(quantile(x, prob = 0.25, na.rm = TRUE)), 
+            as.numeric(quantile(x, probs = 0.25, na.rm = TRUE)), 
             median(x), 
             mean(x), 
             exp(mean(log(1+x)))-1,
-            as.numeric(quantile(x, prob = 0.75, na.rm = TRUE)), 
+            as.numeric(quantile(x, probs = 0.75, na.rm = TRUE)), 
             max(x), 
             sqrt(var(x)/length(x)),
             cl.vals(x, ci)[1], 
@@ -123,7 +126,7 @@ function (R, ci = 0.95, digits = 4)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

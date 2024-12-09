@@ -19,9 +19,7 @@
 #' @seealso \code{\link{chart.RollingPerformance}}
 ###keywords ts multivariate distribution models hplot
 #' @examples
-#' if(!( Sys.info()[['sysname']]=="Windows") ){
-#' # if on Windows, cut and paste this example
-#' 
+#' \donttest{
 #' data(managers)
 #' charts.RollingPerformance(managers[,1:8], 
 #'                           Rf=managers[,10,drop=FALSE], 
@@ -101,7 +99,7 @@ function (R, width = 12, Rf = 0, main = NULL, event.labels = NULL, legend.loc=NU
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

@@ -24,13 +24,14 @@
 #'                  "ED", "FIA", "GM", "LS", "MA",
 #'                  "RV", "SS", "FOF")
 #' # Cleaning the returns time series for manager data
-#' outRob <- Return.locScaleRob(edhec$CA)
-#'
+#' if(requireNamespace("RobStatTM", quietly = TRUE)) { # CRAN requires conditional execution
+#'   outRob <- Return.locScaleRob(edhec$CA)
+#' }
 # Implementation of the robust filter for the IF TS
 Return.locScaleRob <- function(R, alpha.robust=0.05, normal.efficiency=0.99, ...){
   
   if(!requireNamespace("RobStatTM", quietly = TRUE)) {
-    stop("Package \"pkg\" needed for this function to work. Please install it.",
+    stop("Package \"RobStatTM\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
   

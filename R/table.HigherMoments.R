@@ -29,13 +29,16 @@
 #' table.HigherMoments(managers[,1:3],managers[,8,drop=FALSE])
 #' result=t(table.HigherMoments(managers[,1:6],managers[,8,drop=FALSE]))
 #' rownames(result)=colnames(managers[,1:6])
+#' 
+#' \donttest{ # don't test on CRAN, since it requires Suggested packages
+#' 
 #' require("Hmisc")
 #' textplot(format.df(result, na.blank=TRUE, numeric.dollar=FALSE, 
 #'          cdec=rep(3,dim(result)[2])), rmar = 0.8, cmar = 1.5,  
 #'          max.cex=.9, halign = "center", valign = "top", row.valign="center", 
 #'          wrap.rownames=5, wrap.colnames=10, mar = c(0,0,3,0)+0.1)
 #' title(main="Higher Co-Moments with SP500 TR")
-#' 
+#' } 
 #' @export
 table.HigherMoments <-
 function (Ra, Rb, scale = NA, Rf = 0, digits = 4, method = "moment")
@@ -118,7 +121,7 @@ function (Ra, Rb, scale = NA, Rf = 0, digits = 4, method = "moment")
 
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

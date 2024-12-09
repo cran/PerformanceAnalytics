@@ -297,10 +297,7 @@
 #'      
 ###keywords ts multivariate distribution models
 #' @examples
-#' 
-#' if(!( Sys.info()[['sysname']]=="Windows") ){
-#' # if on Windows, cut and paste this example
-#' 
+#' \donttest{
 #'     data(edhec)
 #' 
 #'     # first do normal VaR calc
@@ -323,7 +320,7 @@
 #'     # add Component VaR for the equal weighted portfolio
 #'     VaR(edhec, clean="boudt", portfolio_method="component")
 #' 
-#' } # end Windows check
+#' } # end CRAN check
 #' 
 #' @export
 VaR <-
@@ -338,28 +335,75 @@ VaR <-
     
     # wrapper for univariate and multivariate VaR functions.
     
-    # Fix parameters if SE=TRUE
-    if(SE){
-      
-      # Setting the control parameters
-      if(is.null(SE.control))
-        SE.control <- RPESE.control(estimator="SD")
-      
-      # Fix the method
-      method="historical"
-      portfolio_method="single"
-      invert=FALSE
-      if(SE.control$cleanOutliers=="locScaleRob")
-        clean="locScaleRob" else
-          clean="none"
-    }
-    
     # Setup:
     #if(exists(modified)({if( modified == TRUE) { method="modified" }}
     #if(method == TRUE or is.null(method) ) { method="modified" }
     clean = clean[1]
     method = method[1]
     portfolio_method = portfolio_method[1]
+    
+    # Checking input if SE = TRUE
+    if(SE){
+      SE.check <- TRUE
+      if(!requireNamespace("RPESE", quietly = TRUE)){
+        warning("Package \"RPESE\" needed for standard errors computation. Please install it.",
+                call. = FALSE)
+        SE <- FALSE
+      }
+      if(!(clean %in% c("none", "locScaleRob"))){
+        warning("To return SEs, \"clean\" must be one of \"locScaleRob\" or \"none\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(!(portfolio_method %in% c("single"))){
+        warning("To return SEs, \"portfolio_method\" must be \"single\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(!(method %in% c("historical"))){
+        warning("To return SEs, \"method\" must be \"historical\".",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+      if(invert){
+        warning("To return SEs, \"invert\" must be FALSE.",
+                call. = FALSE)
+        SE.check <- FALSE
+      }
+    }
+    
+    # SE Computation
+    if(SE){
+      
+      # Setting the control parameters
+      if(is.null(SE.control))
+        SE.control <- RPESE.control(estimator="VaR")
+      
+      # Computation of SE (optional)
+      ses=list()
+      # For each of the method specified in se.method, compute the standard error
+      for(mymethod in SE.control$se.method){
+        ses[[mymethod]]=RPESE::EstimatorSE(R, estimator.fun = "VaR", se.method = mymethod, 
+                                           cleanOutliers=SE.control$cleanOutliers,
+                                           fitting.method=SE.control$fitting.method,
+                                           freq.include=SE.control$freq.include,
+                                           freq.par=SE.control$freq.par,
+                                           a=SE.control$a, b=SE.control$b,
+                                           alpha = p,
+                                           ...)
+        ses[[mymethod]]=ses[[mymethod]]$se
+      }
+      ses <- t(data.frame(ses))
+      # Removing SE output if inappropriate arguments
+      if(!SE.check){
+        ses.rownames <- rownames(ses)
+        ses.colnames <- colnames(ses)
+        ses <- matrix(NA, nrow=nrow(ses), ncol=ncol(ses))
+        rownames(ses) <- ses.rownames
+        colnames(ses) <- ses.colnames
+      }
+    }
+    
     if (is.null(weights) & portfolio_method != "single"){
       message("no weights passed in, assuming equal weighted portfolio")
       weights=t(rep(1/dim(R)[[2]], dim(R)[[2]]))
@@ -397,29 +441,6 @@ VaR <-
     if (!is.null(R)){
     }
     
-    if(isTRUE(SE)){
-      if(!requireNamespace("RPESE", quietly = TRUE)){
-        stop("Package \"pkg\" needed for standard errors computation. Please install it.",
-             call. = FALSE)
-      }
-      
-      # Computation of SE (optional)
-      ses=list()
-      # For each of the method specified in se.method, compute the standard error
-      for(mymethod in SE.control$se.method){
-        ses[[mymethod]]=RPESE::EstimatorSE(R, estimator.fun = "VaR", se.method = mymethod, 
-                                           cleanOutliers=SE.control$cleanOutliers,
-                                           fitting.method=SE.control$fitting.method,
-                                           freq.include=SE.control$freq.include,
-                                           freq.par=SE.control$freq.par,
-                                           a=SE.control$a, b=SE.control$b,
-                                           p=p, # Additional Parameter
-                                           ...)
-      }
-      ses <- t(data.frame(ses))
-    }
-    
-    
     switch(portfolio_method,
            single = {
              if(is.null(weights)){
@@ -437,7 +458,7 @@ VaR <-
                switch(method,
                       modified = { rVaR=mVaR.MM(w=weights, mu=mu, sigma=sigma, M3=m3 , M4=m4 , p=p) }, 
                       gaussian = { rVaR=GVaR.MM(w=weights, mu=mu, sigma=sigma, p=p) },
-                      historical = { rVaR = VaR.historical(R=R,p=p) %*% weights } # note that this is weighting the univariate calc by the weights
+                      historical = { rVaR = as.matrix(VaR.historical(R=R,p=p)) * weights } # note that this is weighting the univariate calc by the weights
                ) # end multivariate method
              }
              columns<-ncol(rVaR)
@@ -488,7 +509,7 @@ VaR <-
     } # end VaR wrapper function
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

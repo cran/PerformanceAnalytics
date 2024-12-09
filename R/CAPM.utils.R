@@ -85,7 +85,7 @@ CAPM.CML <- SFM.CML <-function (Ra, Rb, Rf = 0)
 #' Probably the most complete criticism of CAPM in actual practice (as opposed
 #' to structural or theory critiques) is that it posits a market equilibrium,
 #' but is most often used only in a partial equilibrium setting, for example by
-#' using the S\&P 500 as the benchmark asset.  A better method of using and
+#' using the S&P 500 as the benchmark asset.  A better method of using and
 #' testing the CAPM would be to use a general equilibrium model that took
 #' global assets from all asset classes into consideration.
 #' 
@@ -159,7 +159,7 @@ CAPM.SML.slope <- function (Rb, Rf = 0)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

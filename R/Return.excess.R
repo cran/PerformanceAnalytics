@@ -64,11 +64,13 @@ function (R, Rf = 0)
     # and convert it to an xts object.
     if(!is.null(dim(Rf))){
         Rf = checkData(Rf)
-        coln.Rf=colnames(Rf)
-        if(is.null(coln.Rf)){
+        if (length(colnames(R)) == 1 && colnames(R) == colnames(Rf)){
           colnames(Rf) = "Rf"
-          coln.Rf = colnames(Rf)
         }
+        if(is.null(colnames(Rf))){
+          colnames(Rf) = "Rf"
+        }
+        coln.Rf=colnames(Rf)
         Rft=cbind(R,Rf)
         Rft=na.locf(Rft[,make.names(coln.Rf)])
         Rf=Rft[which(index(R) %in% index(Rft))]
@@ -92,7 +94,7 @@ function (R, Rf = 0)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

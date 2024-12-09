@@ -11,7 +11,7 @@
 #' \code{\link{Return.annualized}} will)
 #' @param fill a three-component vector or list (recycled otherwise) providing 
 #' filling values at the left/within/to the right of the data range. See the 
-#' fill argument of \code{\link{na.fill}} for details.
+#' fill argument of \code{\link[zoo]{na.fill}} for details.
 #' @param main set the chart title, same as in \code{\link{plot}}
 #' @param ylim set the y-axis limit, same as in \code{\link{plot}}
 #' @param \dots any other passthru parameters to \code{\link{plot}} or the
@@ -23,8 +23,7 @@
 #' \code{\link[zoo]{rollapply}}
 ###keywords ts multivariate distribution models hplot
 #' @examples
-#' if(!( Sys.info()[['sysname']]=="Windows") ){
-#' # if on Windows, cut and paste this example
+#' \donttest{
 #' data(edhec)
 #' chart.RollingPerformance(edhec[, 1:3], width = 24)
 #' chart.RollingPerformance(edhec[, 1:3], 
@@ -124,7 +123,7 @@ chart.RollingPerformance <- function (R, width = 12, FUN = "Return.annualized", 
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

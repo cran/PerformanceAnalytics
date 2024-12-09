@@ -15,11 +15,12 @@ Authors@R: c(
   , person(given="Diethelm",family="Wuertz",role="ctb")  
   , person(given=c("Anthony","Alexander"),family="Christidis",role="ctb")  
   , person(given="R. Douglas",family="Martin",role="ctb")  
-  , person(given=c("Zeheng", "'Zenith'"),family="Zhou",role="ctb")  
-  , person(given=c("Justin", "M."),family="Shea",role="ctb")   
+  , person(given=c("Zeheng", "Zenith"),family="Zhou",role="ctb")  
+  , person(given=c("Justin", "M."),family="Shea",role="ctb")
+  , person(given="Dhairya",family="Jain",role="ctb")
   )
-Version: 2.0.4
-Date: 2020-02-05
+Version: 2.0.8
+Date: 2024-12-04
 Description: Collection of econometric functions for performance and risk 
     analysis. In addition to standard risk and performance metrics, this 
     package aims to aid practitioners and researchers in utilizing the latest
@@ -31,16 +32,17 @@ Imports: methods, quadprog, zoo
 Depends: R (>= 3.5.0), xts (>= 0.10.0)
 Suggests: dygraphs, Hmisc, MASS, quantmod, gamlss, gamlss.dist,
         robustbase, quantreg, tinytest, ggplot2, RColorBrewer,
-        googleVis, plotly, gridExtra, ggpubr, RPESE, R.rsp, RobStatTM
+        googleVis, plotly, gridExtra, ggpubr, nloptr, rgenoud, RPESE,
+        RobStatTM, fit.models, R.rsp
 VignetteBuilder: R.rsp
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/braverock/PerformanceAnalytics
-Copyright: (c) 2004-2020
-RoxygenNote: 7.0.2
+Copyright: (c) 2004-2022
+RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2020-02-05 23:43:30.960783 UTC; brian
+Packaged: 2024-12-08 18:03:13 UTC; brian
 Author: Brian G. Peterson [cre, aut, cph],
   Peter Carl [aut, cph],
   Kris Boudt [ctb, cph],
@@ -54,8 +56,9 @@ Author: Brian G. Peterson [cre, aut, cph],
   Diethelm Wuertz [ctb],
   Anthony Alexander Christidis [ctb],
   R. Douglas Martin [ctb],
-  Zeheng 'Zenith' Zhou [ctb],
-  Justin M. Shea [ctb]
+  Zeheng Zenith Zhou [ctb],
+  Justin M. Shea [ctb],
+  Dhairya Jain [ctb]
 Maintainer: Brian G. Peterson <brian@braverock.com>
 Repository: CRAN
-Date/Publication: 2020-02-06 12:10:11 UTC
+Date/Publication: 2024-12-09 13:40:08 UTC

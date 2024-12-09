@@ -24,6 +24,7 @@
 %%%%%%%%%%%%%%%%%%%%%% End Setup Lines 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 %\author{Peter Carl\\Guidance Capital Management \And Brian G. Peterson\\Diamond Consulting}
 % \plainauthor{Peter Carl, Brian Peterson}
@@ -703,9 +704,12 @@ frontier of the market portfolio.
 \label{fig:CAPM-Table}
 
 <<tableCAPM,echo=T>>=
-table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)],
-managers[ trailing36.rows, 8, drop=FALSE],
-Rf = managers[ trailing36.rows, Rf.col, drop=FALSE])
+# CRAN questionably(ahem) requires these methods to not run if you don't have Suggests loaded
+if(requireNamespace("RobStatTM", quietly = TRUE)){
+  table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)],
+  managers[ trailing36.rows, 8, drop=FALSE],
+  Rf = managers[ trailing36.rows, Rf.col, drop=FALSE])
+} # end spurious and unnecessary CRAN check
 @
 \end{figure}
 
@@ -897,3 +901,4 @@ fill a hole in the tools available to a financial engineer or analyst.
 If you think there's an important gap or possible improvement to be
 made, please don't hesitate to contact us.
 \end{document}
+

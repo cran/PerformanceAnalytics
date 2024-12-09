@@ -1,5 +1,4 @@
 ### R code from vignette source 'PA-charts.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: LoadLibrary
@@ -120,9 +119,12 @@ chart.RelativePerformance(managers[ , c(manager.col, peers.cols) ], managers[, 8
 ###################################################
 ### code chunk number 15: tableCAPM
 ###################################################
-table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)],
-managers[ trailing36.rows, 8, drop=FALSE],
-Rf = managers[ trailing36.rows, Rf.col, drop=FALSE])
+# CRAN questionably(ahem) requires these methods to not run if you don't have Suggests loaded
+if(requireNamespace("RobStatTM", quietly = TRUE)){
+  table.CAPM(managers[trailing36.rows, c(manager.col, peers.cols)],
+  managers[ trailing36.rows, 8, drop=FALSE],
+  Rf = managers[ trailing36.rows, Rf.col, drop=FALSE])
+} # end spurious and unnecessary CRAN check
 
 
 ###################################################

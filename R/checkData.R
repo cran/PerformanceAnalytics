@@ -86,11 +86,11 @@ checkData <- function (x, method = c("xts", "zoo", "data.frame", "matrix", "vect
                 x = as.zoo(x)
             }
             else {
-                if(class(x) == "matrix" | class(x) == "data.frame"){
+                if(inherits(x, c("matrix", "data.frame"))){
                     x= zoo(x, order.by = as.POSIXct(rownames(x)))  
                 }
                 else{
-                    if(class(x) == "numeric"){
+                    if(inherits(x, "numeric")){
                         if(is.null(names(x)))
                             x= zoo(matrix(x, ncol=NCOL(x)))
                         else
@@ -102,7 +102,7 @@ checkData <- function (x, method = c("xts", "zoo", "data.frame", "matrix", "vect
         xts = {
 			if(is.xts(x)) return(x)
             if(!xtsible(x))
-                if(class(x) == "numeric"){
+                if(inherits(x, "numeric")){
                     x= zoo(matrix(x, ncol=NCOL(x)))
                     if(!quiet)
                         warning("The data cannot be converted into a time series.  Returning a 'zoo' object. ")
@@ -143,7 +143,7 @@ function (x, na.rm = TRUE, quiet = TRUE, ...)
 }
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

@@ -81,7 +81,8 @@ chart.TimeSeries.base <-
                                       grid.color=grid.color, 
                                       grid.lty=grid.lty, 
                                       xaxis.labels=xaxis.labels,
-                                      yaxis.pct=yaxis.pct)
+                                      yaxis.pct=yaxis.pct,
+                                      ...)
              return(p)
            },
            ggplot2 = {
@@ -149,7 +150,7 @@ chart.TimeSeries.base <-
 
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

@@ -1,8 +1,8 @@
-# Compute co-moment matrices
-
-#' calculate centered Returns
+#' calculate centered moment/co-moment return matrices
 #' 
-#' the \eqn{n}-th centered moment is calculated as \deqn{ }{moment^n(R) =
+#' the \eqn{n}-th centered moment is calculated as 
+#' 
+#' \deqn{.}{moment^n(R) =
 #' E[R-E(R)^n]}\deqn{ \mu^{(n)}(R) = E\lbrack(R-E(R))^n\rbrack }{moment^n(R) =
 #' E[R-E(R)^n]}
 #' 
@@ -14,9 +14,6 @@
 #' 
 #' These functions were first utilized in Boudt, Peterson, and Croux (2008),
 #' and have been subsequently used in our other research.
-#' 
-#' ~~ Additional Details will be added to documentation as soon as we have time
-#' to write them. Documentation Patches Welcome. ~~
 #' 
 #' @aliases centeredcomoment centeredmoment Return.centered
 #' @param R an xts, vector, matrix, data frame, timeSeries or zoo object of
@@ -46,10 +43,7 @@
 #' Scott, Robert C., and Philip A. Horvath. 1980. On the Direction of
 #' Preference for Moments of Higher Order than the Variance. Journal of Finance
 #' 35(4):915-919.
-###keywords ts multivariate distribution models
 #' @examples
-#' 
-#' 
 #' data(managers)
 #' Return.centered(managers[,1:3,drop=FALSE])
 #' 
@@ -196,16 +190,16 @@ centeredcomoment = function(Ra,Rb,p1,p2,normalize=FALSE)
 #' @author Kris Boudt, Peter Carl, Dries Cornilly, Brian Peterson
 #' @seealso \code{\link{BetaCoSkewness}} \cr \code{\link{BetaCoKurtosis}} \cr
 #' \code{\link{BetaCoMoments}} \cr \code{\link{ShrinkageMoments}} \cr \code{\link{EWMAMoments}}
-#' \cr \code{\link{StructuredMoments}} \cr \code{\link{MCA}}
+#' \cr \code{\link{StructuredMoments}} \cr \code{\link{MCA}} \cr \code{\link{NCE}}
 #' @references Boudt, Kris, Brian G. Peterson, and Christophe Croux. 2008.
 #' Estimation and Decomposition of Downside Risk for Portfolios with Non-Normal
 #' Returns. Journal of Risk. Winter.
 #' 
-#' Boudt, Kris, Cornilly, Dries and Verdonck, Tim. 2017. A Coskewness Shrinkage 
+#' Boudt, Kris, Dries Cornilly and Tim Verdonck. 2020 A Coskewness Shrinkage 
 #' Approach for Estimating the Skewness of Linear Combinations of Random Variables. 
-#' Submitted. Available at SSRN: https://ssrn.com/abstract=2839781
+#' Journal of Financial Econometrics, 18(1), 1-23.
 #' 
-#' Martellini, L., & Ziemann, V. 2010. Improved estimates of higher-order 
+#' Martellini, Lionel, and Volker Ziemann. 2010. Improved estimates of higher-order 
 #' comoments and implications for portfolio selection. Review of Financial 
 #' Studies, 23(4), 1467-1502.
 #' 
@@ -523,7 +517,7 @@ BetaCoKurtosis <- function(Ra,Rb)
 
 
 ###############################################################################
-# R (http://r-project.org/) Econometrics for Performance and Risk Analysis
+# R (https://r-project.org/) Econometrics for Performance and Risk Analysis
 #
 # Copyright (c) 2004-2020 Peter Carl and Brian G. Peterson
 #

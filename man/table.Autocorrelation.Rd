@@ -5,13 +5,15 @@
 \title{table for calculating the first six autocorrelation coefficients and
 significance}
 \usage{
-table.Autocorrelation(R, digits = 4)
+table.Autocorrelation(R, digits = 4, max.lag = 6)
 }
 \arguments{
 \item{R}{an xts, vector, matrix, data frame, timeSeries or zoo object of
 asset returns}
 
 \item{digits}{number of digits to round results to for display}
+
+\item{max.lag}{the maximum autocorrelation lag to include in the table}
 }
 \description{
 Produces data table of autocorrelation coefficients \eqn{\rho}{rho} and
@@ -25,6 +27,7 @@ and Pierce (1970) that offers a better fit for the \eqn{\chi^2}{chi^2} test
 for small sample sizes. \code{\link{Box.test}} provides both.
 }
 \examples{
+\donttest{ # CRAN does not allow examples to load suggested packages in one of its tests
 
 data(managers)
 t(table.Autocorrelation(managers))
@@ -36,7 +39,7 @@ textplot(result, rmar = 0.8, cmar = 2,  max.cex=.9, halign = "center",
          wrap.colnames=10, mar = c(0,0,3,0)+0.1)
          
 title(main="Autocorrelation")
-
+}
 }
 \references{
 Lo, Andrew W. 2001. Risk Management for Hedge Funds:

@@ -8,6 +8,7 @@ chart.Correlation(
   R,
   histogram = TRUE,
   method = c("pearson", "kendall", "spearman"),
+  pch = 1,
   ...
 )
 }
@@ -19,6 +20,8 @@ chart.Correlation(
 \item{method}{a character string indicating which correlation coefficient
 (or covariance) is to be computed.  One of "pearson"
 (default), "kendall", or "spearman", can be abbreviated.}
+
+\item{pch}{See \code{\link{par}}}
 
 \item{\dots}{any other passthru parameters into \code{\link{pairs}}}
 }
@@ -37,7 +40,7 @@ chart.Correlation(managers[,1:8], histogram=TRUE, pch="+")
 
 }
 \seealso{
-\code{\link{table.Correlation}}
+\code{\link{table.Correlation}} \code{\link{par}}
 }
 \author{
 Peter Carl
